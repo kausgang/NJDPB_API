@@ -6,9 +6,6 @@ spring:
     url: jdbc:sqlserver://${DB_HOST}:1433;databaseName=RTS;encrypt=false;trustServerCertificate=true
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-#    url: jdbc:sqlserver://TREVDEVSQL19.tmis.treas.state.nj.us:1433;databaseName=RTS;encrypt=false;trustServerCertificate=true
-#    username: siebel_user
-#    password: cat?52
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
   jpa:
