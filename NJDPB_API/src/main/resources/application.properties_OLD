@@ -1,0 +1,7 @@
+spring.application.name=NJDPB_API
+
+  datasource:
+    url: jdbc:sqlserver://TREVDEVSQL19.tmis.treas.state.nj.us:1433;databaseName=RTS;encrypt=false;trustServerCertificate=true
+    username: siebel_user
+    password: cat?52
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
