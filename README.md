@@ -1,5 +1,5 @@
-# NJDPB_API
+# PURCHASE database
 
-This public repo will be used to develop NJDPB springboot API.
+Server runs on port 8090
 
-This will have development,stage and production branch for Jenkins to poll.
+The openapi endpoint is - http://localhost:8090/swagger-ui/index.html
