@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface LetterRepository extends JpaRepository<Letter, Long> {
+public interface LetterRepository extends JpaRepository<Letter, String> {
 
-    List<Letter> findBySsn(Long ssn);
+    List<Letter> findBySsn(String ssn);
 
 }

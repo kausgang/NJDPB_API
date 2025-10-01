@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class LetterRequestDTO {
 
     @NotBlank(message = "SSN cannot be blank")
-    private Long ssn;
+    private String ssn;
 //    public String getSsn(){
 //        return ssn;
 //    }

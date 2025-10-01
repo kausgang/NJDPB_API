@@ -12,8 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LetterResponseDTO {
 
-    private Long id;
-    private Long IDN_MEMBER_NUM;
-    private Long ssn;
-    private String FIELD1;
+    private String LETTER_ID;
+    private String LETTER_TYPE;
+//    private Long IDN_MEMBER_NUM;
+    private String SSN;
+//    private String FIELD1;
 }

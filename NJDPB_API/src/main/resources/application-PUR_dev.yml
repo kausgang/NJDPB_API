@@ -9,7 +9,7 @@ spring:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
   jpa:
-    hibernate:
+#    hibernate:
     database-platform: org.hibernate.dialect.SQLServerDialect
     show-sql: true
     properties:

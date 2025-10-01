@@ -8,6 +8,7 @@ import gov.nj.treas.NJDPB_API.persistence.entity.Letter;
 import gov.nj.treas.NJDPB_API.persistence.repository.LetterRepository;
 import gov.nj.treas.NJDPB_API.service.intrface.LetterService;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 @Service
 //@RequiredArgsConstructor
 @Data
+@Slf4j
 public class LetterServiceImpl implements LetterService {
 
 
@@ -26,7 +28,9 @@ public class LetterServiceImpl implements LetterService {
     @Override
     public List<LetterResponseDTO> getLetterBySSN(LetterRequestDTO letterRequestDTO) {
 
-        Long ssn = letterRequestDTO.getSsn();
+        String ssn = letterRequestDTO.getSsn();
+
+        log.info("SSN is - {}",ssn);
 
         List<Letter> letters = letterRepository.findBySsn(ssn);
 

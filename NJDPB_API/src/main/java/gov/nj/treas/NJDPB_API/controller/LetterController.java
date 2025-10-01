@@ -29,15 +29,15 @@ public class LetterController {
     @GetMapping("/ssn/{ssn}")
     public ResponseEntity<List<LetterResponseDTO>> getLettersBySsn(@PathVariable String ssn) {
 
-        long parsedSsn;
-        try {
-            parsedSsn = Long.parseLong(ssn);
-        } catch (NumberFormatException e) {
-            // Handle the error, maybe return a custom error response
-            throw new IllegalArgumentException("Invalid ID format");
-        }
+//        long parsedSsn;
+//        try {
+//            parsedSsn = Long.parseLong(ssn);
+//        } catch (NumberFormatException e) {
+//            // Handle the error, maybe return a custom error response
+//            throw new IllegalArgumentException("Invalid ID format");
+//        }
 
-        letterRequestDTO = new LetterRequestDTO(parsedSsn);
+        letterRequestDTO = new LetterRequestDTO(ssn);
 
 
         List<LetterResponseDTO> letters = letterServiceImplimentation.getLetterBySSN(letterRequestDTO);
