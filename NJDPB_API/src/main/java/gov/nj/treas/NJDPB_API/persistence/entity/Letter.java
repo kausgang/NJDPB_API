@@ -14,11 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Letter {
-
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String letter_id;
     private String ssn;
-//    private Long IDN_MEMBER_NUM;
-//    private String FIELD1;
+    private String letter_type;
 }

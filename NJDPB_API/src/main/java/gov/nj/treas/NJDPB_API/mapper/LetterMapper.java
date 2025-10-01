@@ -10,7 +10,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface LetterMapper {
-
     Letter toEntity(LetterRequestDTO requestDTO);
     LetterResponseDTO toResponseDTO(Letter letter);
     List<LetterResponseDTO> toResponseDTOList(List<Letter> letters);

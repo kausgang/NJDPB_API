@@ -34,6 +34,7 @@ public class LetterServiceImpl implements LetterService {
 
         List<Letter> letters = letterRepository.findBySsn(ssn);
 
+        log.info("letters = {}",letters);
 
         return letters.stream()
                 .map(letterMapper::toResponseDTO) // Renamed to match your mapper
