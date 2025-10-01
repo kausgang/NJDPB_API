@@ -36,9 +36,10 @@ public class LetterServiceImpl implements LetterService {
 
         log.info("letters = {}",letters);
 
-        return letters.stream()
-                .map(letterMapper::toResponseDTO) // Renamed to match your mapper
-                .collect(Collectors.toList());
+//        return letters.stream()
+//                .map(letterMapper::toResponseDTO) // Renamed to match your mapper
+//                .collect(Collectors.toList());
+        return letterMapper.toResponseDTOList(letters);
     }
 
 }
