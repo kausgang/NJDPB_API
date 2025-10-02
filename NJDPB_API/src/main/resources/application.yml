@@ -1,20 +1,25 @@
-spring:
-  application:
-    name: NJDPB_API
+#spring:
+#  application:
+#    name: NJDPB_API
 
-  datasource:
-    url: jdbc:sqlserver://${DB_HOST}:1433;databaseName={DB_NAME};encrypt=false;trustServerCertificate=true
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#  datasource:
+#    url: jdbc:sqlserver://${DB_HOST}:1433;databaseName={DB_NAME};encrypt=false;trustServerCertificate=true
+#    username: ${DB_USERNAME}
+#    password: ${DB_PASSWORD}
+#    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#
+#  jpa:
+#    hibernate:
+#    database-platform: org.hibernate.dialect.SQLServerDialect
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#
+#server:
+#  port: 8090
 
-  jpa:
-    hibernate:
-    database-platform: org.hibernate.dialect.SQLServerDialect
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
 
-server:
-  port: 8090
+#spring:
+#  config:
+#    import: optional:file:.env

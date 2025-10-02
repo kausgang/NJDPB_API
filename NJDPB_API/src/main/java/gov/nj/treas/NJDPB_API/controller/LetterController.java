@@ -6,6 +6,7 @@ import gov.nj.treas.NJDPB_API.dto.LetterRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.LetterResponseDTO;
 import gov.nj.treas.NJDPB_API.service.impl.LetterServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,11 +46,21 @@ public class LetterController {
     }
 
     @PostMapping("/ssn")
-    public ResponseEntity<List<LetterResponseDTO>> postLettersBySsn(@RequestBody LetterRequestDTO letterRequestDTO){
+//    public ResponseEntity<List<LetterResponseDTO>> postLettersBySsn(@RequestBody LetterRequestDTO letterRequestDTO){
+    public ResponseEntity<?> postLettersBySsn(@RequestBody LetterRequestDTO letterRequestDTO){
 
-        List<LetterResponseDTO> letters = letterServiceImplimentation.getLetterBySSN(letterRequestDTO);
+        try{
+            List<LetterResponseDTO> letters = letterServiceImplimentation.getLetterBySSN(letterRequestDTO);
 
-        return ResponseEntity.ok(letters);
+//            this also works
+//            return ResponseEntity.ok(letters);
+            return new ResponseEntity<>(letters, HttpStatus.OK);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+
 
     }
 }
