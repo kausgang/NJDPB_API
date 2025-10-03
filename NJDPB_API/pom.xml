@@ -111,6 +111,14 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
+
+		<!-- https://mvnrepository.com/artifact/com.smartnews/maven-jpa-entity-generator-plugin -->
+		<dependency>
+			<groupId>com.smartnews</groupId>
+			<artifactId>maven-jpa-entity-generator-plugin</artifactId>
+			<version>0.99.9</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -155,6 +163,27 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+
+			<plugin>
+				<groupId>com.smartnews</groupId>
+				<artifactId>maven-jpa-entity-generator-plugin</artifactId>
+				<version>0.99.8</version>
+				<dependencies>
+<!--					<dependency>-->
+<!--						<groupId>mysql</groupId>-->
+<!--						<artifactId>mysql-connector-java</artifactId>-->
+<!--						<version>5.1.46</version>-->
+<!--					</dependency>-->
+					<dependency>
+						<groupId>com.microsoft.sqlserver</groupId>
+						<artifactId>mssql-jdbc</artifactId>
+						<scope>runtime</scope>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+
 		</plugins>
 	</build>
 

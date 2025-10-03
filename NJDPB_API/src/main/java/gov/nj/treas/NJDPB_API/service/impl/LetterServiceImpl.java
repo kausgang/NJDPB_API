@@ -30,11 +30,11 @@ public class LetterServiceImpl implements LetterService {
 
         String ssn = letterRequestDTO.getSsn();
 
-        log.info("SSN is - {}",ssn);
+        log.debug("SSN is - {}",ssn);
 
         List<Letter> letters = letterRepository.findBySsn(ssn);
 
-        log.info("letters = {}",letters);
+        log.debug("letters = {}",letters);
 
 //        return letters.stream()
 //                .map(letterMapper::toResponseDTO) // Renamed to match your mapper

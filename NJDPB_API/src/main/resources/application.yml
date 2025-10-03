@@ -1,6 +1,6 @@
-#spring:
-#  application:
-#    name: NJDPB_API
+spring:
+  application:
+    name: NJDPB_API
 
 #  datasource:
 #    url: jdbc:sqlserver://${DB_HOST}:1433;databaseName={DB_NAME};encrypt=false;trustServerCertificate=true
@@ -20,6 +20,4 @@
 #  port: 8090
 
 
-#spring:
-#  config:
-#    import: optional:file:.env
+#

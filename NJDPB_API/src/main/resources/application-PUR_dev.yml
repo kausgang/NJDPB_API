@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: NJDPB_API
 
   datasource:
     url: jdbc:sqlserver://${DB_HOST}:${DB_PORT};databaseName=${DB_NAME};encrypt=false;trustServerCertificate=true
@@ -15,6 +13,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+
+logging:
+  config: classpath:logback-spring-PUR_dev.xml
+
 
 server:
   port: 8090
