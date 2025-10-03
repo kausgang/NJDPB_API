@@ -2,13 +2,7 @@ pipeline{
 
     agent none
 
-    environment {
-        // Set HTTP and HTTPS proxy environment variables
-        HTTP_PROXY = 'http://172.27.129.1:8080'
-        HTTPS_PROXY = 'http://172.27.129.1:8080'
-        // Specify hosts that should bypass the proxy
-        // NO_PROXY = 'localhost,*.yourdomain.com'
-    }
+
 
     stages{
 
