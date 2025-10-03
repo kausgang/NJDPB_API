@@ -12,8 +12,8 @@ pipeline{
 
         stage('Build'){
 
-            steps {
                 agent {label 'master'}
+            steps {
                 echo 'Building the application...'
                 // dir('NJDPB_API'){
                 // Build the JAR file once
