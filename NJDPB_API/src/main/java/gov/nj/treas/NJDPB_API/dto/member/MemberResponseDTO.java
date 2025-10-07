@@ -1,4 +1,4 @@
-package gov.nj.treas.NJDPB_API.dto;
+package gov.nj.treas.NJDPB_API.dto.member;
 
 
 import lombok.AllArgsConstructor;
@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LetterResponseDTO {
+public class MemberResponseDTO {
 
-    private String letter_id;
     private String ssn;
-    private String letter_type;
+    private String member_num;
+    private String name;
 }

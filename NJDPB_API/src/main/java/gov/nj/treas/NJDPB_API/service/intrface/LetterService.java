@@ -2,8 +2,8 @@ package gov.nj.treas.NJDPB_API.service.intrface;
 
 
 
-import gov.nj.treas.NJDPB_API.dto.LetterRequestDTO;
-import gov.nj.treas.NJDPB_API.dto.LetterResponseDTO;
+import gov.nj.treas.NJDPB_API.dto.letter.LetterRequestDTO;
+import gov.nj.treas.NJDPB_API.dto.letter.LetterResponseDTO;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package gov.nj.treas.NJDPB_API.dto;
+package gov.nj.treas.NJDPB_API.dto.letter;
 
 
 import jakarta.validation.constraints.NotBlank;

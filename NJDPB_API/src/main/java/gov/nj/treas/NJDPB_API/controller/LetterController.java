@@ -2,8 +2,8 @@ package gov.nj.treas.NJDPB_API.controller;
 
 
 
-import gov.nj.treas.NJDPB_API.dto.LetterRequestDTO;
-import gov.nj.treas.NJDPB_API.dto.LetterResponseDTO;
+import gov.nj.treas.NJDPB_API.dto.letter.LetterRequestDTO;
+import gov.nj.treas.NJDPB_API.dto.letter.LetterResponseDTO;
 import gov.nj.treas.NJDPB_API.service.impl.LetterServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pur")
+@RequestMapping("/purchase")
 @RequiredArgsConstructor
 public class LetterController {
 
