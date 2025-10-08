@@ -13,16 +13,18 @@ spring:
       hibernate:
         format_sql: true
 
-#  security:
-#    user:
-#      name:
-#      password:
+  security:
+    user:
+      name: ${SECURITY_USERNAME}
+      password: ${SECURITY_PASSWORD}
 
 logging:
   config: classpath:logback-spring-PUR_dev.xml
 
 server:
   port: 8090
+  servlet:
+    context-path: /purchase
 
 management:
   endpoints:
