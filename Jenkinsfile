@@ -30,7 +30,7 @@ pipeline{
             agent { label 'master' }
             steps{
                 sh '''
-                    ls -l ${workspace}/NJDPB_API/target
+                    ls -l ${WORKSPACE}/NJDPB_API/target
                     pkill -f NJDPB_API
                 '''
             }
