@@ -20,7 +20,7 @@ pipeline{
                 echo 'Building the application...'
                 // dir('NJDPB_API'){
                 // Build the JAR file once
-                                sh 'cd ./NJDPB_API; mvn -version; mvn clean package -DskipTests'
+                                sh 'cd ./NJDPB_API; /home/typgang/MAVEN/apache-maven-3.9.11/bin/mvn clean package -DskipTests'
                 // }
 
             }
