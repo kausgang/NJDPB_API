@@ -7,7 +7,7 @@ pipeline{
     stages{
 
         stage('Checkout') {
-            agent {label 'ut1'}
+            agent {label 'master'}
                     steps {
                         checkout scm
                     }
@@ -15,7 +15,7 @@ pipeline{
 
         stage('Build'){
 
-                agent {label 'ut1'}
+                agent {label 'master'}
             steps {
                 echo 'Building the application...'
                 // dir('NJDPB_API'){
