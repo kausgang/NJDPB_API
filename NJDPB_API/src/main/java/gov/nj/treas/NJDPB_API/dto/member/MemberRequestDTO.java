@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-//@Schema(description = "Details about a member", example = "{\"ssn\": \"123456789\"}")
+@Schema(description = "Details about a member", example = "{\"ssn\": \"123456789\"}")
 public class MemberRequestDTO {
 
     @Schema(description = "SSN number of the member", example = "123456789",  type = "string")

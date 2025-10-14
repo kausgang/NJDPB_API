@@ -13,7 +13,7 @@
 
     <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
-        <file>logs/myapp.log</file>
+        <file>logs/purchase.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>purchase-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
