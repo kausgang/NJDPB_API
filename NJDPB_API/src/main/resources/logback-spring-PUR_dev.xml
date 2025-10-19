@@ -16,7 +16,7 @@
         <file>logs/purchase.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>purchase-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/purchase-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>10MB</maxFileSize>
             <maxHistory>30</maxHistory>
         </rollingPolicy>

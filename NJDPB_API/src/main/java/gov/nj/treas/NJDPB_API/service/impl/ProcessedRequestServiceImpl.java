@@ -1,0 +1,32 @@
+package gov.nj.treas.NJDPB_API.service.impl;
+
+import gov.nj.treas.NJDPB_API.dto.processedrequest.ProcessedRequestDTO;
+import gov.nj.treas.NJDPB_API.dto.processedrequest.ProcessedResponseDTO;
+import gov.nj.treas.NJDPB_API.mapper.ProcessedRequestMapper;
+import gov.nj.treas.NJDPB_API.persistence.entity.ProcessedRequest;
+import gov.nj.treas.NJDPB_API.persistence.repository.ProcessedRequestRepository;
+import gov.nj.treas.NJDPB_API.service.intrface.ProcessedRequestService;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
+public class ProcessedRequestServiceImpl implements ProcessedRequestService {
+
+    @Autowired
+    ProcessedRequestRepository processedRequestRepository;
+
+    @Autowired
+    ProcessedRequestMapper processedRequestMapper;
+
+
+    @Override
+    public List<ProcessedResponseDTO> getProcessedRequestBySsn(ProcessedRequestDTO processedRequestDTO) {
+
+        String ssn = processedRequestDTO.getSsn();
+
+        List<ProcessedRequest> processedRequests = processedRequestRepository.findBySsn(ssn);
+
+        return processedRequestMapper.toResponseDTOList(processedRequests);
+        
+    }
+}
