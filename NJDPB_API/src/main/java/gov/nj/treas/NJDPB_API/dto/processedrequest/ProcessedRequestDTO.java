@@ -16,6 +16,5 @@ import java.time.LocalDateTime;
 public class ProcessedRequestDTO {
 
     private String ssn;
-    private Integer request_id;
-    private LocalDateTime request_date;
+
 }
