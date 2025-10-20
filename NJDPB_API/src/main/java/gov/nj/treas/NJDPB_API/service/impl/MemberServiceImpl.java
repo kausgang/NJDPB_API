@@ -1,5 +1,6 @@
 package gov.nj.treas.NJDPB_API.service.impl;
 
+import gov.nj.treas.NJDPB_API.dto.AggregateRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.member.MemberRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.member.MemberResponseDTO;
 import gov.nj.treas.NJDPB_API.mapper.MemberMapper;
@@ -26,7 +27,8 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public List<MemberResponseDTO> getMembersBySsn(MemberRequestDTO memberRequestDTO) {
+//    public List<MemberResponseDTO> getMembersBySsn(MemberRequestDTO memberRequestDTO) {
+    public List<MemberResponseDTO> getMembersBySsn(AggregateRequestDTO memberRequestDTO) {
 
         String ssn = memberRequestDTO.getSsn();
 

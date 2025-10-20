@@ -1,5 +1,6 @@
 package gov.nj.treas.NJDPB_API.controller;
 
+import gov.nj.treas.NJDPB_API.dto.AggregateRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.member.MemberRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.member.MemberResponseDTO;
 import gov.nj.treas.NJDPB_API.service.impl.MemberServiceImpl;
@@ -61,7 +62,8 @@ public class MemberController {
             )
     )
     @PostMapping("/find_by_ssn")
-    public ResponseEntity<?> postMemberBySSN(@RequestBody MemberRequestDTO memberRequestDTO){
+//    public ResponseEntity<?> postMemberBySSN(@RequestBody MemberRequestDTO memberRequestDTO){
+    public ResponseEntity<?> postMemberBySSN(@RequestBody AggregateRequestDTO memberRequestDTO){
 
         try{
             List<MemberResponseDTO> members = memberServiceimpl.getMembersBySsn(memberRequestDTO);

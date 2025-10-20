@@ -25,7 +25,7 @@ logging:
 server:
   port: 8090
   servlet:
-    context-path: /purchase
+    context-path: /purchase/api/v1
 
 management:
   endpoints:
