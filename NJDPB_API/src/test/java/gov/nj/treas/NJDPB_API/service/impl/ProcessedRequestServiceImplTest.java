@@ -1,5 +1,6 @@
 package gov.nj.treas.NJDPB_API.service.impl;
 
+import gov.nj.treas.NJDPB_API.dto.AggregateRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.processedrequest.ProcessedRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.processedrequest.ProcessedResponseDTO;
 import gov.nj.treas.NJDPB_API.mapper.ProcessedRequestMapper;
@@ -36,6 +37,7 @@ class ProcessedRequestServiceImplTest {
     private ProcessedRequestDTO processedRequestDTO;
     private ProcessedRequest processedRequest;
     private ProcessedResponseDTO processedResponseDTO;
+    private AggregateRequestDTO aggregateRequestDTO;
 //    private List<ProcessedResponseDTO> processedResponseDTOList;
 
     @BeforeEach
@@ -43,6 +45,8 @@ class ProcessedRequestServiceImplTest {
 
          processedRequestDTO = ProcessedRequestDTO.builder()
                 .ssn("123456789").build();
+
+         aggregateRequestDTO = AggregateRequestDTO.builder().ssn("123456789").build();
 
         processedRequest = ProcessedRequest.builder()
                 .ssn("123456789")
@@ -80,7 +84,8 @@ class ProcessedRequestServiceImplTest {
         Mockito.when(processedRequestMapper.toResponseDTOList(Collections.singletonList(processedRequest)))
                 .thenReturn(expectedProcessedResponseDTO);
 
-        List<ProcessedResponseDTO> pr = processedRequestService.getProcessedRequestBySsn(processedRequestDTO);
+//        List<ProcessedResponseDTO> pr = processedRequestService.getProcessedRequestBySsn(processedRequestDTO);
+        List<ProcessedResponseDTO> pr = processedRequestService.getProcessedRequestBySsn(aggregateRequestDTO);
 
 //        Assertions.assertThat(pr).isNotEmpty();
         Assertions.assertNotNull(pr);
