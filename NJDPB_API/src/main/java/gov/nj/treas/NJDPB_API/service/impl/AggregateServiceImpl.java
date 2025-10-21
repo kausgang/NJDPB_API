@@ -37,7 +37,6 @@ public class AggregateServiceImpl implements AggregateService {
         log.debug("Calling Member Service");
         List<MemberResponseDTO> members = memberService.getMembersBySsn(aggregateRequestDTO);
         log.debug("Retrieved Members = {}",members);
-//        return List.of();
 
         log.debug("Calling ProcessedRequest Service");
         List<ProcessedResponseDTO> processed_requests = processedRequestService.getProcessedRequestBySsn(aggregateRequestDTO);
