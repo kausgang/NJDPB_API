@@ -7,9 +7,11 @@ import gov.nj.treas.NJDPB_API.dto.processedrequest.ProcessedResponseDTO;
 import gov.nj.treas.NJDPB_API.mapper.AggregateMapper;
 import gov.nj.treas.NJDPB_API.service.intrface.AggregateService;
 import gov.nj.treas.NJDPB_API.service.intrface.MemberService;
+
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +31,7 @@ public class AggregateServiceImpl implements AggregateService {
 
     @Override
     @Transactional
+    @Cacheable(value="aggregateResponse",key = "#aggregateRequestDTO.ssn")
     public AggregateResponseDTO findDetails(AggregateRequestDTO aggregateRequestDTO) {
 
 

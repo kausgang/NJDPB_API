@@ -10,6 +10,7 @@ import gov.nj.treas.NJDPB_API.service.intrface.MemberService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-//    public List<MemberResponseDTO> getMembersBySsn(MemberRequestDTO memberRequestDTO) {
+    @Cacheable(value = "membersBySsn", key = "#memberRequestDTO.ssn")
     public List<MemberResponseDTO> getMembersBySsn(AggregateRequestDTO memberRequestDTO) {
 
         String ssn = memberRequestDTO.getSsn();
@@ -36,8 +37,6 @@ public class MemberServiceImpl implements MemberService {
         List<Member> members = memberRepository.findBySsn(ssn);
         log.debug("members returned by repository = {}",members);
 
-
-//        return List.of();
 
         return memberMapper.toResponseDTOList(members);
     }

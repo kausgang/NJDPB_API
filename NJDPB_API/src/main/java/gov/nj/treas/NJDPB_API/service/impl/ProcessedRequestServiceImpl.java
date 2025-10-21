@@ -8,6 +8,7 @@ import gov.nj.treas.NJDPB_API.persistence.entity.ProcessedRequest;
 import gov.nj.treas.NJDPB_API.persistence.repository.ProcessedRequestRepository;
 import gov.nj.treas.NJDPB_API.service.intrface.ProcessedRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class ProcessedRequestServiceImpl implements ProcessedRequestService {
 
 
     @Override
-//    public List<ProcessedResponseDTO> getProcessedRequestBySsn(ProcessedRequestDTO processedRequestDTO) {
+    @Cacheable(value="processedResponse",key = "#processedRequestDTO.ssn")
     public List<ProcessedResponseDTO> getProcessedRequestBySsn(AggregateRequestDTO processedRequestDTO) {
 
         String ssn = processedRequestDTO.getSsn();
