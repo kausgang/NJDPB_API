@@ -65,12 +65,10 @@ public class MemberController {
 //    public ResponseEntity<?> postMemberBySSN(@RequestBody MemberRequestDTO memberRequestDTO){
     public ResponseEntity<?> postMemberBySSN(@RequestBody AggregateRequestDTO memberRequestDTO){
 
-        try{
+
             List<MemberResponseDTO> members = memberServiceimpl.getMembersBySsn(memberRequestDTO);
             return new ResponseEntity<>(members,HttpStatus.OK);
-        }
-        catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+
+
     }
 }

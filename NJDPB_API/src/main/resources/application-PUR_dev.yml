@@ -19,6 +19,19 @@ spring:
       name: ${SECURITY_USERNAME}
       password: ${SECURITY_PASSWORD}
 
+
+
+  cache:
+    type: redis
+    redis:
+      time-to-live: 50000 # Sets a 50seconds TTL (in milliseconds) for all Redis caches
+
+
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+
+
 logging:
   config: classpath:logback-spring-PUR_dev.xml
 
