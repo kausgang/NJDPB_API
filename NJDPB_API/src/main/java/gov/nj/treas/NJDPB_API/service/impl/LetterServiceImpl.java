@@ -37,6 +37,13 @@ public class LetterServiceImpl implements MemberService {
 
         String ssn = aggregateRequestDTO.getSsn();
 
+
+        // Format the SSN to match the database format "xxx-xx-xxxx"
+        String hyphenatedSsn = String.format("%s-%s-%s",
+                ssn.substring(0, 3),
+                ssn.substring(3, 5),
+                ssn.substring(5, 9));
+
         log.debug("ssn for letter service is - {}", ssn);
         List<Letter> letters = letterRepository.findBySsn(ssn);
         log.debug("letter returned by repository = {}",letters);
