@@ -2,8 +2,10 @@ package gov.nj.treas.NJDPB_API.service.impl;
 
 import gov.nj.treas.NJDPB_API.dto.AggregateRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.AggregateResponseDTO;
+import gov.nj.treas.NJDPB_API.dto.calculation.CalculationResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.member.MemberResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.processedrequest.ProcessedResponseDTO;
+import gov.nj.treas.NJDPB_API.dto.requestromment.RequestCommentResponseDTO;
 import gov.nj.treas.NJDPB_API.mapper.AggregateMapper;
 import gov.nj.treas.NJDPB_API.service.intrface.AggregateService;
 import gov.nj.treas.NJDPB_API.service.intrface.MemberService;
@@ -27,6 +29,12 @@ public class AggregateServiceImpl implements AggregateService {
     private ProcessedRequestServiceImpl processedRequestService;
 
     @Autowired
+    private CalculationServiceImpl calculationService;
+
+    @Autowired
+    private RequestCommentImpl requestCommentService;
+
+    @Autowired
     private AggregateMapper aggregateMapper;
 
     @Override
@@ -45,8 +53,17 @@ public class AggregateServiceImpl implements AggregateService {
         List<ProcessedResponseDTO> processed_requests = processedRequestService.getProcessedRequestBySsn(aggregateRequestDTO);
         log.debug("Retrieved ProcessedRequests = {}",processed_requests);
 
+        log.debug("Calling Calculation Service");
+        List<CalculationResponseDTO> calculation = calculationService.getCalculationBySsn(aggregateRequestDTO);
+        log.debug("Retrieved Calculation = {}",calculation);
 
-        return aggregateMapper.toAggregateResponseDto(members,processed_requests);
+        log.debug("Calling Request Comment Service");
+        List<RequestCommentResponseDTO> requestComments = requestCommentService.getRequestCommentBySsn(aggregateRequestDTO);
+        log.debug("Retrieved Request Comment = {}",requestComments);
+
+
+//        return aggregateMapper.toAggregateResponseDto(members,processed_requests);
+        return aggregateMapper.toAggregateResponseDto(members,processed_requests,calculation,requestComments);
 
     }
 }

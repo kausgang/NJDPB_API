@@ -3,6 +3,7 @@ package gov.nj.treas.NJDPB_API.service.impl;
 import gov.nj.treas.NJDPB_API.dto.AggregateRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.processedrequest.ProcessedRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.processedrequest.ProcessedResponseDTO;
+import gov.nj.treas.NJDPB_API.exception.RecordNotFoundException;
 import gov.nj.treas.NJDPB_API.mapper.ProcessedRequestMapper;
 import gov.nj.treas.NJDPB_API.persistence.entity.ProcessedRequest;
 import gov.nj.treas.NJDPB_API.persistence.repository.ProcessedRequestRepository;
@@ -30,6 +31,8 @@ public class ProcessedRequestServiceImpl implements ProcessedRequestService {
         String ssn = processedRequestDTO.getSsn();
 
         List<ProcessedRequest> processedRequests = processedRequestRepository.findBySsn(ssn);
+
+        if(processedRequests.isEmpty()) throw new RecordNotFoundException("Record Not Fount");
 
         return processedRequestMapper.toResponseDTOList(processedRequests);
 
