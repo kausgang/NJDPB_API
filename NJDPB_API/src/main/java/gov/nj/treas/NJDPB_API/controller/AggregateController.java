@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,7 +57,7 @@ public class AggregateController {
             )
     )
     @PostMapping("/details")
-    public ResponseEntity<?> getDetails(@RequestBody AggregateRequestDTO aggregateRequestDTO){
+    public ResponseEntity<?> getDetails(@Valid @RequestBody AggregateRequestDTO aggregateRequestDTO){
 
         AggregateResponseDTO aggregateResponseDTO = aggregateService.findDetails(aggregateRequestDTO);
 
