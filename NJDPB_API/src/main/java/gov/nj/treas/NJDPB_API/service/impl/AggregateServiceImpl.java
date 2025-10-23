@@ -3,6 +3,7 @@ package gov.nj.treas.NJDPB_API.service.impl;
 import gov.nj.treas.NJDPB_API.dto.AggregateRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.AggregateResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.calculation.CalculationResponseDTO;
+import gov.nj.treas.NJDPB_API.dto.letter.LetterResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.member.MemberResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.processedrequest.ProcessedResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.requestromment.RequestCommentResponseDTO;
@@ -35,6 +36,9 @@ public class AggregateServiceImpl implements AggregateService {
     private RequestCommentImpl requestCommentService;
 
     @Autowired
+    private LetterServiceImpl letterService;
+
+    @Autowired
     private AggregateMapper aggregateMapper;
 
     @Override
@@ -61,9 +65,18 @@ public class AggregateServiceImpl implements AggregateService {
         List<RequestCommentResponseDTO> requestComments = requestCommentService.getRequestCommentBySsn(aggregateRequestDTO);
         log.debug("Retrieved Request Comment = {}",requestComments);
 
+        log.debug("Calling Letter Service");
+        List<LetterResponseDTO> letters = letterService.getLetterBySsn(aggregateRequestDTO);
+        log.debug("Retrieved letters = {}",requestComments);
 
 //        return aggregateMapper.toAggregateResponseDto(members,processed_requests);
-        return aggregateMapper.toAggregateResponseDto(members,processed_requests,calculation,requestComments);
+        return aggregateMapper.toAggregateResponseDto(
+                members,
+                processed_requests,
+                calculation,
+                requestComments,
+                letters
+        );
 
     }
 }

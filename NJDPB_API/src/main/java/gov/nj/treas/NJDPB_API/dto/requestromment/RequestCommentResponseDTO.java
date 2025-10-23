@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -19,5 +20,9 @@ public class RequestCommentResponseDTO implements Serializable {
     private String ssn;
     private Integer request_id;
 
+    // Done by Itunuoluwa dbo.request_comment
+    private String user_id;
+    private LocalDateTime comment_date;
+    private String req_comment;
 
 }

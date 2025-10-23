@@ -36,7 +36,7 @@ public class CalculationServiceImpl implements CalculationService {
 
         List<Calculation> calculations = calculationRepository.findBySsn(ssn);
 
-        if(calculations.isEmpty()) throw new RecordNotFoundException("Record Not Fount");
+        if(calculations.isEmpty()) throw new RecordNotFoundException("CALCULATION_SERVICE - Record Not Fount");
 
         return calculationMapper.toResponseDTOList(calculations);
 

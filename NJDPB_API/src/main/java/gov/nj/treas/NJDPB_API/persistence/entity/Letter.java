@@ -21,7 +21,7 @@ public class Letter {
     @Id
     private Integer letter_id;
     private Integer  letter_type;
-    private String name;
+    private String ssn;
 
 
 

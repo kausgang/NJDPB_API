@@ -30,7 +30,10 @@ public class RequestComment {
     private Integer request_id;
 
 
-
+    // Done by Itunuoluwa dbo.request_comment
+    private String user_id;
+    private LocalDateTime comment_date;
+    private String req_comment;
 
 
 

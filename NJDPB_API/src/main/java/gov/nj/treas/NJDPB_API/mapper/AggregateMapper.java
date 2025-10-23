@@ -2,6 +2,7 @@ package gov.nj.treas.NJDPB_API.mapper;
 
 import gov.nj.treas.NJDPB_API.dto.AggregateResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.calculation.CalculationResponseDTO;
+import gov.nj.treas.NJDPB_API.dto.letter.LetterResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.member.MemberResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.processedrequest.ProcessedResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.requestromment.RequestCommentResponseDTO;
@@ -18,7 +19,8 @@ default AggregateResponseDTO toAggregateResponseDto(
         List<MemberResponseDTO> members,
         List<ProcessedResponseDTO> processedRequests,
         List<CalculationResponseDTO> calculations,
-        List<RequestCommentResponseDTO> requestComment
+        List<RequestCommentResponseDTO> requestComment,
+        List<LetterResponseDTO> letters
 
 ){
 
@@ -27,7 +29,8 @@ default AggregateResponseDTO toAggregateResponseDto(
         dto.setMembers(members);
         dto.setProcessed_responses(processedRequests);
         dto.setCalculations(calculations);
-        dto.setRequest_comment(requestComment);
+        dto.setRequest_comments(requestComment);
+        dto.setLetters(letters);
 
         return dto;
 

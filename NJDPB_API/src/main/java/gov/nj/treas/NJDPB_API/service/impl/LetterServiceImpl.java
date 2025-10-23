@@ -10,6 +10,7 @@ import gov.nj.treas.NJDPB_API.persistence.entity.Letter;
 import gov.nj.treas.NJDPB_API.persistence.entity.Member;
 import gov.nj.treas.NJDPB_API.persistence.repository.LetterRepository;
 import gov.nj.treas.NJDPB_API.persistence.repository.MemberRepository;
+import gov.nj.treas.NJDPB_API.service.intrface.LetterService;
 import gov.nj.treas.NJDPB_API.service.intrface.MemberService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ import java.util.List;
 @Service
 @Data
 @Slf4j
-public class LetterServiceImpl implements MemberService {
+public class LetterServiceImpl implements LetterService {
 
     @Autowired
     private LetterRepository letterRepository;
@@ -33,7 +34,7 @@ public class LetterServiceImpl implements MemberService {
 
     @Override
     @Cacheable(value = "letterBySsn", key = "#aggregateRequestDTO.ssn")
-    public List<LetterResponseDTO> getMembersBySsn(AggregateRequestDTO aggregateRequestDTO) {
+    public List<LetterResponseDTO> getLetterBySsn(AggregateRequestDTO aggregateRequestDTO) {
 
         String ssn = aggregateRequestDTO.getSsn();
 
@@ -44,11 +45,13 @@ public class LetterServiceImpl implements MemberService {
                 ssn.substring(3, 5),
                 ssn.substring(5, 9));
 
+//        log.info("LETTER_SERVICE - reformatted SSN - {}",hyphenatedSsn);
+
         log.debug("ssn for letter service is - {}", ssn);
-        List<Letter> letters = letterRepository.findBySsn(ssn);
+        List<Letter> letters = letterRepository.findBySsn(hyphenatedSsn);
         log.debug("letter returned by repository = {}",letters);
 
-        if(letters.isEmpty()) throw new RecordNotFoundException("Record Not Fount");
+        if(letters.isEmpty()) throw new RecordNotFoundException("LETTER_SERVICE - Record Not Fount");
 
 
         return letterMapper.toResponseDTOList(letters);
