@@ -41,6 +41,9 @@ public class AggregateServiceImpl implements AggregateService {
     @Autowired
     private AggregateMapper aggregateMapper;
 
+
+    private List<CalculationResponseDTO> calculation;
+
     @Override
     @Transactional
     @Cacheable(value="aggregateResponse",key = "#aggregateRequestDTO.ssn")
@@ -57,9 +60,9 @@ public class AggregateServiceImpl implements AggregateService {
         List<ProcessedResponseDTO> processed_requests = processedRequestService.getProcessedRequestBySsn(aggregateRequestDTO);
         log.debug("Retrieved ProcessedRequests = {}",processed_requests);
 
-        log.debug("Calling Calculation Service");
-        List<CalculationResponseDTO> calculation = calculationService.getCalculationBySsn(aggregateRequestDTO);
-        log.debug("Retrieved Calculation = {}",calculation);
+//        log.debug("Calling Calculation Service");
+//        List<CalculationResponseDTO> calculation = calculationService.getCalculationBySsn(aggregateRequestDTO);
+//        log.debug("Retrieved Calculation = {}",calculation);
 
         log.debug("Calling Request Comment Service");
         List<RequestCommentResponseDTO> requestComments = requestCommentService.getRequestCommentBySsn(aggregateRequestDTO);

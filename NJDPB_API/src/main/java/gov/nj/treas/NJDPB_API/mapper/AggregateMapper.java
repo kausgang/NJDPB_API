@@ -27,8 +27,8 @@ default AggregateResponseDTO toAggregateResponseDto(
 
         AggregateResponseDTO dto = new AggregateResponseDTO();
         dto.setMembers(members);
-        dto.setProcessed_responses(processedRequests);
-        dto.setCalculations(calculations);
+        dto.setProcessed_request(processedRequests);
+//        dto.setCalculations(calculations);
         dto.setRequest_comments(requestComment);
         dto.setLetters(letters);
 
