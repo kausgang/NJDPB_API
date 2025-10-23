@@ -16,12 +16,12 @@ public class RequestCommentResponseDTO implements Serializable {
 
 //    private ProcessedRequestId
 
-    private Integer comment_id;
-    private String ssn;
+//    private Integer comment_id;
+//    private String ssn;
     private Integer request_id;
-
-    // Done by Itunuoluwa dbo.request_comment
-    private String user_id;
+//
+//    // Done by Itunuoluwa dbo.request_comment
+//    private String user_id;
     private LocalDateTime comment_date;
     private String req_comment;
 

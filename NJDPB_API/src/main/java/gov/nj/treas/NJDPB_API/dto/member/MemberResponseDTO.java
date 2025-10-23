@@ -18,10 +18,10 @@ public class MemberResponseDTO implements Serializable {
     private String ssn;
     private String member_num;
     private String name;
-
-
-
-    // Added By Itunuoluwa
+//
+//
+//
+//    // Added By Itunuoluwa
     private String address1;
     private String address2;
     private String city;
@@ -33,8 +33,8 @@ public class MemberResponseDTO implements Serializable {
     private LocalDateTime enrollment_Date;
     private String veterans_flag;
     private String calcby;
-    private Integer request_count;
-    private String chapter_flag;
+//    private Integer request_count;
+//    private String chapter_flag;
     private String former_name;
-    private String member_tier;
+//    private String member_tier;
 }
