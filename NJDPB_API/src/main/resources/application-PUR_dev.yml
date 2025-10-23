@@ -21,15 +21,15 @@ spring:
 
 
 
-  cache:
-    type: redis
-    redis:
-      time-to-live: 50000 # Sets a 50seconds TTL (in milliseconds) for all Redis caches
-
-
-  redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
+#  cache:
+#    type: redis
+#    redis:
+#      time-to-live: 50000 # Sets a 50seconds TTL (in milliseconds) for all Redis caches
+#
+#
+#  redis:
+#    host: ${REDIS_HOST}
+#    port: ${REDIS_PORT}
 
 
 logging:

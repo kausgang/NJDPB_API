@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,7 +64,7 @@ public class MemberController {
     )
     @PostMapping("/find_by_ssn")
 //    public ResponseEntity<?> postMemberBySSN(@RequestBody MemberRequestDTO memberRequestDTO){
-    public ResponseEntity<?> postMemberBySSN(@RequestBody AggregateRequestDTO memberRequestDTO){
+    public ResponseEntity<?> postMemberBySSN(@Valid @RequestBody AggregateRequestDTO memberRequestDTO){
 
 
             List<MemberResponseDTO> members = memberServiceimpl.getMembersBySsn(memberRequestDTO);

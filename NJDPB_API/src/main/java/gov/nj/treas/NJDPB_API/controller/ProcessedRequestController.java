@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,7 +62,7 @@ public class ProcessedRequestController {
     )
     @PostMapping("/find_by_ssn")
 //    public ResponseEntity<?> findBySsn(@RequestBody ProcessedRequestDTO processedRequestDTO){
-    public ResponseEntity<?> findBySsn(@RequestBody AggregateRequestDTO processedRequestDTO) {
+    public ResponseEntity<?> findBySsn(@Valid @RequestBody AggregateRequestDTO processedRequestDTO) {
 
 
         List<ProcessedResponseDTO> response = processedRequestService.getProcessedRequestBySsn(processedRequestDTO);

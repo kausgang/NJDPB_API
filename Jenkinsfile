@@ -25,15 +25,15 @@ pipeline{
                 '''
             }
         }
-        stage('Deploy'){
+        // stage('Deploy'){
 
-            agent { label 'master' }
-            steps{
+        //     agent { label 'master' }
+        //     steps{
 
-                echo "Kill the previous instance and Deploy the new change"
+        //         echo "Kill the previous instance and Deploy the new change"
 
                 
-            }
-        }
+        //     }
+        // }
     }
 }
