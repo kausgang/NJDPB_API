@@ -5,6 +5,7 @@ import gov.nj.treas.NJDPB_API.dto.AggregateResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.member.MemberRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.member.MemberResponseDTO;
 import gov.nj.treas.NJDPB_API.service.impl.AggregateServiceImpl;
+import gov.nj.treas.NJDPB_API.service.intrface.AggregateService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,11 +23,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 //@RequestMapping("/details")
+@RequiredArgsConstructor
 @Tag(name = "Aggregate Response")
 public class AggregateController {
 
-    @Autowired
-    private AggregateServiceImpl aggregateService;
+//    @Autowired
+//    private AggregateServiceImpl aggregateService;
+
+    private final AggregateService aggregateService;
+
 
 
     @Operation(

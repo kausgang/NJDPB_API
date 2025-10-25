@@ -4,6 +4,7 @@ import gov.nj.treas.NJDPB_API.dto.AggregateRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.member.MemberRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.member.MemberResponseDTO;
 import gov.nj.treas.NJDPB_API.service.impl.MemberServiceImpl;
+import gov.nj.treas.NJDPB_API.service.intrface.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -30,10 +31,14 @@ import java.util.List;
 @Tag(name = "Member")
 public class MemberController {
 
-    @Autowired
-    private MemberServiceImpl memberServiceimpl;
+//    @Autowired
+//    private MemberServiceImpl memberServiceimpl;
+
+//    @Autowired
+//    private MemberService memberService;
 
 
+    private final MemberService memberService;
 
     @Operation(
             summary = "Find members by SSN",
@@ -67,7 +72,9 @@ public class MemberController {
     public ResponseEntity<?> postMemberBySSN(@Valid @RequestBody AggregateRequestDTO memberRequestDTO){
 
 
-            List<MemberResponseDTO> members = memberServiceimpl.getMembersBySsn(memberRequestDTO);
+//            List<MemberResponseDTO> members = memberServiceimpl.getMembersBySsn(memberRequestDTO);
+//            return new ResponseEntity<>(members,HttpStatus.OK);
+            List<MemberResponseDTO> members = memberService.getMembersBySsn(memberRequestDTO);
             return new ResponseEntity<>(members,HttpStatus.OK);
 
 

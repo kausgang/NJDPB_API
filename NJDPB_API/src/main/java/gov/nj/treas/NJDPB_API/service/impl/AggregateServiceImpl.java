@@ -8,10 +8,11 @@ import gov.nj.treas.NJDPB_API.dto.member.MemberResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.processedrequest.ProcessedResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.requestromment.RequestCommentResponseDTO;
 import gov.nj.treas.NJDPB_API.mapper.AggregateMapper;
-import gov.nj.treas.NJDPB_API.service.intrface.AggregateService;
-import gov.nj.treas.NJDPB_API.service.intrface.MemberService;
+import gov.nj.treas.NJDPB_API.service.intrface.*;
 
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -21,28 +22,40 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
+//@AllArgsConstructor
+
 public class AggregateServiceImpl implements AggregateService {
 
-    @Autowired
-    private MemberServiceImpl memberService;
+//    @Autowired
+//    private MemberServiceImpl memberService;
+//
+//    @Autowired
+//    private ProcessedRequestServiceImpl processedRequestService;
+//
+//    @Autowired
+//    private CalculationServiceImpl calculationService;
+//
+//    @Autowired
+//    private RequestCommentImpl requestCommentService;
+//
+//    @Autowired
+//    private LetterServiceImpl letterService;
+//
+//    @Autowired
+//    private AggregateMapper aggregateMapper;
 
-    @Autowired
-    private ProcessedRequestServiceImpl processedRequestService;
 
-    @Autowired
-    private CalculationServiceImpl calculationService;
-
-    @Autowired
-    private RequestCommentImpl requestCommentService;
-
-    @Autowired
-    private LetterServiceImpl letterService;
-
-    @Autowired
-    private AggregateMapper aggregateMapper;
-
+    private final MemberService memberService;
+    private final ProcessedRequestService processedRequestService;
+    private final CalculationService calculationService;
+    private final RequestCommentService requestCommentService;
+    private final LetterService letterService;
+    private final AggregateMapper aggregateMapper;
 
     private List<CalculationResponseDTO> calculation;
+
+
 
     @Override
     @Transactional
