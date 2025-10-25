@@ -8,6 +8,7 @@ import gov.nj.treas.NJDPB_API.mapper.ProcessedRequestMapper;
 import gov.nj.treas.NJDPB_API.persistence.entity.ProcessedRequest;
 import gov.nj.treas.NJDPB_API.persistence.repository.ProcessedRequestRepository;
 import gov.nj.treas.NJDPB_API.service.intrface.ProcessedRequestService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -15,14 +16,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProcessedRequestServiceImpl implements ProcessedRequestService {
 
-    @Autowired
-    ProcessedRequestRepository processedRequestRepository;
+//    @Autowired
+//    ProcessedRequestRepository processedRequestRepository;
+//
+//    @Autowired
+//    ProcessedRequestMapper processedRequestMapper;
 
-    @Autowired
-    ProcessedRequestMapper processedRequestMapper;
-
+    private final ProcessedRequestRepository processedRequestRepository;
+    private final ProcessedRequestMapper processedRequestMapper;
 
     @Override
     @Cacheable(value="processedResponse",key = "#processedRequestDTO.ssn")

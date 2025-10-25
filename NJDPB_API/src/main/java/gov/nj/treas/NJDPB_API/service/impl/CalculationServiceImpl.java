@@ -12,6 +12,7 @@ import gov.nj.treas.NJDPB_API.persistence.repository.CalculationRepository;
 import gov.nj.treas.NJDPB_API.persistence.repository.ProcessedRequestRepository;
 import gov.nj.treas.NJDPB_API.service.intrface.CalculationService;
 import gov.nj.treas.NJDPB_API.service.intrface.ProcessedRequestService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -19,13 +20,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CalculationServiceImpl implements CalculationService {
 
-    @Autowired
-    CalculationRepository calculationRepository;
+//    @Autowired
+//    CalculationRepository calculationRepository;
+//
+//    @Autowired
+//    CalculationMapper calculationMapper;
 
-    @Autowired
-    CalculationMapper calculationMapper;
+    private final CalculationRepository calculationRepository;
+    private final CalculationMapper calculationMapper;
 
 
     @Override

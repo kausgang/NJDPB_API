@@ -9,6 +9,7 @@ import gov.nj.treas.NJDPB_API.persistence.entity.RequestComment;
 import gov.nj.treas.NJDPB_API.persistence.repository.RequestCommentRepository;
 import gov.nj.treas.NJDPB_API.service.intrface.CalculationService;
 import gov.nj.treas.NJDPB_API.service.intrface.RequestCommentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -16,14 +17,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class RequestCommentImpl implements RequestCommentService {
 
-    @Autowired
-    RequestCommentRepository requestCommentRepository;
+//    @Autowired
+//    RequestCommentRepository requestCommentRepository;
+//
+//    @Autowired
+//    RequestCommentMapper requestCommentMapper;
 
-    @Autowired
-    RequestCommentMapper requestCommentMapper;
-
+    private final RequestCommentRepository requestCommentRepository;
+    private final RequestCommentMapper requestCommentMapper;
 
     @Override
     @Cacheable(value="requestCommentResponse",key = "#aggregateRequestDTO.ssn")

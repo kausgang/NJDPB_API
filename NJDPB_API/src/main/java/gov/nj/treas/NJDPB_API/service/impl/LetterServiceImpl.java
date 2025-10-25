@@ -13,6 +13,7 @@ import gov.nj.treas.NJDPB_API.persistence.repository.MemberRepository;
 import gov.nj.treas.NJDPB_API.service.intrface.LetterService;
 import gov.nj.treas.NJDPB_API.service.intrface.MemberService;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,13 +24,16 @@ import java.util.List;
 @Service
 @Data
 @Slf4j
+@RequiredArgsConstructor
 public class LetterServiceImpl implements LetterService {
 
-    @Autowired
-    private LetterRepository letterRepository;
-    @Autowired
-    private LetterMapper letterMapper;
+//    @Autowired
+//    private LetterRepository letterRepository;
+//    @Autowired
+//    private LetterMapper letterMapper;
 
+    private final LetterRepository letterRepository;
+    private final LetterMapper letterMapper;
 
 
     @Override

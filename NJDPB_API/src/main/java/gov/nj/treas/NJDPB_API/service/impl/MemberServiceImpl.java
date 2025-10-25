@@ -9,6 +9,7 @@ import gov.nj.treas.NJDPB_API.persistence.entity.Member;
 import gov.nj.treas.NJDPB_API.persistence.repository.MemberRepository;
 import gov.nj.treas.NJDPB_API.service.intrface.MemberService;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -19,13 +20,16 @@ import java.util.List;
 @Service
 @Data
 @Slf4j
+@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private MemberMapper memberMapper;
+//    @Autowired
+//    private MemberRepository memberRepository;
+//    @Autowired
+//    private MemberMapper memberMapper;
 
+    private final MemberRepository memberRepository;
+    private final MemberMapper memberMapper;
 
 
     @Override
