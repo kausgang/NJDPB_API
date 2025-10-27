@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ProcessedRequestMapper {
 
-    ProcessedRequest toEntity(ProcessedRequestDTO processedRequestDTO);
+//    ProcessedRequest toEntity(ProcessedRequestDTO processedRequestDTO);
 
     ProcessedResponseDTO toResponseDTO(ProcessedRequest processedRequest);
 

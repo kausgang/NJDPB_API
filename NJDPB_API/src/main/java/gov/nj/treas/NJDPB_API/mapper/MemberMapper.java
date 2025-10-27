@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface MemberMapper {
 
-    Member toEntity(MemberRequestDTO memberRequestDTO);
+//    Member toEntity(MemberRequestDTO memberRequestDTO);
 
     MemberResponseDTO toResponseDTO(Member member);
 
