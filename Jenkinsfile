@@ -25,15 +25,21 @@ pipeline{
                 '''
             }
         }
-        // stage('Deploy'){
+        stage('Deploy'){
 
-        //     agent { label 'master' }
-        //     steps{
+            agent { label 'master' }
+            steps{
 
-        //         echo "Kill the previous instance and Deploy the new change"
+                echo "Kill the previous instance and Deploy the new change - DO IT MANUALLY"
+
+                sh '''
+
+                    mv /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar_$(date +%Y-%m-%d_%H:%M:%S)
+                    cd ${WORKSPACE}/NJDPB_API/target/NJDPB_API-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/
+                '''
 
                 
-        //     }
-        // }
+            }
+        }
     }
 }
