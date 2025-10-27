@@ -18,7 +18,7 @@ public class ProcessedResponseDTO implements Serializable {
 //    private ProcessedRequestId
 
 //    private String ssn;
-//    private Integer request_id;
+    private Integer request_id;
     private LocalDateTime request_date;
 //
 //
