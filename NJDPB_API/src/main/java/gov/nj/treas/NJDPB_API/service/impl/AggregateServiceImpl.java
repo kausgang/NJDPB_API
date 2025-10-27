@@ -5,6 +5,7 @@ import gov.nj.treas.NJDPB_API.dto.AggregateResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.calculation.CalculationResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.letter.LetterResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.member.MemberResponseDTO;
+import gov.nj.treas.NJDPB_API.dto.processedrequest.K_ProcessedResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.processedrequest.ProcessedResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.requestromment.RequestCommentResponseDTO;
 import gov.nj.treas.NJDPB_API.mapper.AggregateMapper;
@@ -47,7 +48,8 @@ public class AggregateServiceImpl implements AggregateService {
 
 
     private final MemberService memberService;
-    private final ProcessedRequestService processedRequestService;
+//    private final ProcessedRequestService processedRequestService;
+    private final K_ProcessedRequestServiceImpl processedRequestService;
     private final CalculationService calculationService;
     private final RequestCommentService requestCommentService;
     private final LetterService letterService;
@@ -55,6 +57,7 @@ public class AggregateServiceImpl implements AggregateService {
 
     private List<CalculationResponseDTO> calculation;
 
+    private List<ProcessedResponseDTO> processed_requests;
 
 
     @Override
@@ -69,9 +72,9 @@ public class AggregateServiceImpl implements AggregateService {
         List<MemberResponseDTO> members = memberService.getMembersBySsn(aggregateRequestDTO);
         log.debug("Retrieved Members = {}",members);
 
-        log.debug("Calling ProcessedRequest Service");
-        List<ProcessedResponseDTO> processed_requests = processedRequestService.getProcessedRequestBySsn(aggregateRequestDTO);
-        log.debug("Retrieved ProcessedRequests = {}",processed_requests);
+//        log.debug("Calling ProcessedRequest Service");
+//        List<ProcessedResponseDTO> processed_requests = processedRequestService.getProcessedRequestBySsn(aggregateRequestDTO);
+//        log.debug("Retrieved ProcessedRequests = {}",processed_requests);
 
 //        log.debug("Calling Calculation Service");
 //        List<CalculationResponseDTO> calculation = calculationService.getCalculationBySsn(aggregateRequestDTO);

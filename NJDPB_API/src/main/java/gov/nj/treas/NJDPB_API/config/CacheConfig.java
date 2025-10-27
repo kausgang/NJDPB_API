@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Configuration
-@EnableCaching
+//@EnableCaching
 public class CacheConfig {
 
 

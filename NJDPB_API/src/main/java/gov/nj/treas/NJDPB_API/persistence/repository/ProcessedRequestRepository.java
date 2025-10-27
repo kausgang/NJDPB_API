@@ -6,7 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ProcessedRequestRepository extends JpaRepository<ProcessedRequest, ProcessedRequestId> {
+//public interface ProcessedRequestRepository extends JpaRepository<ProcessedRequest, ProcessedRequestId> {
+public interface ProcessedRequestRepository extends JpaRepository<ProcessedRequest, String> {
 
 //    List<ProcessedRequest> findByProcessedRequestIdSsn(String ssn);
 
