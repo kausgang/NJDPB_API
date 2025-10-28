@@ -1,15 +1,12 @@
 package gov.nj.treas.NJDPB_API.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.nj.treas.NJDPB_API.dto.AggregateRequestDTO;
-import gov.nj.treas.NJDPB_API.dto.processedrequest.ProcessedResponseDTO;
-import gov.nj.treas.NJDPB_API.persistence.entity.ProcessedRequest;
+import gov.nj.treas.NJDPB_API.dto.processedRequest.ProcessedResponseDTO;
 import gov.nj.treas.NJDPB_API.service.impl.ProcessedRequestServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,8 +19,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Collections;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @WebMvcTest(ProcessedRequestController.class)
 @AutoConfigureMockMvc(addFilters = false) // ✅ disables Spring Security filters

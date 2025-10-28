@@ -1,7 +1,6 @@
-package gov.nj.treas.NJDPB_API.persistence.entity;
+package gov.nj.treas.NJDPB_API.persistence.entity.processed_request;
 
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Id;
 import lombok.*;
 
 import java.io.Serializable;
@@ -10,7 +9,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-//@EqualsAndHashCode
+@EqualsAndHashCode
 @Builder
 public class ProcessedRequestId implements Serializable {
 

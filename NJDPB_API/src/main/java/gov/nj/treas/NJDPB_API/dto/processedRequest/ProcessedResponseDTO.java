@@ -1,6 +1,5 @@
-package gov.nj.treas.NJDPB_API.dto.processedrequest;
+package gov.nj.treas.NJDPB_API.dto.processedRequest;
 
-import gov.nj.treas.NJDPB_API.persistence.entity.ProcessedRequestId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,12 +16,11 @@ public class ProcessedResponseDTO implements Serializable {
 
 //    private ProcessedRequestId
 
-//    private String ssn;
+    private String ssn;
     private Integer request_id;
+
+
     private LocalDateTime request_date;
-//
-//
-//    //Done by Itunuoluwa for dbo.Processed_request
     private Integer status_code;
 //    private LocalDateTime processed_date;
 //    private Integer purchase_code;

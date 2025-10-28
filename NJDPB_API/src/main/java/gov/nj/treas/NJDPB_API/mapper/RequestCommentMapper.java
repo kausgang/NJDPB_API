@@ -1,6 +1,6 @@
 package gov.nj.treas.NJDPB_API.mapper;
 
-import gov.nj.treas.NJDPB_API.dto.requestromment.RequestCommentResponseDTO;
+import gov.nj.treas.NJDPB_API.dto.requestComment.RequestCommentResponseDTO;
 import gov.nj.treas.NJDPB_API.persistence.entity.RequestComment;
 import org.mapstruct.Mapper;
 

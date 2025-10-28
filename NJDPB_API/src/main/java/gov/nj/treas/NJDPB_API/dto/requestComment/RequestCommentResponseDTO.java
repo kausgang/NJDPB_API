@@ -1,4 +1,4 @@
-package gov.nj.treas.NJDPB_API.dto.requestromment;
+package gov.nj.treas.NJDPB_API.dto.requestComment;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

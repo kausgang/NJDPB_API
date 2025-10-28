@@ -1,20 +1,14 @@
 package gov.nj.treas.NJDPB_API.service.impl;
 
 import gov.nj.treas.NJDPB_API.dto.AggregateRequestDTO;
-import gov.nj.treas.NJDPB_API.dto.processedrequest.K_ProcessedResponseDTO;
-import gov.nj.treas.NJDPB_API.dto.processedrequest.ProcessedResponseDTO;
+import gov.nj.treas.NJDPB_API.dto.processedRequest.K_ProcessedResponseDTO;
 import gov.nj.treas.NJDPB_API.exception.RecordNotFoundException;
 import gov.nj.treas.NJDPB_API.mapper.K_ProcessedRequestMapper;
-import gov.nj.treas.NJDPB_API.mapper.ProcessedRequestMapper;
 import gov.nj.treas.NJDPB_API.persistence.entity.K_ProcessedRequest;
-import gov.nj.treas.NJDPB_API.persistence.entity.ProcessedRequest;
 import gov.nj.treas.NJDPB_API.persistence.repository.K_ProcessedRequestRepository;
-import gov.nj.treas.NJDPB_API.persistence.repository.ProcessedRequestRepository;
 import gov.nj.treas.NJDPB_API.service.intrface.K_ProcessedRequestService;
-import gov.nj.treas.NJDPB_API.service.intrface.ProcessedRequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

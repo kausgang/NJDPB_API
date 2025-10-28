@@ -1,5 +1,6 @@
 package gov.nj.treas.NJDPB_API.persistence.entity;
 
+import gov.nj.treas.NJDPB_API.persistence.entity.processed_request.ProcessedRequestId;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

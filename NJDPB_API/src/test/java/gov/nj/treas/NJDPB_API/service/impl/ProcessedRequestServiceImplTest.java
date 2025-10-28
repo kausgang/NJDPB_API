@@ -1,10 +1,10 @@
 package gov.nj.treas.NJDPB_API.service.impl;
 
 import gov.nj.treas.NJDPB_API.dto.AggregateRequestDTO;
-import gov.nj.treas.NJDPB_API.dto.processedrequest.ProcessedRequestDTO;
-import gov.nj.treas.NJDPB_API.dto.processedrequest.ProcessedResponseDTO;
+import gov.nj.treas.NJDPB_API.dto.processedRequest.ProcessedRequestDTO;
+import gov.nj.treas.NJDPB_API.dto.processedRequest.ProcessedResponseDTO;
 import gov.nj.treas.NJDPB_API.mapper.ProcessedRequestMapper;
-import gov.nj.treas.NJDPB_API.persistence.entity.ProcessedRequest;
+import gov.nj.treas.NJDPB_API.persistence.entity.processed_request.ProcessedRequest;
 import gov.nj.treas.NJDPB_API.persistence.repository.ProcessedRequestRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;

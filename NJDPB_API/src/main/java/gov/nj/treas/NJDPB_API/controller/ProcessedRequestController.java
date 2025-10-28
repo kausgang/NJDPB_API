@@ -1,12 +1,8 @@
 package gov.nj.treas.NJDPB_API.controller;
 
 import gov.nj.treas.NJDPB_API.dto.AggregateRequestDTO;
-import gov.nj.treas.NJDPB_API.dto.member.MemberRequestDTO;
-import gov.nj.treas.NJDPB_API.dto.member.MemberResponseDTO;
-import gov.nj.treas.NJDPB_API.dto.processedrequest.ProcessedResponseDTO;
-import gov.nj.treas.NJDPB_API.persistence.repository.K_ProcessedRequestRepository;
+import gov.nj.treas.NJDPB_API.dto.processedRequest.ProcessedResponseDTO;
 import gov.nj.treas.NJDPB_API.service.impl.K_ProcessedRequestServiceImpl;
-import gov.nj.treas.NJDPB_API.service.impl.ProcessedRequestServiceImpl;
 import gov.nj.treas.NJDPB_API.service.intrface.ProcessedRequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -16,7 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

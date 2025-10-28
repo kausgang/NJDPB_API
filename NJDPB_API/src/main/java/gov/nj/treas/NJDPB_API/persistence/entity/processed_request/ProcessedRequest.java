@@ -1,4 +1,4 @@
-package gov.nj.treas.NJDPB_API.persistence.entity;
+package gov.nj.treas.NJDPB_API.persistence.entity.processed_request;
 
 
 import jakarta.persistence.EmbeddedId;
@@ -21,13 +21,13 @@ import java.time.LocalDateTime;
 public class ProcessedRequest {
 
 
-//    @EmbeddedId
-//    private ProcessedRequestId processedRequestId;
+    @EmbeddedId
+    private ProcessedRequestId processedRequestId;
 
 
-    @Id
-    private String ssn;
-    private Integer request_id;
+//    @Id
+//    private String ssn;
+//    private Integer request_id;
 
     private LocalDateTime request_date;
 

@@ -1,6 +1,5 @@
-package gov.nj.treas.NJDPB_API.dto.processedrequest;
+package gov.nj.treas.NJDPB_API.dto.processedRequest;
 
-import gov.nj.treas.NJDPB_API.persistence.entity.ProcessedRequestId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,12 +14,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class K_ProcessedResponseDTO implements Serializable {
 
-    private ProcessedRequestId processedRequestId;
+//    private ProcessedRequestId processedRequestId;
 
-//    private String ssn;
+    private String ssn;
+    private Integer request_id;
 
 
-//    private Integer request_id;
     private LocalDateTime request_date;
 //
 //

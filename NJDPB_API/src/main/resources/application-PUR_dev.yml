@@ -32,6 +32,10 @@ spring:
 #    port: ${REDIS_PORT}
 
 
+  cache:
+    type: none
+
+
 logging:
   config: classpath:logback-spring-PUR_dev.xml
 
