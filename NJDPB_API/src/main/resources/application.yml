@@ -3,7 +3,7 @@ spring:
     name: NJDPB_API
 
 
-#  boot:
-#    admin:
-#      client:
-#        url: ${ADMIN_SERVER_URL}  # URL of your Admin Server
+  boot:
+    admin:
+      client:
+        url: ${ADMIN_SERVER_URL:""}  # Default empty string if admin server is not available
