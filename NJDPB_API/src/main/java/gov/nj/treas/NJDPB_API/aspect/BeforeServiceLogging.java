@@ -21,5 +21,14 @@ public class BeforeServiceLogging {
 
         log.info("Calling {}",methodName);
 
+
+        Object[] args = joinPoint.getArgs();
+
+        log.debug("Calling method: {} With Arguments ", methodName);
+        for (int i = 0; i < args.length; i++) {
+            log.debug("Arg[{}]: {}", i, args[i]);
+        }
+
+
     }
 }

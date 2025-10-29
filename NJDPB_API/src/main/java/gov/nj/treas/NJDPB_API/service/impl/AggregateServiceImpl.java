@@ -1,5 +1,6 @@
 package gov.nj.treas.NJDPB_API.service.impl;
 
+import gov.nj.treas.NJDPB_API.annotation.DebugLogging;
 import gov.nj.treas.NJDPB_API.dto.AggregateRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.AggregateResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.calculation.CalculationResponseDTO;
@@ -44,6 +45,7 @@ public class AggregateServiceImpl implements AggregateService {
     @Override
     @Transactional
     @Cacheable(value="aggregateResponse",key = "#aggregateRequestDTO.ssn")
+    @DebugLogging
     public AggregateResponseDTO findDetails(AggregateRequestDTO aggregateRequestDTO) {
 
 
