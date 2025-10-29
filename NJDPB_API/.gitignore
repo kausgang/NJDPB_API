@@ -35,3 +35,7 @@ build/
 src/main/resources/.env
 
 logs
+
+.run
+
+.env-PUR_dev.properties

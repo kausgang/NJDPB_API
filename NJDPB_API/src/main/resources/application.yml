@@ -2,3 +2,8 @@ spring:
   application:
     name: NJDPB_API
 
+
+#  boot:
+#    admin:
+#      client:
+#        url: ${ADMIN_SERVER_URL}  # URL of your Admin Server

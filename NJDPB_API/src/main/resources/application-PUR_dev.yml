@@ -1,4 +1,9 @@
 spring:
+
+  config:
+    import: optional:file:.env-${spring.profiles.active}
+
+
   datasource:
     url: jdbc:sqlserver://${DB_HOST}:${DB_PORT};databaseName=${DB_NAME};encrypt=false;trustServerCertificate=true
     username: ${DB_USERNAME}
