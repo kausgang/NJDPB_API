@@ -32,12 +32,17 @@ pipeline{
 
                 echo "Kill the previous instance and Deploy the new change - DO IT MANUALLY"
 
+                sh 'ps -ef | grep NJDPB | grep -v grep | awk '{print $2}' | xargs kill -9'
+
                 sh '''
 
                     mv /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar_$(date +%Y-%m-%d_%H:%M:%S)
                     scp ${WORKSPACE}/NJDPB_API/target/NJDPB_API-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/
+
+
                 '''
 
+                sh '/home/typgang/SiebelExternalApi/runAPI.sh'
                 
             }
         }
