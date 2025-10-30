@@ -44,14 +44,6 @@ spring:
 
 logging:
   config: classpath:logback-spring-PUR_dev.xml
-  level:
-    org:
-      hibernate:
-        SQL: DEBUG
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
 
 server:
   port: 8090
