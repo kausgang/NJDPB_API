@@ -13,9 +13,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @Data
@@ -34,17 +36,22 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Cacheable(value = "membersBySsn", key = "#memberRequestDTO.ssn")
-    public List<MemberResponseDTO> getMembersBySsn(AggregateRequestDTO memberRequestDTO) {
+    @Async("taskExecutor") // Specify the executor bean name
+//    public List<MemberResponseDTO> getMembersBySsn(AggregateRequestDTO memberRequestDTO) {
+    public CompletableFuture<List<MemberResponseDTO>> getMembersBySsn(AggregateRequestDTO memberRequestDTO) {
 
         String ssn = memberRequestDTO.getSsn();
 
-        log.debug("ssn for member service is - {}", ssn);
         List<Member> members = memberRepository.findBySsn(ssn);
-        log.debug("members returned by repository = {}",members);
 
         if(members.isEmpty()) throw new RecordNotFoundException("MEMBER_SERVICE - Record Not Fount");
 
+        List<MemberResponseDTO> memberResponseDTOList = memberMapper.toResponseDTOList(members);
 
-        return memberMapper.toResponseDTOList(members);
+        return CompletableFuture.completedFuture(memberResponseDTOList);
+
+
+
+//        return memberMapper.toResponseDTOList(members);
     }
 }

@@ -16,15 +16,17 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 //@AllArgsConstructor
-
 public class AggregateServiceImpl implements AggregateService {
 
 
@@ -38,6 +40,10 @@ public class AggregateServiceImpl implements AggregateService {
     private final AggregateMapper aggregateMapper;
 
     private List<CalculationResponseDTO> calculation;
+    private List<MemberResponseDTO> members;
+    private List<ProcessedResponseDTO> processed_requests;
+    private List<RequestCommentResponseDTO> requestComments;
+    private List<LetterResponseDTO> letters;
 
 //    private List<ProcessedResponseDTO> processed_requests;
 
@@ -46,23 +52,37 @@ public class AggregateServiceImpl implements AggregateService {
     @Transactional
     @Cacheable(value="aggregateResponse",key = "#aggregateRequestDTO.ssn")
     @DebugLogging
-    public AggregateResponseDTO findDetails(AggregateRequestDTO aggregateRequestDTO) {
+    public AggregateResponseDTO findDetails(AggregateRequestDTO aggregateRequestDTO) throws ExecutionException, InterruptedException {
 
 
 
-        List<MemberResponseDTO> members = memberService.getMembersBySsn(aggregateRequestDTO);
+//        List<MemberResponseDTO> members = memberService.getMembersBySsn(aggregateRequestDTO);
 
-        List<ProcessedResponseDTO> processed_requests = processedRequestService.getProcessedRequestBySsn(aggregateRequestDTO);
+//        List<ProcessedResponseDTO> processed_requests = processedRequestService.getProcessedRequestBySsn(aggregateRequestDTO);
 //        log.debug("Retrieved ProcessedRequests = {}",processed_requests);
 
 //        List<CalculationResponseDTO> calculation = calculationService.getCalculationBySsn(aggregateRequestDTO);
 //        log.debug("Retrieved Calculation = {}",calculation);
 
-        List<RequestCommentResponseDTO> requestComments = requestCommentService.getRequestCommentBySsn(aggregateRequestDTO);
+
+
+
+//        List<RequestCommentResponseDTO> requestComments = requestCommentService.getRequestCommentBySsn(aggregateRequestDTO);
 //        log.debug("Retrieved Request Comment = {}",requestComments);
 
-        List<LetterResponseDTO> letters = letterService.getLetterBySsn(aggregateRequestDTO);
+//        List<LetterResponseDTO> letters = letterService.getLetterBySsn(aggregateRequestDTO);
 //        log.debug("Retrieved letters = {}",requestComments);
+
+
+        CompletableFuture<List<MemberResponseDTO>> memberList = memberService.getMembersBySsn(aggregateRequestDTO);
+        CompletableFuture<List<ProcessedResponseDTO>> processedRequestList = processedRequestService.getProcessedRequestBySsn(aggregateRequestDTO);
+
+        CompletableFuture.allOf(memberList,processedRequestList).join();
+
+        members = memberList.get();
+        processed_requests = processedRequestList.get();
+
+
 
         return aggregateMapper.toAggregateResponseDto(
                 members,
@@ -73,4 +93,7 @@ public class AggregateServiceImpl implements AggregateService {
         );
 
     }
+
+
+
 }

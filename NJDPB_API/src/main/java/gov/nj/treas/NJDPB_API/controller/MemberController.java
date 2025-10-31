@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/member")
@@ -69,13 +70,18 @@ public class MemberController {
     )
     @PostMapping("/find_by_ssn")
 //    public ResponseEntity<?> postMemberBySSN(@RequestBody MemberRequestDTO memberRequestDTO){
-    public ResponseEntity<?> postMemberBySSN(@Valid @RequestBody AggregateRequestDTO memberRequestDTO){
+//    public ResponseEntity<?> postMemberBySSN(@Valid @RequestBody AggregateRequestDTO memberRequestDTO){
+    public CompletableFuture<ResponseEntity<?>> postMemberBySSN(@Valid @RequestBody AggregateRequestDTO memberRequestDTO){
 
 
-//            List<MemberResponseDTO> members = memberServiceimpl.getMembersBySsn(memberRequestDTO);
+
+//            List<MemberResponseDTO> members = memberService.getMembersBySsn(memberRequestDTO);
 //            return new ResponseEntity<>(members,HttpStatus.OK);
-            List<MemberResponseDTO> members = memberService.getMembersBySsn(memberRequestDTO);
-            return new ResponseEntity<>(members,HttpStatus.OK);
+
+        CompletableFuture<List<MemberResponseDTO>> futureData = memberService.getMembersBySsn(memberRequestDTO);
+        return futureData.thenApply(ResponseEntity::ok);
+
+
 
 
     }

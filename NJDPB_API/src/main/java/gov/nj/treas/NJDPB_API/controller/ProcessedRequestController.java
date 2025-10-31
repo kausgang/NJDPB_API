@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+import java.util.concurrent.CompletableFuture;
 
 
 @RestController
@@ -64,13 +64,15 @@ public class ProcessedRequestController {
     )
     @PostMapping("/find_by_ssn")
 //    public ResponseEntity<?> findBySsn(@RequestBody ProcessedRequestDTO processedRequestDTO){
-    public ResponseEntity<?> findBySsn(@Valid @RequestBody AggregateRequestDTO processedRequestDTO) {
+//    public ResponseEntity<?> findBySsn(@Valid @RequestBody AggregateRequestDTO processedRequestDTO) {
+    public CompletableFuture<ResponseEntity<?>> findBySsn(@Valid @RequestBody AggregateRequestDTO processedRequestDTO) {
 
 
-        List<ProcessedResponseDTO> response = processedRequestService.getProcessedRequestBySsn(processedRequestDTO);
-//        List<ProcessedResponseDTO> response = k_ProcessedRequestService.getProcessedRequestBySsn(processedRequestDTO);
+//        List<ProcessedResponseDTO> response = processedRequestService.getProcessedRequestBySsn(processedRequestDTO);
+        CompletableFuture<List<ProcessedResponseDTO>> futureData = processedRequestService.getProcessedRequestBySsn(processedRequestDTO);
 
-        return ResponseEntity.ok(response);
+//        return ResponseEntity.ok(response);
+        return futureData.thenApply(ResponseEntity::ok);
     }
 }
 

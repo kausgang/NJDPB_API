@@ -5,9 +5,10 @@ import gov.nj.treas.NJDPB_API.dto.member.MemberRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.member.MemberResponseDTO;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public interface MemberService {
 
-//    List<MemberResponseDTO> getMembersBySsn(MemberRequestDTO memberRequestDTO);
-List<MemberResponseDTO> getMembersBySsn(AggregateRequestDTO memberRequestDTO);
+//        List<MemberResponseDTO> getMembersBySsn(AggregateRequestDTO memberRequestDTO);
+        CompletableFuture<List<MemberResponseDTO>> getMembersBySsn(AggregateRequestDTO memberRequestDTO);
 }

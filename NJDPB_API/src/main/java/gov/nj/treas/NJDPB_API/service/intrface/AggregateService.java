@@ -4,9 +4,10 @@ import gov.nj.treas.NJDPB_API.dto.AggregateRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.AggregateResponseDTO;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
 public interface AggregateService {
 
-    AggregateResponseDTO findDetails(AggregateRequestDTO aggregateRequestDTO);
+    AggregateResponseDTO findDetails(AggregateRequestDTO aggregateRequestDTO) throws ExecutionException, InterruptedException;
 }

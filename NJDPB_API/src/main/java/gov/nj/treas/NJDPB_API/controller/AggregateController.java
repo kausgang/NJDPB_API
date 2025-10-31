@@ -63,7 +63,7 @@ public class AggregateController {
             )
     )
     @PostMapping("/details")
-    public ResponseEntity<?> getDetails(@Valid @RequestBody AggregateRequestDTO aggregateRequestDTO){
+    public ResponseEntity<?> getDetails(@Valid @RequestBody AggregateRequestDTO aggregateRequestDTO) throws Exception{
 
         AggregateResponseDTO aggregateResponseDTO = aggregateService.findDetails(aggregateRequestDTO);
 

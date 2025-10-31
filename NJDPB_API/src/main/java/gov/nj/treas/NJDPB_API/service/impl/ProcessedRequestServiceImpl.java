@@ -13,6 +13,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +25,8 @@ public class ProcessedRequestServiceImpl implements ProcessedRequestService {
 
     @Override
     @Cacheable(value="processedResponse",key = "#processedRequestDTO.ssn")
-    public List<ProcessedResponseDTO> getProcessedRequestBySsn(AggregateRequestDTO processedRequestDTO) {
+//    public List<ProcessedResponseDTO> getProcessedRequestBySsn(AggregateRequestDTO processedRequestDTO) {
+    public CompletableFuture<List<ProcessedResponseDTO>> getProcessedRequestBySsn(AggregateRequestDTO processedRequestDTO) {
 
         String ssn = processedRequestDTO.getSsn();
 
@@ -32,7 +34,11 @@ public class ProcessedRequestServiceImpl implements ProcessedRequestService {
 
         if(processedRequests.isEmpty()) throw new RecordNotFoundException("PROCESSED_REQUEST_SERVICE - Record Not Fount");
 
-        return processedRequestMapper.toResponseDTOList(processedRequests);
+//        return processedRequestMapper.toResponseDTOList(processedRequests);
+
+        List<ProcessedResponseDTO> processedResponseDTOList = processedRequestMapper.toResponseDTOList(processedRequests);
+
+        return CompletableFuture.completedFuture(processedResponseDTOList);
 
     }
 }
