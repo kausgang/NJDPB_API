@@ -11,13 +11,14 @@ import gov.nj.treas.NJDPB_API.dto.requestComment.RequestCommentResponseDTO;
 import gov.nj.treas.NJDPB_API.mapper.AggregateMapper;
 import gov.nj.treas.NJDPB_API.service.intrface.*;
 
-import jakarta.transaction.Transactional;
+//import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -49,7 +50,7 @@ public class AggregateServiceImpl implements AggregateService {
 
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     @Cacheable(value="aggregateResponse",key = "#aggregateRequestDTO.ssn")
     @DebugLogging
     public AggregateResponseDTO findDetails(AggregateRequestDTO aggregateRequestDTO) throws ExecutionException, InterruptedException {
