@@ -12,17 +12,22 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@Profile("PUR_dev")
-public class SecurityConfig {
+@Profile(value = "local_dev")
+public class LocalH2Config {
 
     @Bean
-    public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
+    public SecurityFilterChain H2securityFilterChain (HttpSecurity http) throws Exception {
 
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                                .requestMatchers("/actuator/**").permitAll()
+//                                .requestMatchers("/actuator/**").permitAll()
+                                .requestMatchers("/h2-console/**").permitAll()
                                 .anyRequest().authenticated()
+                )
+//                // Use a lambda configuration for headers to avoid the deprecated method
+                .headers(headers -> headers
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin) // This syntax is NOT deprecated in 6.1+
                 )
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
