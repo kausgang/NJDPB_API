@@ -56,3 +56,21 @@ management:
       exposure:
         include: "*"
 #        exclude: "env,beans"
+
+
+
+
+resilience4j:
+#  retry:
+#    instances:
+#      DORES_DB:
+#        maxAttempts: 3
+#        waitDuration: 2s
+#        enableExponentialBackoff: true
+#        exponentialBackoffMultiplier: 2
+#        retryExceptions:
+#          - java.lang.Exception # This will catch almost everything
+  timelimiter:
+    instances:
+      DORES_DB:
+        timeoutDuration: 3s

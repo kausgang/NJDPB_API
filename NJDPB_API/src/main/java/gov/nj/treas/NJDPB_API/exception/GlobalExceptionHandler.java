@@ -38,4 +38,21 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
     }
+
+
+
+    @ExceptionHandler(DbTimeoutException.class)
+    public ResponseEntity<ErrorResponseDTO> dbTimeout(DbTimeoutException ex){
+
+        ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.builder()
+                .message(ex.getMessage())//I am getting the message from the RequestDto classc
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.REQUEST_TIMEOUT)
+                .build();
+
+        return new ResponseEntity<>(errorResponseDTO, HttpStatus.REQUEST_TIMEOUT);
+
+    }
+
+
 }

@@ -1,0 +1,13 @@
+package gov.nj.treas.NJDPB_API.annotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface SimulateDelay {
+    long millis() default 5000; // default delay
+}
+
