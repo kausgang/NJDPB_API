@@ -31,3 +31,4 @@ build/
 
 ### VS Code ###
 .vscode/
+NJDPB_API/.env-PUR_dev.properties

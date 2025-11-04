@@ -1,0 +1,17 @@
+spring:
+
+  config:
+    import: optional:file:.env-${spring.profiles.active}
+
+  datasource:
+    url: jdbc:sqlserver://${DB_HOST}:${DB_PORT};databaseName=${DB_NAME};encrypt=false;trustServerCertificate=true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+  jpa:
+    database-platform: org.hibernate.dialect.SQLServerDialect
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
