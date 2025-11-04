@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
+@Deprecated
 @RestController
 @RequestMapping("/processed_request")
 @Tag(name = "Processed Request")
