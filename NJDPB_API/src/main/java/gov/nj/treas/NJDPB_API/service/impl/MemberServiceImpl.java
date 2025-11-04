@@ -2,6 +2,7 @@ package gov.nj.treas.NJDPB_API.service.impl;
 
 import gov.nj.treas.NJDPB_API.dto.AggregateRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.member.MemberResponseDTO;
+import gov.nj.treas.NJDPB_API.exception.RecordNotFoundException;
 import gov.nj.treas.NJDPB_API.mapper.MemberMapper;
 import gov.nj.treas.NJDPB_API.persistence.entity.Member;
 import gov.nj.treas.NJDPB_API.persistence.repository.MemberRepository;
@@ -30,6 +31,9 @@ public class MemberServiceImpl implements MemberService {
 
         String ssn = memberRequestDTO.getSsn();
         List<Member> members = memberRepository.findBySsn(ssn);
+
+        if(members.isEmpty()) throw new RecordNotFoundException("MEMBER_SERVICE - Record Not Fount");
+
         List<MemberResponseDTO> memberResponseDTOList = memberMapper.toResponseDTOList(members);
         return CompletableFuture.completedFuture(memberResponseDTOList);
 
