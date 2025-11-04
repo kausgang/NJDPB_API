@@ -2,6 +2,7 @@ package gov.nj.treas.NJDPB_API.dto;
 
 import gov.nj.treas.NJDPB_API.dto.member.MemberResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.processed_request.ProcessedRequestResponseDTO;
+import gov.nj.treas.NJDPB_API.dto.request_comment.RequestCommentResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,5 +19,6 @@ public class AggregateResponseDTO implements Serializable {
 
     private List<MemberResponseDTO> members;
     private List<ProcessedRequestResponseDTO> proceed_request;
+    private List<RequestCommentResponseDTO> request_comment;
 
 }
