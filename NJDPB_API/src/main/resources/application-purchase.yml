@@ -16,6 +16,12 @@ spring:
       hibernate:
         format_sql: true
 
+  security:
+    user:
+      name: ${SECURITY_USERNAME}
+      password: ${SECURITY_PASSWORD}
+
+
 
 server:
   servlet:

@@ -2,10 +2,6 @@ spring:
   application:
     name: NJDPB_API
 
-  security:
-    user:
-      name: ${SECURITY_USERNAME}
-      password: ${SECURITY_PASSWORD}
 
 server:
   port: 8090

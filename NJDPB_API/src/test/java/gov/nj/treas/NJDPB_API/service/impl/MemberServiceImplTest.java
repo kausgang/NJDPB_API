@@ -70,8 +70,6 @@ class MemberServiceImplTest {
         List<MemberResponseDTO> expectedResponseDTOList = List.of(memberResponseDTO);
         String ssn = aggregateRequestDTO.getSsn();
 
-        CompletableFuture<List<MemberResponseDTO>> response = memberServiceImpl.getMembersBySsn(aggregateRequestDTO);
-
         // 1. Setup mock for Repository (Stubbing)
         Mockito.when(memberRepository.findBySsn(ssn)).thenReturn(memberList);
 
