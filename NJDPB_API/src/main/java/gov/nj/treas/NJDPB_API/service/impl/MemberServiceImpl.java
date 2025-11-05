@@ -1,5 +1,6 @@
 package gov.nj.treas.NJDPB_API.service.impl;
 
+import gov.nj.treas.NJDPB_API.annotation.DebugLogging;
 import gov.nj.treas.NJDPB_API.dto.AggregateRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.member.MemberResponseDTO;
 import gov.nj.treas.NJDPB_API.exception.RecordNotFoundException;
@@ -26,6 +27,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Async("taskExecutor") // Specify the executor bean name
+    @DebugLogging
     public CompletableFuture<List<MemberResponseDTO>> getMembersBySsn(AggregateRequestDTO memberRequestDTO) {
 
 

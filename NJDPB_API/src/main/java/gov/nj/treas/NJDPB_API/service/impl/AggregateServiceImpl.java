@@ -10,6 +10,7 @@ import gov.nj.treas.NJDPB_API.mapper.AggregateMapper;
 import gov.nj.treas.NJDPB_API.service.intrface.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -29,6 +30,7 @@ public class AggregateServiceImpl implements AggregateService {
     private final AggregateMapper aggregateMapper;
 
     @Override
+    @Cacheable(value="aggregateResponse",key = "#aggregateRequestDTO.ssn")
     public AggregateResponseDTO findDetails(AggregateRequestDTO aggregateRequestDTO) throws ExecutionException, InterruptedException {
 
 

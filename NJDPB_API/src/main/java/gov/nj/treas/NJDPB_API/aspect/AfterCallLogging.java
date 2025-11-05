@@ -17,6 +17,6 @@ public class AfterCallLogging {
 
         String methodName = joinPoint.getSignature().toShortString();
         log.debug("Repository Method {} returned: {}", methodName, result);
-        
+
     }
 }

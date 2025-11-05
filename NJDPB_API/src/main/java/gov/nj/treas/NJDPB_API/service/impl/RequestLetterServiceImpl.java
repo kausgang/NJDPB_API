@@ -1,5 +1,6 @@
 package gov.nj.treas.NJDPB_API.service.impl;
 
+import gov.nj.treas.NJDPB_API.annotation.DebugLogging;
 import gov.nj.treas.NJDPB_API.dto.AggregateRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.request_letter.RequestLetterResponseDTO;
 import gov.nj.treas.NJDPB_API.exception.RecordNotFoundException;
@@ -9,6 +10,7 @@ import gov.nj.treas.NJDPB_API.persistence.repository.RequestLetterRepository;
 import gov.nj.treas.NJDPB_API.service.intrface.RequestLetterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +27,8 @@ public class RequestLetterServiceImpl implements RequestLetterService {
 
 
     @Override
+    @Async("taskExecutor") // Specify the executor bean name
+    @DebugLogging
     public CompletableFuture<List<RequestLetterResponseDTO>> getRequestLetterBySsn(AggregateRequestDTO aggregateRequestDTO) {
 
         String ssn = aggregateRequestDTO.getSsn();

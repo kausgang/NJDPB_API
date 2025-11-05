@@ -1,5 +1,6 @@
 package gov.nj.treas.NJDPB_API.service.impl;
 
+import gov.nj.treas.NJDPB_API.annotation.DebugLogging;
 import gov.nj.treas.NJDPB_API.dto.AggregateRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.request_comment.RequestCommentResponseDTO;
 import gov.nj.treas.NJDPB_API.exception.RecordNotFoundException;
@@ -8,6 +9,7 @@ import gov.nj.treas.NJDPB_API.persistence.entity.RequestComment;
 import gov.nj.treas.NJDPB_API.persistence.repository.RequestCommentRepository;
 import gov.nj.treas.NJDPB_API.service.intrface.RequestCommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +24,8 @@ public class RequestCommentImpl implements RequestCommentService {
     private final RequestCommentMapper requestCommentMapper;
 
     @Override
+    @Async("taskExecutor") // Specify the executor bean name
+    @DebugLogging
     public CompletableFuture<List<RequestCommentResponseDTO>> getRequestCommentBySsn(AggregateRequestDTO aggregateRequestDTO) {
 
         String ssn = aggregateRequestDTO.getSsn();

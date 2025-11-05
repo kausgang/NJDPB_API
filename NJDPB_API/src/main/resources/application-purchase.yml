@@ -22,6 +22,9 @@ spring:
       password: ${SECURITY_PASSWORD}
 
 
+cache:
+  type: none
+
 
 server:
   servlet:
