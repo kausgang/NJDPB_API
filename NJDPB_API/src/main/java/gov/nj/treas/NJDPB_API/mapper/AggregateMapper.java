@@ -22,7 +22,7 @@ public interface AggregateMapper {
         AggregateResponseDTO dto = new AggregateResponseDTO();
 
         dto.setMembers(members);
-        dto.setProceed_request(processed_request);
+        dto.setProcessed_request(processed_request);
         dto.setRequest_comment(request_comment);
         dto.setRequest_letter(request_letter);
 

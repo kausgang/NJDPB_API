@@ -19,7 +19,7 @@ import java.util.List;
 public class AggregateResponseDTO implements Serializable {
 
     private List<MemberResponseDTO> members;
-    private List<ProcessedRequestResponseDTO> proceed_request;
+    private List<ProcessedRequestResponseDTO> processed_request;
     private List<RequestCommentResponseDTO> request_comment;
     private List<RequestLetterResponseDTO> request_letter;
 
