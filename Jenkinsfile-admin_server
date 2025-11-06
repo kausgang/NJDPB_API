@@ -36,6 +36,9 @@ pipeline{
 
                 sh '''
         
+                    echo "Moving old JAR to a new location...";
+                    mv /home/typgang/SiebelExternalApi/NJDPB_ADMIN_Server-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/NJDPB_ADMIN_Server-0.0.1-SNAPSHOT.jar_$(date +%Y-%m-%d_%H:%M:%S);
+
                     echo "Copying new JAR from workspace...";
                     scp ${WORKSPACE}/NJDPB_ADMIN_Server/target/NJDPB_ADMIN_Server-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/;
 
