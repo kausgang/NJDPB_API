@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface RequestCommentMapper {
 
-    RequestCommentResponseDTO toResponseDTO(RequestCommentMapper requestComment);
+    RequestCommentResponseDTO toResponseDTO(RequestComment requestComment);
 
     List<RequestCommentResponseDTO> toResponseDTOList(List<RequestComment> requestCommentList);
 }

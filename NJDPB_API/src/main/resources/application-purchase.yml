@@ -22,6 +22,11 @@ spring:
       password: ${SECURITY_PASSWORD}
 
 
+  boot:
+    admin:
+      client:
+        url: ${ADMIN_SERVER_URL:""}  # Default empty string if admin server is not available
+
 cache:
   type: none
 
@@ -33,3 +38,27 @@ server:
 
 logging:
   config: classpath:logback-spring-purchase.xml
+
+
+#resilience4j.ratelimiter:
+#  instances:
+#    api-rate-limit:
+#      limitForPeriod: 400
+#      limitRefreshPeriod: 1s
+#      timeoutDuration: 0
+#      registerHealthIndicator: true
+#      eventConsumerBufferSize: 100
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true

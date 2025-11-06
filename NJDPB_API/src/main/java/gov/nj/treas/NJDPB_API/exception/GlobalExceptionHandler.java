@@ -2,6 +2,7 @@ package gov.nj.treas.NJDPB_API.exception;
 
 
 import gov.nj.treas.NJDPB_API.dto.ErrorResponseDTO;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -36,5 +37,19 @@ public class GlobalExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(RequestNotPermitted.class)
+    public ResponseEntity<ErrorResponseDTO> handleRequestNotPermitted(RequestNotPermitted ex){
+
+        ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.builder()
+                .message(ex.getMessage())//I am getting the message from the Resilience4J class
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.TOO_MANY_REQUESTS)
+                .build();
+
+        return new ResponseEntity<>(errorResponseDTO, HttpStatus.TOO_MANY_REQUESTS);
+
     }
 }

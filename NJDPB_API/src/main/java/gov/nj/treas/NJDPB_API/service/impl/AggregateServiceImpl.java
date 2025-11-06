@@ -8,6 +8,7 @@ import gov.nj.treas.NJDPB_API.dto.request_comment.RequestCommentResponseDTO;
 import gov.nj.treas.NJDPB_API.dto.request_letter.RequestLetterResponseDTO;
 import gov.nj.treas.NJDPB_API.mapper.AggregateMapper;
 import gov.nj.treas.NJDPB_API.service.intrface.*;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -30,7 +31,8 @@ public class AggregateServiceImpl implements AggregateService {
     private final AggregateMapper aggregateMapper;
 
     @Override
-    @Cacheable(value="aggregateResponse",key = "#aggregateRequestDTO.ssn")
+//    @Cacheable(value="aggregateResponse",key = "#aggregateRequestDTO.ssn")
+//    @RateLimiter(name = "api-rate-limit")
     public AggregateResponseDTO findDetails(AggregateRequestDTO aggregateRequestDTO) throws ExecutionException, InterruptedException {
 
 
