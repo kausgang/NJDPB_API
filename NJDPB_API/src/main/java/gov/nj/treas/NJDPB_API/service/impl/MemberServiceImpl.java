@@ -34,7 +34,7 @@ public class MemberServiceImpl implements MemberService {
         String ssn = memberRequestDTO.getSsn();
         List<Member> members = memberRepository.findBySsn(ssn);
 
-        if(members.isEmpty()) throw new RecordNotFoundException("MEMBER_SERVICE - Record Not Fount");
+        if(members.isEmpty()) throw new RecordNotFoundException("MEMBER_SERVICE - Record Not Found");
 
         List<MemberResponseDTO> memberResponseDTOList = memberMapper.toResponseDTOList(members);
         return CompletableFuture.completedFuture(memberResponseDTOList);
