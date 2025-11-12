@@ -65,7 +65,7 @@ pipeline{
             agent {label 'master'}
             steps {
                 script {
-                    def imageName = 'NJDPB-purchase:latest'
+                    def imageName = 'njdpb-purchase:latest'
                     // Build the container image using the Dockerfile in your project root
                     sh "podman build -t ${imageName} ${WORKSPACE}/NJDPB_API/"
                     // sh "chmod +x ${WORKSPACE}/NJDPB_API/mvnw"
