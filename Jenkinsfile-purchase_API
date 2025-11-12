@@ -68,7 +68,7 @@ pipeline{
                     def imageName = 'my-springboot-app-image:latest'
                     // Build the container image using the Dockerfile in your project root
                     // sh "podman build -t ${imageName} ."
-                    sh "${WORKSPACE}/NJDPB_API/target/mvnw spring-boot:build-image"
+                    sh "${WORKSPACE}/NJDPB_API/mvnw spring-boot:build-image"
                     echo "Image built: ${imageName}"
                 }
             }
