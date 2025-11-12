@@ -64,20 +64,22 @@ pipeline{
 
             agent {label 'master'}
             steps {
-                script {
+                
+                script 
+                {
                     def imageName = 'njdpb-purchase:latest'
-                    // Build the container image using the Dockerfile in your project root
-                    sh '''
-                    podman build \
-                    --build-arg HTTP_PROXY=http://172.27.129.1:8080\
-                    --build-arg HTTP_PROXY=http://172.27.129.1:8080\
-                    --build-arg HTTP_PROXY=localhost\
-                    -t ${imageName} ${WORKSPACE}/NJDPB_API/
-                    '''
-                    // sh "chmod +x ${WORKSPACE}/NJDPB_API/mvnw"
-                    // sh "${WORKSPACE}/NJDPB_API/mvnw spring-boot:build-image"
+                    def buildArgs = """
+                        --build-arg HTTP_PROXY=http://172.27.129.1:8080 \
+                        --build-arg HTTPS_PROXY=http://172.27.129.1:8080 \
+                        --build-arg NO_PROXY=localhost,127.0.0.1
+                    """
+                    sh """
+                        podman build ${buildArgs} -t ${imageName} ${WORKSPACE}/NJDPB_API/
+                    """
                     echo "Image built: ${imageName}"
+                        
                 }
+
             }
         }
 
