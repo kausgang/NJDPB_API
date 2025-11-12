@@ -56,5 +56,19 @@ pipeline{
                 
             }
         }
+
+
+        stage('Build Podman Image') {
+            steps {
+                script {
+                    def imageName = 'my-springboot-app-image:latest'
+                    // Build the container image using the Dockerfile in your project root
+                    sh "podman build -t ${imageName} ."
+                    echo "Image built: ${imageName}"
+                }
+            }
+        }
+
+
     }
 }
