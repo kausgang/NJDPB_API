@@ -59,6 +59,8 @@ pipeline{
 
 
         stage('Build Podman Image') {
+
+            agent {label 'master'}
             steps {
                 script {
                     def imageName = 'my-springboot-app-image:latest'
