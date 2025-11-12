@@ -25,37 +25,39 @@ pipeline{
                 '''
             }
         }
-        stage('Deploy'){
-
-            agent { label 'master' }
-            steps{
-
-                echo "Kill the previous instance and Deploy the new change - DO IT MANUALLY"
 
 
+        // stage('Deploy'){
 
-                sh '''
-                    echo "Killing previous instance with PID...";
-                    ps -ef | grep NJDPB | grep -v grep | awk '{print $2}' | xargs -r kill -9;
+        //     agent { label 'master' }
+        //     steps{
 
-                    echo "Moving old JAR to a new location...";
-                    mv /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar_$(date +%Y-%m-%d_%H:%M:%S);
+        //         echo "Kill the previous instance and Deploy the new change - DO IT MANUALLY"
 
-                    echo "Copying new JAR from workspace...";
-                    scp ${WORKSPACE}/NJDPB_API/target/NJDPB_API-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/;
 
-                    echo "Starting new instance...";
-                    nohup /home/typgang/SiebelExternalApi/runAPI.sh > /home/typgang/SiebelExternalApi/api.log 2>&1 &
-                '''
 
-                // sh '/home/typgang/SiebelExternalApi/runAPI.sh'
+        //         sh '''
+        //             echo "Killing previous instance with PID...";
+        //             ps -ef | grep NJDPB | grep -v grep | awk '{print $2}' | xargs -r kill -9;
 
-                // sh '''
-                //     mv /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar_$(date +%Y-%m-%d_%H:%M:%S)
-                // '''
+        //             echo "Moving old JAR to a new location...";
+        //             mv /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar_$(date +%Y-%m-%d_%H:%M:%S);
+
+        //             echo "Copying new JAR from workspace...";
+        //             scp ${WORKSPACE}/NJDPB_API/target/NJDPB_API-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/;
+
+        //             echo "Starting new instance...";
+        //             nohup /home/typgang/SiebelExternalApi/runAPI.sh > /home/typgang/SiebelExternalApi/api.log 2>&1 &
+        //         '''
+
+        //         // sh '/home/typgang/SiebelExternalApi/runAPI.sh'
+
+        //         // sh '''
+        //         //     mv /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar_$(date +%Y-%m-%d_%H:%M:%S)
+        //         // '''
                 
-            }
-        }
+        //     }
+        // }
 
 
         stage('Build Podman Image') {
@@ -65,7 +67,8 @@ pipeline{
                 script {
                     def imageName = 'my-springboot-app-image:latest'
                     // Build the container image using the Dockerfile in your project root
-                    sh "podman build -t ${imageName} ."
+                    // sh "podman build -t ${imageName} ."
+                    sh "mvn spring-boot:build-image"
                     echo "Image built: ${imageName}"
                 }
             }
