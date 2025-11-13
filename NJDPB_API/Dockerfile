@@ -13,15 +13,8 @@ FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY . .
 # Use -DskipTests or specific profiles as needed for your CI/CD
-# RUN mvn clean package -DskipTests
-# Pass proxy settings as Java system properties when running Maven
+RUN mvn clean package -DskipTests
 
-RUN mvn clean install \
-    -Dhttp.proxyHost=172.27.129.1 \
-    -Dhttp.proxyPort=8080 \
-    -Dhttps.proxyHost=172.27.129.1 \
-    -Dhttps.proxyPort=8080 \
-    -Dhttp.nonProxyHosts="localhost|127.0.0.1"
 
 # === Stage 2: Run the application ===
 # Use a minimal JRE 21 image for the final runtime
