@@ -61,25 +61,28 @@ pipeline{
 
 
         stage('Build Podman Image') {
-
             agent {label 'master'}
             steps {
-                
                 script 
                 {
                     def imageName = 'njdpb-purchase:latest'
-                    def buildArgs = """
-                        --build-arg HTTP_PROXY=http://172.27.129.1:8080 \
-                        --build-arg HTTPS_PROXY=http://172.27.129.1:8080 \
-                        --build-arg NO_PROXY=localhost,127.0.0.1
-                    """
+                    // Define a map for build arguments for cleaner passing
+                    def httpProxy = 'http://172.27.129.1:8080'
+                    def noProxy = 'localhost,127.0.0.1'
+                    def buildArgs = "--build-arg HTTP_PROXY=${httpProxy} --build-arg HTTPS_PROXY=${httpProxy} --build-arg NO_PROXY=${noProxy}"
+
+                    // Define the specific path to the directory containing your Containerfile/Dockerfile
+                    def buildPath = "${WORKSPACE}/NJDPB_API/"
+
                     sh """
-                        podman build ${buildArgs} -t ${imageName} ${WORKSPACE}/NJDPB_API/
+                        # Ensure the script runs in the correct directory
+                        cd ${buildPath}
+
+                        # Run the podman build command within that directory
+                        podman build ${buildArgs} -t ${imageName} .
                     """
                     echo "Image built: ${imageName}"
-                        
                 }
-
             }
         }
 
