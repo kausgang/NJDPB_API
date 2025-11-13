@@ -14,7 +14,8 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 # Security best practice: Run as a non-root user
-RUN addgroup --system spring && adduser --system spring --group spring
+# RUN addgroup --system spring && adduser --system spring --group spring
+RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 
 # Expose the application port
