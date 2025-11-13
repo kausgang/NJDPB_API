@@ -1,12 +1,3 @@
-ARG HTTP_PROXY
-ARG HTTPS_PROXY
-ARG NO_PROXY
-
-ENV HTTP_PROXY=$HTTP_PROXY
-ENV HTTPS_PROXY=$HTTPS_PROXY
-ENV NO_PROXY=$NO_PROXY
-
-
 # === Stage 1: Build the application ===
 # Use a JDK 21 image with Maven for compilation
 FROM maven:3.9.6-eclipse-temurin-21 AS build

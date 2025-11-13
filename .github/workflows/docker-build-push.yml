@@ -26,6 +26,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./NJDPB_API  # path to your Spring Boot project
-          file: Dockerfile
+          file: ./NJDPB_API/Dockerfile
           push: true
           tags: iem22/njdpb-purchase:latest
