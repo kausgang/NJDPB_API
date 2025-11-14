@@ -70,7 +70,7 @@ pipeline{
         stage('Deploy New Container') {
             agent {label 'master'}
             steps {
-                stript{
+                script{
 
                     sh '''
                         nohup podman run --replace --name purchase-api --detach --net=host \
