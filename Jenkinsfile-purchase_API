@@ -2,8 +2,6 @@ pipeline{
 
     agent none
 
-
-
     stages{
 
         stage('Checkout') {
@@ -11,65 +9,14 @@ pipeline{
                     steps {
                         checkout scm
                     }
-                }
-
-        // stage('Build'){
-
-        //     agent {label 'master'}
-        //     steps {
-        //         echo 'Building the application...'
-        //         sh '''
-        //             cd ./NJDPB_API;
-        //             export JAVA_HOME=/home/typgang/Jenkins/jdk-21.0.2;
-        //             /home/typgang/MAVEN/apache-maven-3.9.11/bin/mvn clean package -DskipTests
-        //         '''
-        //     }
-        // }
-
-
-        // stage('Deploy'){
-
-        //     agent { label 'master' }
-        //     steps{
-
-        //         echo "Kill the previous instance and Deploy the new change - DO IT MANUALLY"
-
-
-
-        //         sh '''
-        //             echo "Killing previous instance with PID...";
-        //             ps -ef | grep NJDPB | grep -v grep | awk '{print $2}' | xargs -r kill -9;
-
-        //             echo "Moving old JAR to a new location...";
-        //             mv /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar_$(date +%Y-%m-%d_%H:%M:%S);
-
-        //             echo "Copying new JAR from workspace...";
-        //             scp ${WORKSPACE}/NJDPB_API/target/NJDPB_API-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/;
-
-        //             echo "Starting new instance...";
-        //             nohup /home/typgang/SiebelExternalApi/runAPI.sh > /home/typgang/SiebelExternalApi/api.log 2>&1 &
-        //         '''
-
-        //         // sh '/home/typgang/SiebelExternalApi/runAPI.sh'
-
-        //         // sh '''
-        //         //     mv /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar_$(date +%Y-%m-%d_%H:%M:%S)
-        //         // '''
-                
-        //     }
-        // }
-
+        }
 
         stage('Build Podman Image') {
             agent {label 'master'}
             steps {
                 script 
                 {
-                    def imageName = 'njdpb-purchase:latest'
-                    // Define a map for build arguments for cleaner passing
-                    // def httpProxy = 'http://172.27.129.1:8080'
-                    // def noProxy = 'localhost,127.0.0.1'
-                    // def buildArgs = "--build-arg HTTP_PROXY=${httpProxy} --build-arg HTTPS_PROXY=${httpProxy} --build-arg NO_PROXY=${noProxy}"
+                    def imageName = 'njdpb-purchase'
                     def buildArgs = "-f ./NJDPB_CICD/Dockerfile_NJDPB_Proxy"
 
                     // Define the specific path to the directory containing your Containerfile/Dockerfile
@@ -80,12 +27,50 @@ pipeline{
                         cd ${buildPath}
 
                         # Run the podman build command within that directory
-                        podman build ${buildArgs} -t ${imageName} .
+                        podman build ${buildArgs} -t ${imageName}:${BUILD_NUMBER} .
+
+                        
+                        # Optionally tag as latest
+                        podman tag ${IMAGE_NAME}:${TAG} ${IMAGE_NAME}:latest
+
                     """
-                    echo "Image built: ${imageName}"
+                    echo "Image built: ${imageName}:${BUILD_NUMBER}"
                 }
             }
         }
+
+
+
+
+        
+        stage('Stop Previous Container') {
+            steps {
+                sh '''
+                    if podman ps -a --format '{{.Names}}' | grep -q purchase_api; then
+                        podman stop purchase_api
+                        podman rm purchase_api
+                    fi
+                '''
+            }
+        }
+
+
+
+        
+        stage('Deploy New Container') {
+            steps {
+                sh '''
+                    podman run --detach --name purchase_api \
+                      --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
+                      -p 8090:8090 \
+                      ${IMAGE_NAME}:${TAG} \
+                      --spring.profiles.active=purchase 
+                      
+                '''
+            }
+        }
+
+
 
 
     }
