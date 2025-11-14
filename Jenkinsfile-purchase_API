@@ -70,13 +70,17 @@ pipeline{
         stage('Deploy New Container') {
             agent {label 'master'}
             steps {
-                sh '''
-                    nohup podman run --replace --name purchase-api --detach --net=host \
+                stript{
+
+                    sh '''
+                        nohup podman run --replace --name purchase-api --detach --net=host \
                         --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
                         localhost/njdpb-purchase:${BUILD_NUMBER} \
                         --spring.profiles.active=purchase > /dev/null 2>&1 &
                        
-                '''
+                    '''
+                }
+                
             }
         }
 
