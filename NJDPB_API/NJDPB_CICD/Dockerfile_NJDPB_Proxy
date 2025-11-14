@@ -5,7 +5,7 @@ WORKDIR /app
 COPY .. .
 
 # Copy the maven settings
-COPY ./settings.xml /root/.m2/settings.xml
+COPY ./NJDPB_CICD/settings.xml /root/.m2/settings.xml
 
 # Use -DskipTests or specific profiles as needed for your CI/CD
 RUN mvn clean package -DskipTests
