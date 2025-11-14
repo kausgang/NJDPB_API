@@ -33,17 +33,17 @@ pipeline{
 
                     sh """
                         # Ensure the script runs in the correct directory
-                        cd ${buildPath}
+                        cd ${env.buildPath}
 
                         # Run the podman build command within that directory
-                        podman build ${buildArgs} -t ${IMAGE_NAME}:${BUILD_NUMBER} .
+                        podman build ${env.buildArgs} -t ${env.IMAGE_NAME}:${BUILD_NUMBER} .
 
                         
                         # Optionally tag as latest
-                        podman tag ${IMAGE_NAME}:${BUILD_NUMBER} ${IMAGE_NAME}:latest
+                        podman tag ${env.IMAGE_NAME}:${BUILD_NUMBER} ${env.IMAGE_NAME}:latest
 
                     """
-                    echo "Image built: ${IMAGE_NAME}:${BUILD_NUMBER}"
+                    echo "Image built: ${env.IMAGE_NAME}:${BUILD_NUMBER}"
                 }
             }
         }
@@ -74,7 +74,7 @@ pipeline{
                     podman run --detach --name purchase_api \
                       --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
                       -p 8090:8090 \
-                      ${IMAGE_NAME}:latest \
+                      ${env.IMAGE_NAME}:latest \
                       --spring.profiles.active=purchase 
                       
                 '''
