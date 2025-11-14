@@ -2,6 +2,15 @@ pipeline{
 
     agent none
 
+    environment {
+
+        IMAGE_NAME = 'njdpb-purchase'
+        buildArgs = "-f ./NJDPB_CICD/Dockerfile_NJDPB_Proxy"
+
+                    // Define the specific path to the directory containing your Containerfile/Dockerfile
+        buildPath = "${WORKSPACE}/NJDPB_API/"
+    }
+
     stages{
 
         stage('Checkout') {
@@ -16,25 +25,25 @@ pipeline{
             steps {
                 script 
                 {
-                    def imageName = 'njdpb-purchase'
-                    def buildArgs = "-f ./NJDPB_CICD/Dockerfile_NJDPB_Proxy"
+                    // def imageName = 'njdpb-purchase'
+                    // def buildArgs = "-f ./NJDPB_CICD/Dockerfile_NJDPB_Proxy"
 
-                    // Define the specific path to the directory containing your Containerfile/Dockerfile
-                    def buildPath = "${WORKSPACE}/NJDPB_API/"
+                    // // Define the specific path to the directory containing your Containerfile/Dockerfile
+                    // def buildPath = "${WORKSPACE}/NJDPB_API/"
 
                     sh """
                         # Ensure the script runs in the correct directory
                         cd ${buildPath}
 
                         # Run the podman build command within that directory
-                        podman build ${buildArgs} -t ${imageName}:${BUILD_NUMBER} .
+                        podman build ${buildArgs} -t ${IMAGE_NAME}:${BUILD_NUMBER} .
 
                         
                         # Optionally tag as latest
-                        podman tag ${IMAGE_NAME}:${TAG} ${IMAGE_NAME}:latest
+                        podman tag ${IMAGE_NAME}:${BUILD_NUMBER} ${IMAGE_NAME}:latest
 
                     """
-                    echo "Image built: ${imageName}:${BUILD_NUMBER}"
+                    echo "Image built: ${IMAGE_NAME}:${BUILD_NUMBER}"
                 }
             }
         }
@@ -65,7 +74,7 @@ pipeline{
                     podman run --detach --name purchase_api \
                       --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
                       -p 8090:8090 \
-                      ${IMAGE_NAME}:${TAG} \
+                      ${IMAGE_NAME}:latest \
                       --spring.profiles.active=purchase 
                       
                 '''
