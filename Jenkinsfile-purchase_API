@@ -52,17 +52,17 @@ pipeline{
 
 
         
-        stage('Stop Previous Container') {
-            agent {label 'master'}
-            steps {
-                sh '''
-                    if podman ps -a --format '{{.Names}}' | grep -q purchase_api; then
-                        podman stop purchase_api
-                        podman rm purchase_api
-                    fi
-                '''
-            }
-        }
+        // stage('Stop Previous Container') {
+        //     agent {label 'master'}
+        //     steps {
+        //         sh '''
+        //             if podman ps -a --format '{{.Names}}' | grep -q purchase_api; then
+        //                 podman stop purchase_api
+        //                 podman rm purchase_api
+        //             fi
+        //         '''
+        //     }
+        // }
 
 
 
@@ -73,7 +73,7 @@ pipeline{
                 sh '''
                     podman run --name purchase-api --detach --net=host \
                         --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
-                        localhost/njdpb-purchase:latest \
+                        localhost/njdpb-purchase:${BUILD_NUMBER} \
                         --spring.profiles.active=purchase
                       
                 '''
