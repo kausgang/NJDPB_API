@@ -44,6 +44,7 @@ pipeline{
 
         
         stage('Stop Previous Container') {
+            agent {label 'master'}
             steps {
                 sh '''
                     if podman ps -a --format '{{.Names}}' | grep -q purchase_api; then
@@ -58,6 +59,7 @@ pipeline{
 
         
         stage('Deploy New Container') {
+            agent {label 'master'}
             steps {
                 sh '''
                     podman run --detach --name purchase_api \
