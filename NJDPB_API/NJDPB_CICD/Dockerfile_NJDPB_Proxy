@@ -2,10 +2,10 @@
 # Use a JDK 21 image with Maven for compilation
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
-COPY . .
+COPY .. .
 
 # Copy the maven settings
-COPY /home/typgang/.m2/settings.xml /root/.m2/settings.xml
+COPY ./settings.xml /root/.m2/settings.xml
 
 # Use -DskipTests or specific profiles as needed for your CI/CD
 RUN mvn clean package -DskipTests

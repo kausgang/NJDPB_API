@@ -70,7 +70,7 @@ pipeline{
                     // def httpProxy = 'http://172.27.129.1:8080'
                     // def noProxy = 'localhost,127.0.0.1'
                     // def buildArgs = "--build-arg HTTP_PROXY=${httpProxy} --build-arg HTTPS_PROXY=${httpProxy} --build-arg NO_PROXY=${noProxy}"
-                    def buildArgs = "-f Dockerfile_NJDPB_Proxy"
+                    def buildArgs = "-f ./NJDPB_CICD/Dockerfile_NJDPB_Proxy"
 
                     // Define the specific path to the directory containing your Containerfile/Dockerfile
                     def buildPath = "${WORKSPACE}/NJDPB_API/"
