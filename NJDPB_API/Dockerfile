@@ -19,7 +19,7 @@ RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 
 # Expose the application port
-EXPOSE 8080
+EXPOSE 8090
 
 # Copy the packaged JAR file from the 'build' stage
 # Adjust 'target/*.jar' to match your build tool's output path if necessary
