@@ -2,13 +2,13 @@ pipeline{
 
     agent none
 
-    environment {
+    // environment {
 
-        IMAGE_NAME = 'njdpb-purchase'
-        buildArgs = "-f ./NJDPB_CICD/Dockerfile_NJDPB_Proxy"
+    //     IMAGE_NAME = 'njdpb-purchase'
+    //     buildArgs = "-f ./NJDPB_CICD/Dockerfile_NJDPB_Proxy"
 
         
-    }
+    // }
 
     stages{
 
@@ -25,7 +25,8 @@ pipeline{
                 script 
                 {
                     // def imageName = 'njdpb-purchase'
-                    // def buildArgs = "-f ./NJDPB_CICD/Dockerfile_NJDPB_Proxy"
+                    def IMAGE_NAME = 'njdpb-purchase'
+                    def buildArgs = "-f ./NJDPB_CICD/Dockerfile_NJDPB_Proxy"
 
                     // // Define the specific path to the directory containing your Containerfile/Dockerfile
                     def buildPath = "${WORKSPACE}/NJDPB_API/"
@@ -35,14 +36,14 @@ pipeline{
                         cd ${buildPath}
 
                         # Run the podman build command within that directory
-                        podman build ${env.buildArgs} -t ${env.IMAGE_NAME}:${BUILD_NUMBER} .
+                        podman build ${buildArgs} -t ${IMAGE_NAME}:${BUILD_NUMBER} .
 
                         
                         # Optionally tag as latest
-                        podman tag ${env.IMAGE_NAME}:${BUILD_NUMBER} ${env.IMAGE_NAME}:latest
+                        podman tag ${IMAGE_NAME}:${BUILD_NUMBER} ${IMAGE_NAME}:latest
 
                     """
-                    echo "Image built: ${env.IMAGE_NAME}:${BUILD_NUMBER}"
+                    echo "Image built: ${IMAGE_NAME}:${BUILD_NUMBER}"
                 }
             }
         }
@@ -73,7 +74,7 @@ pipeline{
                     podman run --detach --name purchase_api \
                       --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
                       -p 8090:8090 \
-                      ${env.IMAGE_NAME}:latest \
+                      ${IMAGE_NAME}:latest \
                       --spring.profiles.active=purchase 
                       
                 '''
