@@ -7,8 +7,7 @@ pipeline{
         IMAGE_NAME = 'njdpb-purchase'
         buildArgs = "-f ./NJDPB_CICD/Dockerfile_NJDPB_Proxy"
 
-                    // Define the specific path to the directory containing your Containerfile/Dockerfile
-        buildPath = "${WORKSPACE}/NJDPB_API/"
+        
     }
 
     stages{
@@ -29,7 +28,7 @@ pipeline{
                     // def buildArgs = "-f ./NJDPB_CICD/Dockerfile_NJDPB_Proxy"
 
                     // // Define the specific path to the directory containing your Containerfile/Dockerfile
-                    // def buildPath = "${WORKSPACE}/NJDPB_API/"
+                    def buildPath = "${WORKSPACE}/NJDPB_API/"
 
                     sh """
                         # Ensure the script runs in the correct directory
