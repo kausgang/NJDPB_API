@@ -71,11 +71,11 @@ pipeline{
             agent {label 'master'}
             steps {
                 sh '''
-                    podman run --replace --name purchase-api --detach --net=host \
+                    nohup podman run --replace --name purchase-api --detach --net=host \
                         --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
                         localhost/njdpb-purchase:${BUILD_NUMBER} \
-                        --spring.profiles.active=purchase
-                      
+                        --spring.profiles.active=purchase > /dev/null 2>&1 &
+                       
                 '''
             }
         }
