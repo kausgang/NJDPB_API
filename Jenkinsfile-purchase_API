@@ -13,18 +13,18 @@ pipeline{
                     }
                 }
 
-        stage('Build'){
+        // stage('Build'){
 
-            agent {label 'master'}
-            steps {
-                echo 'Building the application...'
-                sh '''
-                    cd ./NJDPB_API;
-                    export JAVA_HOME=/home/typgang/Jenkins/jdk-21.0.2;
-                    /home/typgang/MAVEN/apache-maven-3.9.11/bin/mvn clean package -DskipTests
-                '''
-            }
-        }
+        //     agent {label 'master'}
+        //     steps {
+        //         echo 'Building the application...'
+        //         sh '''
+        //             cd ./NJDPB_API;
+        //             export JAVA_HOME=/home/typgang/Jenkins/jdk-21.0.2;
+        //             /home/typgang/MAVEN/apache-maven-3.9.11/bin/mvn clean package -DskipTests
+        //         '''
+        //     }
+        // }
 
 
         // stage('Deploy'){
@@ -67,9 +67,10 @@ pipeline{
                 {
                     def imageName = 'njdpb-purchase:latest'
                     // Define a map for build arguments for cleaner passing
-                    def httpProxy = 'http://172.27.129.1:8080'
-                    def noProxy = 'localhost,127.0.0.1'
-                    def buildArgs = "--build-arg HTTP_PROXY=${httpProxy} --build-arg HTTPS_PROXY=${httpProxy} --build-arg NO_PROXY=${noProxy}"
+                    // def httpProxy = 'http://172.27.129.1:8080'
+                    // def noProxy = 'localhost,127.0.0.1'
+                    // def buildArgs = "--build-arg HTTP_PROXY=${httpProxy} --build-arg HTTPS_PROXY=${httpProxy} --build-arg NO_PROXY=${noProxy}"
+                    def buildArgs = "-f Dockerfile_NJDPB_Proxy"
 
                     // Define the specific path to the directory containing your Containerfile/Dockerfile
                     def buildPath = "${WORKSPACE}/NJDPB_API/"
