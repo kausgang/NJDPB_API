@@ -71,7 +71,7 @@ pipeline{
             agent {label 'master'}
             steps {
                 sh '''
-                    podman run --name purchase-api --detach --net=host \
+                    podman run --replace --name purchase-api --detach --net=host \
                         --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
                         localhost/njdpb-purchase:${BUILD_NUMBER} \
                         --spring.profiles.active=purchase
