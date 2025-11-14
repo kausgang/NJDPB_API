@@ -73,7 +73,7 @@ pipeline{
                 sh '''
                     podman run --detach --rm --net=host \
                         --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
-                        localhost/njdpb-purchase \
+                        localhost/njdpb-purchase:latest \
                         --spring.profiles.active=purchase
                       
                 '''
