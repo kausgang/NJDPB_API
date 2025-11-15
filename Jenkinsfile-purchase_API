@@ -71,7 +71,7 @@ pipeline{
     steps {
         script {
             sh '''
-                /home/typgang/SiebelExternalApi/runContainer.sh > /dev/null 2>&1 &
+                /home/typgang/SiebelExternalApi/runContainer.sh > /runContainer.log 2>&1 &
             '''
             // sh '''
             //     nohup /home/typgang/SiebelExternalApi/runContainer.sh > /dev/null 2>&1 &
