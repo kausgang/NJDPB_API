@@ -73,16 +73,33 @@ pipeline{
                 script{
 
                     sh '''
-                        nohup podman run --replace --name purchase-api --net=host \
+                        podman run --replace -d --name purchase-api --net=host \
                         --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
                         localhost/njdpb-purchase:latest \
-                        --spring.profiles.active=purchase > /dev/null 2>&1 &
-                       
-                    '''
+                        --spring.profiles.active=purchase
+                        '''
                 }
                 
             }
         }
+
+
+        // stage('Deploy New Container') {
+        //     agent {label 'master'}
+        //     steps {
+        //         script{
+
+        //             sh '''
+        //                 nohup podman run --replace --name purchase-api --net=host \
+        //                 --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
+        //                 localhost/njdpb-purchase:latest \
+        //                 --spring.profiles.active=purchase > /dev/null 2>&1 &
+                       
+        //             '''
+        //         }
+                
+        //     }
+        // }
 
 
 
