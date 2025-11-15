@@ -71,14 +71,7 @@ pipeline{
     steps {
         script {
             sh '''
-                echo "Cleaning up old container..."
-                podman rm -f purchase-api || true
-
-                echo "Starting container in foreground and disowning..."
-                ( podman run --replace --name purchase-api --net=host \
-                  --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
-                  localhost/njdpb-purchase:latest \
-                  --spring.profiles.active=purchase & ) && disown
+                nohup /home/typgang/SiebelExternalApi/runContainer.sh &
             '''
         }
     }
