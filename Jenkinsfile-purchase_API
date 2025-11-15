@@ -66,43 +66,26 @@ pipeline{
 
 
 
-        
-        stage('Deploy New Container') {
-            agent {label 'master'}
-            steps {
-                script{
+ stage('Deploy New Container') {
+    agent { label 'master' }
+    steps {
+        script {
+            sh '''
+                echo "Cleaning up old container..."
+                podman rm -f purchase-api || true
 
-                    // sh '''
-                    //     podman run --replace -d --name purchase-api --net=host \
-                    //     --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
-                    //     localhost/njdpb-purchase:latest \
-                    //     --spring.profiles.active=purchase
-                    //     '''
-
-
-                    
-sh '''
-    echo "Environment variables:"
-    env
-
-
-    cat /home/typgang/SiebelExternalApi/.env-purchase.properties
-    
-    
-    nohup podman run --replace --name purchase-api --net=host \
-    --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
-    localhost/njdpb-purchase:latest \
-    --spring.profiles.active=purchase > podman.out 2>&1 &
-
-    podman logs purchase-api || true
-
-
-'''
-
-                }
-                
-            }
+                echo "Starting container in foreground and disowning..."
+                ( podman run --replace --name purchase-api --net=host \
+                  --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
+                  localhost/njdpb-purchase:latest \
+                  --spring.profiles.active=purchase & ) && disown
+            '''
         }
+    }
+}
+
+
+
 
 
         // stage('Deploy New Container') {
