@@ -73,9 +73,9 @@ pipeline{
                 script{
 
                     sh '''
-                        nohup podman run --replace --name purchase-api --detach --net=host \
+                        nohup podman run --replace --name purchase-api --net=host \
                         --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
-                        localhost/njdpb-purchase:${BUILD_NUMBER} \
+                        localhost/njdpb-purchase:latest \
                         --spring.profiles.active=purchase > /dev/null 2>&1 &
                        
                     '''
