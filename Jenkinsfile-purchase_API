@@ -89,10 +89,10 @@ sh '''
     cat /home/typgang/SiebelExternalApi/.env-purchase.properties
     
     
-    podman run --replace --name purchase-api --net=host \
+    nohup podman run --replace --name purchase-api --net=host \
     --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
     localhost/njdpb-purchase:latest \
-    --spring.profiles.active=purchase
+    --spring.profiles.active=purchase > podman.out 2>&1 &
 
     podman logs purchase-api || true
 
