@@ -72,12 +72,33 @@ pipeline{
             steps {
                 script{
 
-                    sh '''
-                        podman run --replace -d --name purchase-api --net=host \
-                        --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
-                        localhost/njdpb-purchase:latest \
-                        --spring.profiles.active=purchase
-                        '''
+                    // sh '''
+                    //     podman run --replace -d --name purchase-api --net=host \
+                    //     --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
+                    //     localhost/njdpb-purchase:latest \
+                    //     --spring.profiles.active=purchase
+                    //     '''
+
+
+                    
+sh '''
+    echo "Environment variables:"
+    env
+
+
+    cat /home/typgang/SiebelExternalApi/.env-purchase.properties
+    
+    
+    podman run --replace -d --name purchase-api --net=host \
+    --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
+    localhost/njdpb-purchase:latest \
+    --spring.profiles.active=purchase
+
+    podman logs purchase-api || true
+
+
+'''
+
                 }
                 
             }
