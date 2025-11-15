@@ -2,14 +2,6 @@ pipeline{
 
     agent none
 
-    // environment {
-
-    //     IMAGE_NAME = 'njdpb-purchase'
-    //     buildArgs = "-f ./NJDPB_CICD/Dockerfile_NJDPB_Proxy"
-
-        
-    // }
-
     stages{
 
         stage('Checkout') {
@@ -63,25 +55,6 @@ pipeline{
         //         '''
         //     }
         // }
-
-
-
- stage('Deploy New Container') {
-    agent { label 'master' }
-    steps {
-        script {
-            sh '''
-                /home/typgang/SiebelExternalApi/runContainer.sh > runContainer.log 2>&1 &
-            '''
-            // sh '''
-            //     nohup /home/typgang/SiebelExternalApi/runContainer.sh > /dev/null 2>&1 &
-            // '''
-        }
-    }
-}
-
-
-
 
 
         // stage('Deploy New Container') {
