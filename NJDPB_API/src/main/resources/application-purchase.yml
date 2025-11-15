@@ -22,10 +22,10 @@ spring:
       password: ${SECURITY_PASSWORD}
 
 
-#  boot:
-#    admin:
-#      client:
-#        url: ${ADMIN_SERVER_URL:""}  # Default empty string if admin server is not available
+  boot:
+    admin:
+      client:
+        url: ${ADMIN_SERVER_URL:""}  # Default empty string if admin server is not available
 
 cache:
   type: none
