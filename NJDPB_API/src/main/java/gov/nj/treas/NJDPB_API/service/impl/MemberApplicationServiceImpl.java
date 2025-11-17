@@ -2,6 +2,7 @@ package gov.nj.treas.NJDPB_API.service.impl;
 
 import gov.nj.treas.NJDPB_API.dto.AggregateRequestDTO;
 import gov.nj.treas.NJDPB_API.dto.member_application.MemberApplicationResponseDTO;
+import gov.nj.treas.NJDPB_API.exception.RecordNotFoundException;
 import gov.nj.treas.NJDPB_API.mapper.MemberApplicationMapper;
 import gov.nj.treas.NJDPB_API.persistence.entity.MemberApplication;
 import gov.nj.treas.NJDPB_API.persistence.repository.MemberApplicationRepository;
@@ -29,12 +30,19 @@ public class MemberApplicationServiceImpl implements MemberApplicationService {
     @Override
     public CompletableFuture<List<MemberApplicationResponseDTO>> getMemberApplicationBySsn(AggregateRequestDTO aggregateRequestDTO) {
 
-        String ssn = aggregateRequestDTO.getSsn();
+        try {
+            String ssn = aggregateRequestDTO.getSsn();
 
-        List<MemberApplication> memberApplicationList = memberApplicationRepository.findBySsnMember(ssn);
-        List<MemberApplicationResponseDTO> memberApplicationResponseDTOList = memberApplicationMapper.toResponseDTOList(memberApplicationList);
+            List<MemberApplication> memberApplicationList = memberApplicationRepository.findBySsnMember(ssn);
 
-        return CompletableFuture.completedFuture(memberApplicationResponseDTOList);
+            if(memberApplicationList.isEmpty()) throw new RecordNotFoundException("MEMBER_APPLICATION - Record not found");
+
+            List<MemberApplicationResponseDTO> memberApplicationResponseDTOList = memberApplicationMapper.toResponseDTOList(memberApplicationList);
+
+            return CompletableFuture.completedFuture(memberApplicationResponseDTOList);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }
