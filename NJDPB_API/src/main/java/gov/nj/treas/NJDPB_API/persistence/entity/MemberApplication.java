@@ -21,7 +21,7 @@ public class MemberApplication {
     @Id
     private Integer idn_member_num;
 
-    @Column(name = "ssn_number")
-    private String ssnNumber;
+    @Column(name = "ssn_member")
+    private String ssnMember;
 
 }

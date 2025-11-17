@@ -15,5 +15,5 @@ public class MemberApplicationResponseDTO {
 
 
     private Integer idn_member_num;
-    private String ssnNumber;
+    private String ssnMember;
 }

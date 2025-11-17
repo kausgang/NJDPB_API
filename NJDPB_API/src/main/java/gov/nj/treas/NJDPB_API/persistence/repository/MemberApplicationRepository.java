@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface MemberApplicationRepository extends JpaRepository<MemberApplication,Integer> {
 
-    List<MemberApplication> findBySsnNumber(String ssn);
+    List<MemberApplication> findBySsnMember(String ssn);
 }

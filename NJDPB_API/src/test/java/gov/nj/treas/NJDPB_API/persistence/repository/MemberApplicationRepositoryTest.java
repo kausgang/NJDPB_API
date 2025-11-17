@@ -25,7 +25,7 @@ class MemberApplicationRepositoryTest {
 
         MemberApplication memberApplication = MemberApplication.builder()
                 .idn_member_num(1)
-                .ssnNumber("123456789").build();
+                .ssnMember("123456789").build();
 
         testEntityManager.persistAndFlush(memberApplication);
 
@@ -34,9 +34,9 @@ class MemberApplicationRepositoryTest {
     @Test
     void findBySsnNumber() {
 
-        List<MemberApplication> ma = memberApplicationRepository.findBySsnNumber("123456789");
+        List<MemberApplication> ma = memberApplicationRepository.findBySsnMember("123456789");
 
         assertEquals(1,ma.size());
-        assertEquals("123456789",ma.getFirst().getSsnNumber());
+        assertEquals("123456789",ma.getFirst().getSsnMember());
     }
 }
