@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AggregateResponseDTO implements Serializable {
 
-    private List<MemberApplicationResponseDTO> member_application;
+    private List<MemberApplicationResponseDTO> member_applications;
+    private List<LetterResponseDTO> letters;
 
 }
