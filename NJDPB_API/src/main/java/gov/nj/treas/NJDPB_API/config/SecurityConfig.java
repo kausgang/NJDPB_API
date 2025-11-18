@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@Profile("purchase")
+@Profile("retirement")
 public class SecurityConfig {
 
     @Bean
