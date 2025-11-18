@@ -17,7 +17,7 @@ pipeline{
                 script 
                 {
                     // def imageName = 'njdpb-purchase'
-                    def IMAGE_NAME = 'njdpb-purchase'
+                    def IMAGE_NAME = 'njdpb-retirement'
                     def buildArgs = "-f ./NJDPB_CICD/Dockerfile_NJDPB_Proxy"
 
                     // // Define the specific path to the directory containing your Containerfile/Dockerfile
