@@ -33,7 +33,7 @@ cache:
 
 server:
   servlet:
-    context-path: /purchase/api/v1
+    context-path: /api/v1
 
 
 logging:
