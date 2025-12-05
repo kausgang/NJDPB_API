@@ -24,14 +24,14 @@ pipeline{
                     def buildPath = "${WORKSPACE}/NJDPB_API/"
 
                     bat """
-                        # Ensure the script runs in the correct directory
+                        REM Ensure the script runs in the correct directory
                         cd ${buildPath}
 
-                        # Run the podman build command within that directory
+                        REM Run the podman build command within that directory
                         podman build -t ${IMAGE_NAME}:${BUILD_NUMBER} .
 
                         
-                        # Optionally tag as latest
+                        REM Optionally tag as latest
                         podman tag ${IMAGE_NAME}:${BUILD_NUMBER} ${IMAGE_NAME}:latest
 
                     """
