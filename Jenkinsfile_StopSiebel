@@ -8,12 +8,12 @@ pipeline {
         RUN_IN_PRODUCTION = 'false'
 
         // Creates DB_CREDS_USR and DB_CREDS_PSW
-        DB_CREDS = credentials('db-prod-credentials')
+        DB_CREDS = credentials('siebel-db-credentials')
     }
 
     stages {
         stage('Set Environment Variables') {
-            agent { label 'np1' }
+            agent { label 'p1' }
             steps {
                 script {
                     if (env.RUN_IN_PRODUCTION == 'true') {
