@@ -2,7 +2,7 @@ pipeline {
     agent none
 
     environment {
-        RUN_IN_PRODUCTION = 'false'
+        RUN_IN_PRODUCTION = 'true'
         // This generates DB_CREDS_USR and DB_CREDS_PSW automatically
         DB_CREDS = credentials('siebel-db-credentials')
     }

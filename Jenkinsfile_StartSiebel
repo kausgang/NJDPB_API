@@ -2,7 +2,7 @@ pipeline {
     agent none
 
     environment {
-        RUN_IN_PRODUCTION = 'false'
+        RUN_IN_PRODUCTION = 'true'
         WAIT_TIME = 10
         DB_CREDS = credentials('siebel-db-credentials')
     }
