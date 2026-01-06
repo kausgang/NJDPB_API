@@ -2,16 +2,23 @@ pipeline {
     agent none
 
     environment {
-        // WAIT_FOR_OM       = 10
-        // DB_USERNAME       = 'sadmin'
-        // DB_PASSWORD       = 'siebdev99'
         RUN_IN_PRODUCTION = 'false'
-
-        // Creates DB_CREDS_USR and DB_CREDS_PSW
+        // This generates DB_CREDS_USR and DB_CREDS_PSW automatically
         DB_CREDS = credentials('siebel-db-credentials')
     }
 
+    options {
+        skipDefaultCheckout() 
+    }
+
     stages {
+        stage('Checkout Source') {
+            agent { label 'master' } 
+            steps {
+                checkout scm 
+            }
+        } // <--- WAS MISSING
+
         stage('Set Environment Variables') {
             agent { label 'master' }
             steps {
@@ -43,7 +50,6 @@ pipeline {
         stage('Parallel Stop Siebel') {
             parallel {
                 stage('Stop EMAIL') {
-                    // agent { label 'np4' }
                     agent { label "${env.OM3}" }
                     steps {
                         sh '''
@@ -62,7 +68,6 @@ pipeline {
                 }
 
                 stage('Stop OM2') {
-                    // agent { label 'np3' }
                     agent { label "${env.OM2}" }
                     steps {
                         sh '''
@@ -81,7 +86,6 @@ pipeline {
                 }
 
                 stage('Stop OM1') {
-                    // agent { label 'np2' }
                     agent { label "${env.OM1}" }
                     steps {
                         sh '''
@@ -100,28 +104,6 @@ pipeline {
                 }
             }
         }
-
-        // stage('Check Siebel Status') {
-        //     // agent { label 'np1' }
-        //     agent { label $env.GATEWAY }
-        //     steps {
-        //         script {
-        //             // def srvrmgr_command = "srvrmgr -g ${env.GATEWAY} -e ${env.ENTERPRISE} -u ${DB_USERNAME} -p ${DB_PASSWORD} -q -c \"list servers show SBLSRVR_NAME,SV_DISP_STATE\""
-        //             def srvrmgr_command = "srvrmgr -g ${env.GATEWAY} -e ${env.ENTERPRISE} -u $DB_CREDS_USR -p $DB_CREDS_PSW -q -c \"list servers show SBLSRVR_NAME,SV_DISP_STATE\""
-        //             // def srvrmgr_output = sh(script: "sudo su - sadmin -c '${srvrmgr_command}'", returnStdout: true).trim()
-        //             def srvrmgr_output = sh(script: "sudo su - sadmin -c '${srvrmgr_command}'", returnStdout: true).trim()
-                    
-        //             echo "Server Status: ${srvrmgr_output}"
-
-        //             emailext(
-        //                 from:    'kaustav.ganguli@treas.nj.gov',
-        //                 to:      'kaustav.ganguli@treas.nj.gov',
-        //                 subject: "Siebel server status",
-        //                 body:    srvrmgr_output
-        //             )
-        //         }
-        //     }
-        // }
     }
 
     post {
