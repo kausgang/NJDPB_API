@@ -31,7 +31,7 @@ pipeline {
                         env.OM1              = 'np2'
                         env.OM2              = 'np3'
                         env.OM3              = 'np4'
-                        env.app              = 'app'
+                        env.app              = 'np1'
                         env.EMAIL_RECIPIENTS = 'kaustav.ganguli@treas.nj.gov'
                     } else {
                         env.ENVIRONMENT      = 'Old_Prod'
@@ -41,7 +41,7 @@ pipeline {
                         env.OM1              = 'p2'
                         env.OM2              = 'p3'
                         env.OM3              = 'p4'
-                        env.app              = 'app'
+                        env.app              = 'p1'
                         env.EMAIL_RECIPIENTS = 'kaustav.ganguli@treas.nj.gov'
                     }
                     echo "Running in ${env.ENVIRONMENT} environment"
@@ -106,7 +106,7 @@ pipeline {
                 }
 
 
-                stage('Stop app') {
+                stage('Stop gateway') {
                     agent { label "${env.app}" }
                     steps {
                         sh '''
