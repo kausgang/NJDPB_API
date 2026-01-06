@@ -13,7 +13,7 @@ pipeline {
 
     stages {
         stage('Set Environment Variables') {
-            agent { label 'p1' }
+            agent { label 'master' }
             steps {
                 script {
                     if (env.RUN_IN_PRODUCTION == 'true') {
