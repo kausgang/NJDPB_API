@@ -51,7 +51,7 @@ pipeline {
 
         stage('Parallel Stop Siebel') {
             parallel {
-                stage('Stop EMAIL') {
+                stage("Stop ${env.OM3}") {
                     agent { label "${env.OM3}" }
                     steps {
                         sh '''
@@ -69,7 +69,7 @@ pipeline {
                     }
                 }
 
-                stage('Stop OM2') {
+                stage("Stop ${env.OM2}") {
                     agent { label "${env.OM2}" }
                     steps {
                         sh '''
@@ -87,7 +87,7 @@ pipeline {
                     }
                 }
 
-                stage('Stop OM1') {
+                stage("Stop ${env.OM1}") {
                     agent { label "${env.OM1}" }
                     steps {
                         sh '''
@@ -106,7 +106,7 @@ pipeline {
                 }
 
 
-                stage('Stop gateway') {
+                stage("Stop ${env.app}") {
                     agent { label "${env.app}" }
                     steps {
                         sh '''
