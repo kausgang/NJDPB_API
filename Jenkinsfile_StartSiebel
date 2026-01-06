@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         RUN_IN_PRODUCTION = 'false'
-        // This generates DB_CREDS_USR and DB_CREDS_PSW automatically
         DB_CREDS = credentials('siebel-db-credentials')
     }
 
@@ -25,23 +24,23 @@ pipeline {
                 script {
                     if (env.RUN_IN_PRODUCTION == 'true') {
                         env.ENVIRONMENT      = 'Prod'
-                        env.GATEWAY          = 'ty-sblprd1-ha-e.njes.state.nj.us:9111'
+                        env.GATEWAY_URL      = 'ty-sblprd1-ha-e.njes.state.nj.us:9111'
                         env.ENTERPRISE       = 'SBA_UPROD'
                         env.COMPONENT        = 'PSCcObjMgr_SSO'
-                        env.OM1              = 'np2'
-                        env.OM2              = 'np3'
-                        env.OM3              = 'np4'
-                        env.app              = 'np1'
+                        env.LABEL_OM1        = 'np2'
+                        env.LABEL_OM2        = 'np3'
+                        env.LABEL_OM3        = 'np4'
+                        env.LABEL_APP        = 'np1'
                         env.EMAIL_RECIPIENTS = 'kaustav.ganguli@treas.nj.gov'
                     } else {
                         env.ENVIRONMENT      = 'Old_Prod'
-                        env.GATEWAY          = 'ty-sebtst4-ma-s.njes.state.nj.us:9111'
+                        env.GATEWAY_URL      = 'ty-sebtst4-ma-s.njes.state.nj.us:9111'
                         env.ENTERPRISE       = 'SBA_UPROD'
                         env.COMPONENT        = 'PSCcObjMgr_enu'
-                        env.OM1              = 'p2'
-                        env.OM2              = 'p3'
-                        env.OM3              = 'p4'
-                        env.app              = 'p1'
+                        env.LABEL_OM1        = 'p2'
+                        env.LABEL_OM2        = 'p3'
+                        env.LABEL_OM3        = 'p4'
+                        env.LABEL_APP        = 'p1'
                         env.EMAIL_RECIPIENTS = 'kaustav.ganguli@treas.nj.gov'
                     }
                     echo "Running in ${env.ENVIRONMENT} environment"
@@ -49,70 +48,48 @@ pipeline {
             }
         }
 
-        stage('Parallel Stop Siebel') {
-
-            stage('Start gateway') {
-                agent { label "${env.app}" }
-                steps {
-                    sh '''
-                        sudo su - sadmin -c "
-                            . /siebqa1/SIEBEL/gtwysrvr/siebenv.sh;
-                            start_ns ;
-                            sleep 120;
-                        "
-                    '''
-                }
-            }
-
-            parallel {
-
-
-                stage('Start app') {
-                    agent { label "${env.app}" }
+        // Parent stage to hold the sequence
+        stage('Siebel Startup Sequence') {
+            stages {
+                stage('Start Gateway') {
+                    // Use force local evaluation for labels set in previous stages
+                    agent { label "${env.LABEL_APP}" }
                     steps {
                         sh '''
-                            sudo su - sadmin -c "
-                                start_server all;
-                            "
+                            sudo su - sadmin -c ". /siebqa1/SIEBEL/gtwysrvr/siebenv.sh; start_ns"
+                            sleep 120
                         '''
                     }
                 }
 
-                stage('Start EMAIL') {
-                    agent { label "${env.OM3}" }
-                    steps {
-                        sh '''
-                            sudo su - sadmin -c "
-                                start_server all;
-                            "
-                        '''
+                stage('Parallel Start Components') {
+                    parallel {
+                        stage('Start app') {
+                            agent { label "${env.LABEL_APP}" }
+                            steps {
+                                sh 'sudo su - sadmin -c "start_server all"'
+                            }
+                        }
+                        stage('Start EMAIL') {
+                            agent { label "${env.LABEL_OM3}" }
+                            steps {
+                                sh 'sudo su - sadmin -c "start_server all"'
+                            }
+                        }
+                        stage('Start OM1') {
+                            agent { label "${env.LABEL_OM1}" }
+                            steps {
+                                sh 'sudo su - sadmin -c "start_server all"'
+                            }
+                        }
+                        stage('Start OM2') {
+                            agent { label "${env.LABEL_OM2}" }
+                            steps {
+                                sh 'sudo su - sadmin -c "start_server all"'
+                            }
+                        }
                     }
                 }
-
-                stage('Start OM1') {
-                    agent { label "${env.OM1}" }
-                    steps {
-                        sh '''
-                            sudo su - sadmin -c "
-                                start_server all;
-                            "
-                        '''
-                    }
-                }
-
-                stage('Start OM2') {
-                    agent { label "${env.OM2}" }
-                    steps {
-                        sh '''
-                            sudo su - sadmin -c "
-                                start_server all;
-                            "
-                        '''
-                    }
-                }
-
-
-
             }
         }
     }
