@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         RUN_IN_PRODUCTION = 'false'
+        WAIT_TIME = 10
         DB_CREDS = credentials('siebel-db-credentials')
     }
 
@@ -51,6 +52,8 @@ pipeline {
         // Parent stage to hold the sequence
         stage('Siebel Startup Sequence') {
             stages {
+
+
                 stage('Start Gateway') {
                     // Use force local evaluation for labels set in previous stages
                     agent { label "${env.LABEL_APP}" }
@@ -62,7 +65,7 @@ pipeline {
                     }
                 }
 
-                stage('Parallel Start Components') {
+                stage('Parallel Start Servers') {
                     parallel {
                         stage('Start app') {
                             agent { label "${env.LABEL_APP}" }
@@ -90,6 +93,38 @@ pipeline {
                         }
                     }
                 }
+
+
+                stage('Wait for OM to come up') {
+                    agent { label 'master' }
+                    steps {
+                        echo "Waiting for ${WAIT_TIME} minute..."
+                        sleep time: "${WAIT_TIME}", unit: 'MINUTES'
+                    }
+                }
+
+
+
+                stage('Check Siebel Status') {
+                    agent { label 'np1' }
+                    steps {
+                        script { // Added script block for proper execution
+                            def srvrmgr_command = """
+                                srvrmgr -g ${env.GATEWAY} -e ${env.ENTERPRISE} -u ${DB_CREDS_USR} -p ${DB_CREDS_PSW} -q -c "list servers show SBLSRVR_NAME,SV_DISP_STATE"
+                            """
+                            def srvrmgr_output = sh(script: "sudo su - sadmin -c '${srvrmgr_command}'", returnStdout: true).trim()
+                            echo "Server Status: ${srvrmgr_output}"
+
+                            emailext(
+                                from: 'kaustav.ganguli@treas.nj.gov',
+                                subject: "Siebel server status",
+                                body: srvrmgr_output,
+                                to: "kaustav.ganguli@treas.nj.gov"
+                            )
+                        }
+                    }
+                }
+
             }
         }
     }
