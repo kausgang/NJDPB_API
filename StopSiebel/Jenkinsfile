@@ -1,0 +1,137 @@
+pipeline {
+    agent none
+
+    environment {
+        // WAIT_FOR_OM       = 10
+        // DB_USERNAME       = 'sadmin'
+        // DB_PASSWORD       = 'siebdev99'
+        RUN_IN_PRODUCTION = 'false'
+
+        // Creates DB_CREDS_USR and DB_CREDS_PSW
+        DB_CREDS = credentials('db-prod-credentials')
+    }
+
+    stages {
+        stage('Set Environment Variables') {
+            agent { label 'np1' }
+            steps {
+                script {
+                    if (env.RUN_IN_PRODUCTION == 'true') {
+                        env.ENVIRONMENT      = 'Prod'
+                        env.GATEWAY          = 'ty-sblprd1-ha-e.njes.state.nj.us:9111'
+                        env.ENTERPRISE       = 'SBA_UPROD'
+                        env.COMPONENT        = 'PSCcObjMgr_SSO'
+                        env.OM1              = 'np2'
+                        env.OM2              = 'np3'
+                        env.OM3              = 'np4'
+                        env.EMAIL_RECIPIENTS = 'kaustav.ganguli@treas.nj.gov'
+                    } else {
+                        env.ENVIRONMENT      = 'Old_Prod'
+                        env.GATEWAY          = 'ty-sebtst4-ma-s.njes.state.nj.us:9111'
+                        env.ENTERPRISE       = 'SBA_UPROD'
+                        env.COMPONENT        = 'PSCcObjMgr_enu'
+                        env.OM1              = 'p2'
+                        env.OM2              = 'p3'
+                        env.OM3              = 'p4'
+                        env.EMAIL_RECIPIENTS = 'kaustav.ganguli@treas.nj.gov'
+                    }
+                    echo "Running in ${env.ENVIRONMENT} environment"
+                }
+            }
+        }
+
+        stage('Parallel Stop Siebel') {
+            parallel {
+                stage('Stop EMAIL') {
+                    // agent { label 'np4' }
+                    agent { label "${env.OM3}" }
+                    steps {
+                        sh '''
+                            sudo su - sadmin -c "
+                                stop_server all;
+                                rm -rf /siebqa1/SIEBEL/siebsrvr/sys/osdf.SBA_UPROD.EMAIL;
+                                /siebqa1/SIEBEL/applicationcontainer_internal/bin/shutdown.sh;
+                                ps -eaf | grep shm | grep -v grep | awk '{print \$2}' | xargs kill -9;
+                                ps -eaf | grep svc | grep -v grep | awk '{print \$2}' | xargs kill -9;
+                                sleep 120;
+                                /siebqa1/SIEBEL/applicationcontainer_internal/bin/startup.sh;
+                                sleep 20
+                            "
+                        '''
+                    }
+                }
+
+                stage('Stop OM2') {
+                    // agent { label 'np3' }
+                    agent { label "${env.OM2}" }
+                    steps {
+                        sh '''
+                            sudo su - sadmin -c "
+                                stop_server all;
+                                rm -rf /siebqa1/SIEBEL/siebsrvr/sys/osdf.SBA_UPROD.OM2;
+                                /siebqa1/SIEBEL/applicationcontainer_internal/bin/shutdown.sh;
+                                ps -eaf | grep shm | grep -v grep | awk '{print \$2}' | xargs kill -9;
+                                ps -eaf | grep svc | grep -v grep | awk '{print \$2}' | xargs kill -9;
+                                sleep 120;
+                                /siebqa1/SIEBEL/applicationcontainer_internal/bin/startup.sh;
+                                sleep 20
+                            "
+                        '''
+                    }
+                }
+
+                stage('Stop OM1') {
+                    // agent { label 'np2' }
+                    agent { label "${env.OM1}" }
+                    steps {
+                        sh '''
+                            sudo su - sadmin -c "
+                                stop_server all;
+                                rm -rf /siebqa1/SIEBEL/siebsrvr/sys/osdf.SBA_UPROD.OM1;
+                                /siebqa1/SIEBEL/applicationcontainer_internal/bin/shutdown.sh;
+                                ps -eaf | grep shm | grep -v grep | awk '{print \$2}' | xargs kill -9;
+                                ps -eaf | grep svc | grep -v grep | awk '{print \$2}' | xargs kill -9;
+                                sleep 120;
+                                /siebqa1/SIEBEL/applicationcontainer_internal/bin/startup.sh;
+                                sleep 20
+                            "
+                        '''
+                    }
+                }
+            }
+        }
+
+        // stage('Check Siebel Status') {
+        //     // agent { label 'np1' }
+        //     agent { label $env.GATEWAY }
+        //     steps {
+        //         script {
+        //             // def srvrmgr_command = "srvrmgr -g ${env.GATEWAY} -e ${env.ENTERPRISE} -u ${DB_USERNAME} -p ${DB_PASSWORD} -q -c \"list servers show SBLSRVR_NAME,SV_DISP_STATE\""
+        //             def srvrmgr_command = "srvrmgr -g ${env.GATEWAY} -e ${env.ENTERPRISE} -u $DB_CREDS_USR -p $DB_CREDS_PSW -q -c \"list servers show SBLSRVR_NAME,SV_DISP_STATE\""
+        //             // def srvrmgr_output = sh(script: "sudo su - sadmin -c '${srvrmgr_command}'", returnStdout: true).trim()
+        //             def srvrmgr_output = sh(script: "sudo su - sadmin -c '${srvrmgr_command}'", returnStdout: true).trim()
+                    
+        //             echo "Server Status: ${srvrmgr_output}"
+
+        //             emailext(
+        //                 from:    'kaustav.ganguli@treas.nj.gov',
+        //                 to:      'kaustav.ganguli@treas.nj.gov',
+        //                 subject: "Siebel server status",
+        //                 body:    srvrmgr_output
+        //             )
+        //         }
+        //     }
+        // }
+    }
+
+    post {
+        success {
+            emailext (
+                from:    'kaustav.ganguli@treas.nj.gov',
+                to:      "${env.EMAIL_RECIPIENTS}",
+                subject: "Prod enterprise stopped.",
+                body:    "Siebel prod enterprise stopped."
+            )
+        }
+    }
+}
