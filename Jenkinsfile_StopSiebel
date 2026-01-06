@@ -17,7 +17,7 @@ pipeline {
             steps {
                 checkout scm 
             }
-        } // <--- WAS MISSING
+        } 
 
         stage('Set Environment Variables') {
             agent { label 'master' }
@@ -31,6 +31,7 @@ pipeline {
                         env.OM1              = 'np2'
                         env.OM2              = 'np3'
                         env.OM3              = 'np4'
+                        env.app              = 'app'
                         env.EMAIL_RECIPIENTS = 'kaustav.ganguli@treas.nj.gov'
                     } else {
                         env.ENVIRONMENT      = 'Old_Prod'
@@ -40,6 +41,7 @@ pipeline {
                         env.OM1              = 'p2'
                         env.OM2              = 'p3'
                         env.OM3              = 'p4'
+                        env.app              = 'app'
                         env.EMAIL_RECIPIENTS = 'kaustav.ganguli@treas.nj.gov'
                     }
                     echo "Running in ${env.ENVIRONMENT} environment"
@@ -102,6 +104,28 @@ pipeline {
                         '''
                     }
                 }
+
+
+                stage('Stop app') {
+                    agent { label "${env.app}" }
+                    steps {
+                        sh '''
+                            sudo su - sadmin -c "
+                                stop_server all;
+                                rm -rf /siebqa1/SIEBEL/siebsrvr/sys/osdf.SBA_UPROD.app;
+                                /siebqa1/SIEBEL/applicationcontainer_internal/bin/shutdown.sh;
+                                ps -eaf | grep shm | grep -v grep | awk '{print \$2}' | xargs kill -9;
+                                sleep 120;
+                                /siebqa1/SIEBEL/applicationcontainer_internal/bin/startup.sh;
+                                sleep 20
+                                . /siebqa1/SIEBEL/gtwysrvr/siebenv.sh;
+                                stop_ns;
+                                ps -eaf | grep svc | grep -v grep | awk '{print \$2}' | xargs kill -9;
+                            "
+                        '''
+                    }
+                }
+
             }
         }
     }
@@ -111,8 +135,8 @@ pipeline {
             emailext (
                 from:    'kaustav.ganguli@treas.nj.gov',
                 to:      "${env.EMAIL_RECIPIENTS}",
-                subject: "Prod enterprise stopped.",
-                body:    "Siebel prod enterprise stopped."
+                subject: "${env.ENVIRONMENT} enterprise stopped.",
+                body:    "Siebel ${env.ENVIRONMENT} enterprise stopped."
             )
         }
     }
