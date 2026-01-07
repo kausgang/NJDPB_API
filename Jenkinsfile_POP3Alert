@@ -1,0 +1,221 @@
+pipeline {
+    agent none
+
+    // Declare default environment variables
+    environment {
+        // This generates DB_CREDS_USR and DB_CREDS_PSW automatically
+        DB_CREDS = credentials('siebel-db-credentials')
+        Allowed_Hours = '8'
+        RUN_IN_PRODUCTION = 'true'  // Set to true for prod
+    }
+
+    options {
+        skipDefaultCheckout() 
+    }
+    
+
+    stages {
+
+        stage('Checkout Source') {
+            agent { label 'master' } 
+            steps {
+                checkout scm 
+            }
+        } 
+
+
+        stage('Set Environment Variables') {
+            // agent { label 'master' }
+            agent { label 'np1' }
+            steps {
+                script {
+                    if (env.RUN_IN_PRODUCTION == 'true') {
+                        env.ENVIRONMENT = 'Prod'
+                        env.DB_CONNECTSTRING = 'new_prod'
+                        env.SIEBEL_EMAIL_SERVER = 'np4'
+                        env.EMAIL_RECIPIENTS = 'kaustav.ganguli@treas.nj.gov,Vid.Dikert@treas.nj.gov,Sukumar.Mididodi@treas.nj.gov'
+                    } else {
+                        env.ENVIRONMENT = 'Old_Prod'
+                        env.DB_CONNECTSTRING = 'hcck2_typsiebpensp'
+                        env.SIEBEL_EMAIL_SERVER = 'p4'
+                        env.EMAIL_RECIPIENTS = 'kaustav.ganguli@treas.nj.gov'
+                    }
+
+                    echo "Running in ${env.ENVIRONMENT} environment"
+                    echo "DB_CONNECTSTRING = ${env.DB_CONNECTSTRING}"
+                    echo "SIEBEL_EMAIL_SERVER = ${env.SIEBEL_EMAIL_SERVER}"
+                    echo "EMAIL_RECIPIENTS = ${env.EMAIL_RECIPIENTS}"
+                }
+            }
+        }
+
+        stage('Create SQL Script') {
+            agent { label "${env.ENVIRONMENT}" }
+            steps {
+                script {
+                    // Create SQL script in workspace
+                    sh '''#!/bin/bash
+                        cat <<EOF > SQL_QUERY.txt
+SET heading off
+SET UNDERLINE OFF
+
+SELECT
+    EXTRACT(YEAR FROM CAST(APPT_START_DT AS TIMESTAMP)) AS year,
+    EXTRACT(MONTH FROM CAST(APPT_START_DT AS TIMESTAMP)) AS month,
+    EXTRACT(DAY FROM CAST(APPT_START_DT AS TIMESTAMP)) AS day,
+    EXTRACT(HOUR FROM CAST(APPT_START_DT AS TIMESTAMP)) AS hour,
+    EXTRACT(MINUTE FROM CAST(APPT_START_DT AS TIMESTAMP)) AS minute,
+    EXTRACT(SECOND FROM CAST(APPT_START_DT AS TIMESTAMP)) AS second
+FROM
+    siebel.s_evt_act
+WHERE
+    EVT_STAT_CD = 'Not Started'
+    AND APPT_START_DT IS NOT NULL
+ORDER BY
+    APPT_START_DT DESC
+FETCH FIRST 1 ROW ONLY;
+EOF
+                    '''
+                    stash includes: 'SQL_QUERY.txt', name: 'SQL_QUERY'
+                }
+            }
+        }
+
+        stage('Execute SQL Script') {
+            agent { label "${env.ENVIRONMENT}" }
+            steps {
+                script {
+                    unstash 'SQL_QUERY'
+
+                    sh """#!/bin/bash
+                        cat <<EOF > sql_script.sh
+cat ${WORKSPACE}/SQL_QUERY.txt|sqlplus -s ${DB_CREDS_USR}/${DB_CREDS_PSW}@${env.DB_CONNECTSTRING}
+EOF
+
+                        chmod +x ${WORKSPACE}/sql_script.sh
+                        sudo su - sadmin -c ${WORKSPACE}/sql_script.sh > timestamp.txt
+                    """
+                    stash includes: 'timestamp.txt', name: 'timestamp-data'
+                }
+            }
+        }
+
+        stage('Process SQL Output & find Time difference. optionally make api call') {
+            agent { label "${env.ENVIRONMENT}" }
+            steps {
+                script {
+                    unstash 'timestamp-data'
+
+                    def output = sh(script: "cat timestamp.txt", returnStdout: true).trim()
+                    def parts = output.split("\\s+")
+
+                    def year = parts[0]
+                    def month = parts[1]
+                    def day = parts[2]
+                    def hour = parts[3]
+                    def minute = parts[4]
+                    def second = parts[5]
+
+                    echo "year = ${year}"
+                    echo "month = ${month}"
+                    echo "day = ${day}"
+                    echo "hour = ${hour}"
+                    echo "minute = ${minute}"
+                    echo "second = ${second}"
+
+                    echo "Current timestamp is - ${BUILD_TIMESTAMP}"
+                    echo "Current GMT timestamp is - ${GMT_TIME}"
+
+                    def gmtParts = GMT_TIME.split("-")
+                    def gmtYear = gmtParts[0]
+                    def gmtMonth = gmtParts[1]
+                    def gmtDay = gmtParts[2]
+                    def gmtHour = gmtParts[3]
+                    def gmtMinute = gmtParts[4]
+                    def gmtSecond = gmtParts[5]
+
+                    echo "gmtYear = ${gmtYear}"
+                    echo "gmtMonth = ${gmtMonth}"
+                    echo "gmtDay = ${gmtDay}"
+                    echo "gmtHour = ${gmtHour}"
+                    echo "gmtMinute = ${gmtMinute}"
+                    echo "gmtSecond = ${gmtSecond}"
+
+                    def ts1 = java.time.LocalDateTime.parse(
+                        "${year}-${month.padLeft(2,'0')}-${day.padLeft(2,'0')}-${hour.padLeft(2,'0')}-${minute.padLeft(2,'0')}-${second.padLeft(2,'0')}",
+                        java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")
+                    )
+
+                    def ts2 = java.time.LocalDateTime.parse(
+                        "${gmtYear}-${gmtMonth.padLeft(2,'0')}-${gmtDay.padLeft(2,'0')}-${gmtHour.padLeft(2,'0')}-${gmtMinute.padLeft(2,'0')}-${gmtSecond.padLeft(2,'0')}",
+                        java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss")
+                    )
+
+                    def diffInHours = java.time.Duration.between(ts1, ts2).toHours()
+                    def diffInMinute = java.time.Duration.between(ts1, ts2).toMinutes()
+
+                    env.DIFF_IN_HOURS = diffInHours.toString()
+                    env.DIFF_IN_MINUTES = diffInMinute.toString()
+                    echo "Time difference in hours: ${env.DIFF_IN_HOURS}"
+                }
+            }
+        }
+
+        /*
+        stage('Send API Call from Jenkins Host') {
+            agent { label 'master' }
+            steps {
+                unstash 'timestamp-data'
+                script {
+                    def timestamp = readFile('timestamp.txt').trim()
+                    echo "Timestamp received: ${timestamp}"
+
+                    def jsonPayload = """{
+                        "last_record_utc": "${timestamp}"
+                    }"""
+
+                    sh """
+                        curl -X POST $API_ENDPOINT \\
+                             -H "Content-Type: application/json" \\
+                             -H "x-api-key: $API_KEY" \\
+                             -d '${jsonPayload}'
+                    """
+                }
+            }
+        }
+        */
+
+
+         stage('Take action depending on the time difference on email server') {
+            agent { label "${env.SIEBEL_EMAIL_SERVER}" }
+
+            steps {
+                script {
+                    // Uncomment if you want to send an email based on the time difference
+                    def cleanedRecipients = env.EMAIL_RECIPIENTS.replaceAll('\\s*,\\s*', ',')  // Removes surrounding whitespace
+
+                    def timeDifference = env.DIFF_IN_HOURS?.toInteger()
+                    def timeDifference_minute = env.DIFF_IN_MINUTES?.toInteger()
+
+                    if (timeDifference != null && timeDifference > Allowed_Hours.toInteger()) {
+                        // echo "No email arrived in ${timeDifference} hours in Siebel"
+                        emailext(
+                            subject: "No email in ${timeDifference} hours - restarting Siebel email server",
+                            body: "Email has not arrived in ${timeDifference} hours in Siebel",
+                            from: 'kaustav.ganguli@treas.nj.gov',
+                            to: cleanedRecipients
+                        )
+
+                        // write script to restart siebel email server
+                        sh '''sudo su - sadmin -c "stop_server all;rm -rf /siebqa1/SIEBEL/siebsrvr/sys/osdf.SBA_UPROD.EMAIL;/siebqa1/SIEBEL/applicationcontainer_internal/bin/shutdown.sh;ps -eaf | grep shm | grep -v grep | awk '{print $2}'| xargs kill -9;ps -eaf | grep svc | grep -v grep | awk '{print $2}'| xargs kill -9;sleep 60;/siebqa1/SIEBEL/applicationcontainer_internal/bin/startup.sh;sleep 20;start_server all"'''
+
+                    } else {
+                        // echo "email arrived in ${timeDifference} hours"
+                        echo "email arrived in ${timeDifference_minute} minutes"
+                    }
+                }
+            }
+        }
+
+    }
+}
