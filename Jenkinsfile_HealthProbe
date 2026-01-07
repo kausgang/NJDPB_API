@@ -19,7 +19,7 @@ pipeline {
                     if curl -k -s ${URL_TO_CHECK}| grep -q ${STRING_TO_FIND}; then
 
                     echo "Match found: Executing success action..."
-                        echo "" | mail -s "Siebel Server Busy" kaustav.ganguli@treas.nj.gov 
+                        echo "URL = ${URL_TO_CHECK}" | mail -s "ALERT!! Siebel Server Busy" kaustav.ganguli@treas.nj.gov 
                     else
                         echo "No match found or request timed out."
                     fi
