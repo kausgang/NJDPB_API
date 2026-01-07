@@ -3,8 +3,8 @@ pipeline {
 
     // Declare default environment variables
     environment {
-        DB_USERNAME = 'sadmin'
-        DB_PASSWORD = 'siebdev99'
+        // This generates DB_CREDS_USR and DB_CREDS_PSW automatically
+        DB_CREDS = credentials('siebel-db-credentials')
         RUN_IN_PRODUCTION = 'true'  // Set to true for prod
         Allowed_Active_Sessions = '190'
     }
@@ -102,7 +102,7 @@ pipeline {
 
                     // Check Active sessions
                     def srvrmgr_command = """
-                        srvrmgr -g ${env.GATEWAY} -e ${env.ENTERPRISE} -u ${DB_USERNAME} -p ${DB_PASSWORD} -q -c "list comp PSCcObjMgr_SSO for server om1 show CP_NUM_RUN_TASKS"
+                        srvrmgr -g ${env.GATEWAY} -e ${env.ENTERPRISE} -u ${DB_CREDS_USR} -p ${DB_CREDS_PSW} -q -c "list comp PSCcObjMgr_SSO for server om1 show CP_NUM_RUN_TASKS"
                     """
                     def srvrmgr_output = sh(script: "sudo su - sadmin -c '${srvrmgr_command}'", returnStdout: true).trim()
 
@@ -190,7 +190,7 @@ pipeline {
 
                     // Check Active sessions
                     def srvrmgr_command = """
-                        srvrmgr -g ${env.GATEWAY} -e ${env.ENTERPRISE} -u ${DB_USERNAME} -p ${DB_PASSWORD} -q -c "list comp PSCcObjMgr_SSO for server om2 show CP_NUM_RUN_TASKS"
+                        srvrmgr -g ${env.GATEWAY} -e ${env.ENTERPRISE} -u ${DB_CREDS_USR} -p ${DB_CREDS_PSW} -q -c "list comp PSCcObjMgr_SSO for server om2 show CP_NUM_RUN_TASKS"
                     """
                     def srvrmgr_output = sh(script: "sudo su - sadmin -c '${srvrmgr_command}'", returnStdout: true).trim()
 
