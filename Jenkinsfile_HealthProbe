@@ -1,33 +1,64 @@
-pipeline {
+// pipeline {
 
-    agent { label 'master' } 
+//     agent { label 'master' } 
+
+//     environment {
+//         ENVIRONMENT = 'PRODUCTION'
+//         URL_TO_CHECK = "https://ty-sblprd5-ha-e.njes.state.nj.us:1443/siebel/app/pensions/enu?SWECmd=Start"
+//         STRING_TO_FIND = "either busy or experiencing difficulties"
+
+//     }
+
+//     stages {
+    
+
+
+//         stage('Check Status'){
+
+//             steps {
+//                 sh '''
+//                     if curl -k -s ${URL_TO_CHECK} | grep -q ${STRING_TO_FIND}; then
+
+//                         echo "Match found: Executing success action..."
+//                         echo "URL = ${URL_TO_CHECK}" | mail -s "ALERT!! Siebel ${ENVIRONMENT} Server Busy" kaustav.ganguli@treas.nj.gov 
+//                     else
+//                         echo "No match found or request timed out."
+//                     fi
+
+//                 '''
+//             }
+//         }
+//     }
+    
+// }
+
+
+
+pipeline {
+    agent { label 'master' } // Updated from 'master'
 
     environment {
         ENVIRONMENT = 'PRODUCTION'
         URL_TO_CHECK = "https://ty-sblprd5-ha-e.njes.state.nj.us:1443/siebel/app/pensions/enu?SWECmd=Start"
         STRING_TO_FIND = "either busy or experiencing difficulties"
-
+        ALERT_EMAIL = "kaustav.ganguli@treas.nj.gov"
     }
 
     stages {
-    
-
-
-        stage('Check Status'){
-
+        stage('Check Status') {
             steps {
                 sh '''
-                    if curl -k -s ${URL_TO_CHECK}| grep -q ${STRING_TO_FIND}; then
-
-                    echo "Match found: Executing success action..."
-                        echo "URL = ${URL_TO_CHECK}" | mail -s "ALERT!! Siebel ${ENVIRONMENT} Server Busy" kaustav.ganguli@treas.nj.gov 
+                    # Use -k for insecure, -s for silent, -L to follow redirects
+                    RESPONSE=$(curl -k -sL "$URL_TO_CHECK")
+                    
+                    if echo "$RESPONSE" | grep -q "$STRING_TO_FIND"; then
+                        echo "Match found: Server is busy."
+                        echo "URL: $URL_TO_CHECK" | mail -s "ALERT!! Siebel $ENVIRONMENT Server Busy" "$ALERT_EMAIL"
                     else
-                        echo "No match found or request timed out."
+                        echo "No match found. Server status OK or check timed out."
                     fi
-
                 '''
             }
         }
     }
-    
 }
