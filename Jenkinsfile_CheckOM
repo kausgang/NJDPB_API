@@ -1,0 +1,240 @@
+pipeline {
+    agent none
+
+    // Declare default environment variables
+    environment {
+        DB_USERNAME = 'sadmin'
+        DB_PASSWORD = 'siebdev99'
+        RUN_IN_PRODUCTION = 'true'  // Set to true for prod
+        Allowed_Active_Sessions = '190'
+    }
+
+
+    options {
+        skipDefaultCheckout() 
+    }
+    
+
+    stages {
+
+        stage('Checkout Source') {
+            agent { label 'master' } 
+            steps {
+                checkout scm 
+            }
+        } 
+        stage('Set Environment Variables') {
+            agent { label 'master' }
+            steps {
+                script {
+                    if (env.RUN_IN_PRODUCTION == 'true') {
+                        env.ENVIRONMENT = 'Prod'
+                        env.GATEWAY = 'ty-sblprd1-ha-e.njes.state.nj.us:9111'
+                        env.ENTERPRISE = 'SBA_UPROD'
+                        env.COMPONENT = 'PSCcObjMgr_SSO'
+                        env.OM1 = 'np2'
+                        env.OM2 = 'np3'
+                        env.EMAIL_RECIPIENTS = 'kaustav.ganguli@treas.nj.gov,Vid.Dikert@treas.nj.gov,Sukumar.Mididodi@treas.nj.gov'
+                        // env.EMAIL_RECIPIENTS = 'kaustav.ganguli@treas.nj.gov'
+
+                    } else {
+                        env.ENVIRONMENT = 'Old_Prod'
+
+                        env.GATEWAY = 'ty-sebtst4-ma-s.njes.state.nj.us:9111'
+                        env.ENTERPRISE = 'SBA_UPROD'
+                        env.COMPONENT = 'PSCcObjMgr_enu'
+                        env.OM1 = 'p2'
+                        env.OM2 = 'p3'
+                        env.EMAIL_RECIPIENTS = 'kaustav.ganguli@treas.nj.gov'
+                    }
+
+                    echo "Running in ${env.ENVIRONMENT} environment"
+                    // echo "DB_CONNECTSTRING = ${env.DB_CONNECTSTRING}"
+                    // echo "SIEBEL_EMAIL_SERVER = ${env.SIEBEL_EMAIL_SERVER}"
+                    echo "EMAIL_RECIPIENTS = ${env.EMAIL_RECIPIENTS}"
+                }
+            }
+        }
+
+        stage('Check processes - OM1') {
+            agent { label "${env.OM1}" }
+            steps {
+                script {
+                    // Define the function to extract the number from the srvrmgr output
+                    def extractCpNumRunTasks = { String srvrmgrOutput ->
+                        def lines = srvrmgrOutput.readLines()
+
+                        for (int i = 0; i < lines.size(); i++) {
+                            def line = lines[i].trim()
+                            if (line.startsWith("CP_NUM_RUN_TASKS")) {
+                                if (i + 1 < lines.size()) {
+                                    return lines[i+2].trim() // Assuming the value is on the next line
+                                }
+                            }
+                        }
+                        return null
+                    }
+
+                    def checkSVC = { String processName ->
+                        // Check if the SVC process is running
+                        def processCount = sh(script: "ps -eaf | grep ${processName} | grep -v grep | wc -l", returnStdout: true).trim()
+                        echo "${processName} Process Count: ${processCount}"
+
+                        if (processCount.toInteger() == 0) {
+                            echo "${processName} process is not running on ${env.OM1}"
+                        } else {
+                            echo "${processName} process is running on ${env.OM1}"
+                        }
+
+                        return processCount
+
+                    }
+
+
+                    // Check SVC processes
+                    def processCount_svc = checkSVC('svc')
+                    echo "SVC Process Count: ${processCount_svc}"
+                    
+
+                    // Check SHM processes
+                    def processCount_shm = checkSVC('shm')
+                    echo "SHM Process Count: ${processCount_shm}"
+
+                    // Check Active sessions
+                    def srvrmgr_command = """
+                        srvrmgr -g ${env.GATEWAY} -e ${env.ENTERPRISE} -u ${DB_USERNAME} -p ${DB_PASSWORD} -q -c "list comp PSCcObjMgr_SSO for server om1 show CP_NUM_RUN_TASKS"
+                    """
+                    def srvrmgr_output = sh(script: "sudo su - sadmin -c '${srvrmgr_command}'", returnStdout: true).trim()
+
+                    def activeSession = extractCpNumRunTasks(srvrmgr_output)
+                    echo "Active sessions are: ${activeSession}"
+
+
+                    def cleanedRecipients = env.EMAIL_RECIPIENTS.replaceAll('\\s*,\\s*', ',')  // Removes surrounding whitespace
+
+                    // Process count email alert
+                    if(processCount_svc.toInteger() > 0 && processCount_shm.toInteger() > 0) {
+                        echo "Both SVC and SHM processes are running on ${env.OM1}"
+                    } else {
+                        // error("Either SVC or SHM process is not running on ${env.OM1}")
+                        echo "Either SVC or SHM process is not running on ${env.OM1}"
+
+                        emailext(
+                            from: 'kaustav.ganguli@treas.nj.gov',
+                            subject: "SVC or SHM process is not running on ${env.OM1}",
+                            body: "Either SVC or SHM process is not running on ${env.OM1}",
+                            to: cleanedRecipients
+                        )
+                    }
+
+                    // Active sessions email alert
+                    if(activeSession.toInteger() > Allowed_Active_Sessions.toInteger()) {
+                        echo "Active session count is high on ${env.OM1}"
+                         emailext(
+                            from: 'kaustav.ganguli@treas.nj.gov',
+                            subject: "Active session count is high on ${env.OM1}",
+                            body: "Active session count is ${activeSession} on ${env.OM1}",
+                            to: cleanedRecipients
+                        )
+                    }
+                    else {
+                        echo "Active session count is ${activeSession} on ${env.OM1}"
+                    }
+                }
+            }
+        }
+
+        stage('Check processes - OM2') {
+            agent { label "${env.OM2}" }
+            steps {
+                script {
+                    // Define the function to extract the number from the srvrmgr output
+                    def extractCpNumRunTasks = { String srvrmgrOutput ->
+                        def lines = srvrmgrOutput.readLines()
+
+                        for (int i = 0; i < lines.size(); i++) {
+                            def line = lines[i].trim()
+                            if (line.startsWith("CP_NUM_RUN_TASKS")) {
+                                if (i + 1 < lines.size()) {
+                                    return lines[i+2].trim() // Assuming the value is on the next line
+                                }
+                            }
+                        }
+                        return null
+                    }
+
+                    def checkSVC = { String processName ->
+                        // Check if the SVC process is running
+                        def processCount = sh(script: "ps -eaf | grep ${processName} | grep -v grep | wc -l", returnStdout: true).trim()
+                        echo "${processName} Process Count: ${processCount}"
+
+                        if (processCount.toInteger() == 0) {
+                            // error("${processName} process is not running on ${env.OM2}") //do not use error - it causes the pipeline to end immediately
+                            echo "${processName} process is not running on ${env.OM2}"
+                        } else {
+                            echo "${processName} process is running on ${env.OM2}"
+                        }
+
+                        return processCount
+
+                    }
+
+
+                    // Check SVC processes
+                    def processCount_svc_om2 = checkSVC('svc')
+                    echo "SVC Process Count: ${processCount_svc_om2}"
+
+                    // Check SHM processes
+                    def processCount_shm_om2 = checkSVC('shm')
+                    echo "SHM Process Count: ${processCount_shm_om2}"
+
+                    // Check Active sessions
+                    def srvrmgr_command = """
+                        srvrmgr -g ${env.GATEWAY} -e ${env.ENTERPRISE} -u ${DB_USERNAME} -p ${DB_PASSWORD} -q -c "list comp PSCcObjMgr_SSO for server om2 show CP_NUM_RUN_TASKS"
+                    """
+                    def srvrmgr_output = sh(script: "sudo su - sadmin -c '${srvrmgr_command}'", returnStdout: true).trim()
+
+                    def activeSession_om2 = extractCpNumRunTasks(srvrmgr_output)
+                    echo "Active sessions are: ${activeSession_om2}"
+
+
+                    def cleanedRecipients = env.EMAIL_RECIPIENTS.replaceAll('\\s*,\\s*', ',')  // Removes surrounding whitespace
+
+                    // Process count email alert
+                    if(processCount_svc_om2.toInteger() > 0 || processCount_shm_om2.toInteger() > 0) {
+                        echo "Both SVC and SHM processes are running on ${env.OM2}"
+                    } else {
+                        // error("Either SVC or SHM process is not running on ${env.OM2}")
+                        echo "Either SVC or SHM process is not running on ${env.OM2}"
+
+                        emailext(
+                            subject: "SVC or SHM process is not running on ${env.OM2}",
+                            body: "Either SVC or SHM process is not running on ${env.OM2}",
+                            from: 'kaustav.ganguli@treas.nj.gov',
+                            to: cleanedRecipients
+                        )
+                    }
+
+                    // Active sessions email alert
+                    if(activeSession_om2.toInteger() > Allowed_Active_Sessions.toInteger()) {
+                        echo "Active session count is high on ${env.OM2}"
+                         emailext(
+                            from: 'kaustav.ganguli@treas.nj.gov',
+                            subject: "Active session count is high on ${env.OM2}",
+                            body: "Active session count is ${activeSession_om2} on ${env.OM2}",
+                            to: cleanedRecipients
+                        )
+                    } 
+                    else {
+                        echo "Active session count is ${activeSession_om2} on ${env.OM2}"
+                    }
+
+
+                }
+            }
+        }
+
+
+
+        }
+}
