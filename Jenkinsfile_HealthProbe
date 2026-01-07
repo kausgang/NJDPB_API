@@ -35,7 +35,7 @@ pipeline {
 
     environment {
         ENVIRONMENT = 'PRODUCTION'
-        URL_TO_CHECK = "ty-sblprd5-ha-e.njes.state.nj.us"
+        URL_TO_CHECK = "https://ty-sblprd5-ha-e.njes.state.nj.us:1443/siebel/app/pensions/enu?SWECmd=Start"
         STRING_TO_FIND = "either busy or experiencing difficulties"
         ALERT_EMAIL = "kaustav.ganguli@treas.nj.gov"
     }
