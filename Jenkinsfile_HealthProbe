@@ -3,6 +3,7 @@ pipeline {
     agent { label 'master' } 
 
     environment {
+        ENVIRONMENT = 'PRODUCTION'
         URL_TO_CHECK = "https://ty-sblprd5-ha-e.njes.state.nj.us:1443/siebel/app/pensions/enu?SWECmd=Start"
         STRING_TO_FIND = "either busy or experiencing difficulties"
 
@@ -19,7 +20,7 @@ pipeline {
                     if curl -k -s ${URL_TO_CHECK}| grep -q ${STRING_TO_FIND}; then
 
                     echo "Match found: Executing success action..."
-                        echo "URL = ${URL_TO_CHECK}" | mail -s "ALERT!! Siebel Server Busy" kaustav.ganguli@treas.nj.gov 
+                        echo "URL = ${URL_TO_CHECK}" | mail -s "ALERT!! Siebel ${ENVIRONMENT} Server Busy" kaustav.ganguli@treas.nj.gov 
                     else
                         echo "No match found or request timed out."
                     fi
