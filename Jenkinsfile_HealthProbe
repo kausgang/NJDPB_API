@@ -1,0 +1,32 @@
+pipeline {
+
+    agent { label 'master' } 
+
+    environment {
+        URL_TO_CHECK = "https://ty-sblprd5-ha-e.njes.state.nj.us:1443/siebel/app/pensions/enu?SWECmd=Start"
+        STRING_TO_FIND = "either busy or experiencing difficulties"
+
+    }
+
+    stages {
+    
+
+
+        stage('Check Status'){
+
+            steps {
+                sh '''
+                    if curl -k -s ${URL_TO_CHECK}| grep -q ${STRING_TO_FIND}; then
+
+                    echo "Match found: Executing success action..."
+                        echo "" | mail -s "Siebel Server Busy" kaustav.ganguli@treas.nj.gov 
+                    else
+                        echo "No match found or request timed out."
+                    fi
+
+                '''
+            }
+        }
+    }
+    
+}
