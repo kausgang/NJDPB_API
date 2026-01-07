@@ -1,45 +1,41 @@
-// pipeline {
 
-//     agent { label 'master' } 
+// pipeline {
+//     agent { label 'master' } // Updated from 'master'
 
 //     environment {
 //         ENVIRONMENT = 'PRODUCTION'
 //         URL_TO_CHECK = "https://ty-sblprd5-ha-e.njes.state.nj.us:1443/siebel/app/pensions/enu?SWECmd=Start"
 //         STRING_TO_FIND = "either busy or experiencing difficulties"
-
+//         ALERT_EMAIL = "kaustav.ganguli@treas.nj.gov"
 //     }
 
 //     stages {
-    
-
-
-//         stage('Check Status'){
-
+//         stage('Check Status') {
 //             steps {
 //                 sh '''
-//                     if curl -k -s ${URL_TO_CHECK} | grep -q ${STRING_TO_FIND}; then
-
-//                         echo "Match found: Executing success action..."
-//                         echo "URL = ${URL_TO_CHECK}" | mail -s "ALERT!! Siebel ${ENVIRONMENT} Server Busy" kaustav.ganguli@treas.nj.gov 
+//                     # Use -k for insecure, -s for silent, -L to follow redirects
+//                     RESPONSE=$(curl -k -sL "$URL_TO_CHECK")
+                    
+//                     if echo "$RESPONSE" | grep -q "$STRING_TO_FIND"; then
+//                         echo "Match found: Server is busy."
+//                         echo "URL: $URL_TO_CHECK" | mail -s "ALERT!! Siebel $ENVIRONMENT Server Busy" "$ALERT_EMAIL"
 //                     else
-//                         echo "No match found or request timed out."
+//                         echo "No match found. Server status OK or check timed out."
 //                     fi
-
 //                 '''
 //             }
 //         }
 //     }
-    
 // }
 
 
 
 pipeline {
-    agent { label 'master' } // Updated from 'master'
+    agent { label 'built-in' } // Use 'built-in' for modern Jenkins instances
 
     environment {
         ENVIRONMENT = 'PRODUCTION'
-        URL_TO_CHECK = "https://ty-sblprd5-ha-e.njes.state.nj.us:1443/siebel/app/pensions/enu?SWECmd=Start"
+        URL_TO_CHECK = "ty-sblprd5-ha-e.njes.state.nj.us"
         STRING_TO_FIND = "either busy or experiencing difficulties"
         ALERT_EMAIL = "kaustav.ganguli@treas.nj.gov"
     }
@@ -47,17 +43,26 @@ pipeline {
     stages {
         stage('Check Status') {
             steps {
-                sh '''
-                    # Use -k for insecure, -s for silent, -L to follow redirects
-                    RESPONSE=$(curl -k -sL "$URL_TO_CHECK")
-                    
-                    if echo "$RESPONSE" | grep -q "$STRING_TO_FIND"; then
-                        echo "Match found: Server is busy."
-                        echo "URL: $URL_TO_CHECK" | mail -s "ALERT!! Siebel $ENVIRONMENT Server Busy" "$ALERT_EMAIL"
-                    else
-                        echo "No match found. Server status OK or check timed out."
-                    fi
-                '''
+                script {
+                    // Check status via shell and capture exit code
+                    // grep -q returns 0 if match is found, 1 if not
+                    def status = sh(
+                        script: "curl -k -sL ${URL_TO_CHECK} | grep -q '${STRING_TO_FIND}'",
+                        returnStatus: true
+                    )
+
+                    if (status == 0) {
+                        echo "Match found: Server is busy. Sending alert..."
+                        emailext(
+                            to: "${ALERT_EMAIL}",
+                            subject: "ALERT!! Siebel ${ENVIRONMENT} Server Busy",
+                            body: "The Siebel server is currently busy or experiencing difficulties.\nURL: ${URL_TO_CHECK}\nBuild: ${env.BUILD_URL}",
+                            mimeType: 'text/plain'
+                        )
+                    } else {
+                        echo "No match found. Server status is OK."
+                    }
+                }
             }
         }
     }
