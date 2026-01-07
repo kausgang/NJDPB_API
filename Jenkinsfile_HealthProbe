@@ -37,7 +37,7 @@ pipeline {
         ENVIRONMENT = 'PRODUCTION'
         URL_TO_CHECK = "https://ty-sblprd5-ha-e.njes.state.nj.us:1443/siebel/app/pensions/enu?SWECmd=Start"
         STRING_TO_FIND = "either busy or experiencing difficulties"
-        ALERT_EMAIL = "kaustav.ganguli@treas.nj.gov"
+        ALERT_EMAIL = "kaustav.ganguli@treas.nj.gov, Sukumar.Mididodi@treas.nj.gov"
     }
 
     stages {
@@ -54,6 +54,7 @@ pipeline {
                     if (status == 0) {
                         echo "Match found: Server is busy. Sending alert..."
                         emailext(
+                            from: 'kaustav.ganguli@treas.nj.gov',
                             to: "${ALERT_EMAIL}",
                             subject: "ALERT!! Siebel ${ENVIRONMENT} Server Busy",
                             body: "The Siebel server is currently busy or experiencing difficulties.\nURL: ${URL_TO_CHECK}\nBuild: ${env.BUILD_URL}",
