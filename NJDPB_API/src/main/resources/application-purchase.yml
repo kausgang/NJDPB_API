@@ -37,7 +37,10 @@ server:
 
 
 logging:
-  config: classpath:logback-spring-purchase.xml
+#  config: classpath:logback-spring-purchase.xml
+  structured:
+    format:
+      console: ecs
 
 
 #resilience4j.ratelimiter:
