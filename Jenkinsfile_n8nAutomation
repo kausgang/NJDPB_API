@@ -1,0 +1,77 @@
+pipeline {
+    agent none
+    stages {
+        stage('Run Command') {
+            agent { label "${agent_name}" } 
+            steps {
+
+                    script {
+                    
+                    // Initialize status variable outside the if/else block to keep it in scope
+                    def status 
+                    
+                    // CORRECTED: Reference variables directly in Groovy (no ${} inside if)
+                    // and compare strings using double quotes
+                    if (agent_name != "master") {
+                        status = sh(script: "sudo su - sadmin -c '${command}' > output.txt 2>&1", returnStatus: true)
+                    } else {
+                        status = sh(script: "${command} > output.txt 2>&1", returnStatus: true)
+                    }
+                    // 2. Initialize a default message
+                    def outputContent = "No output was produced by the command."
+                    
+                    // 3. Only read if the file exists and is not empty
+                    if (fileExists('output.txt')) {
+                        def rawContent = readFile('output.txt')
+                        if (rawContent != null && !rawContent.trim().isEmpty()) {
+                            outputContent = rawContent.trim()
+                        }
+                    }
+                    
+                    // 4. Send email (This will now always run even if status != 0 or file is empty)
+                    emailext(
+                        subject: "n8n job ran on: ${agent_name} - command- ${command_description} ",
+                        body: """
+Agent Name :
+${agent_name}
+
+Command Description:
+${command_description}
+
+Command executed: 
+${command}
+
+Exit Status: ${status}
+
+--- Output Start ---
+${outputContent}
+--- Output End ---
+        """,
+                        from: 'kaustav.ganguli@treas.nj.gov',
+                        to: "kaustav.ganguli@treas.nj.gov"
+                    )
+                    
+                }
+
+            }
+        }
+    }
+    
+    post {
+        failure {
+            emailext(
+                subject: "n8n Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+                    Project: ${env.JOB_NAME}
+                    Build Number: ${env.BUILD_NUMBER}
+                    Status: FAILED
+                    Command Description: ${command_description}
+                    Command: ${command}
+                    Check console output at: ${env.BUILD_URL}console
+                """,
+                to: 'kaustav.ganguli@treas.nj.gov',
+                from: 'kaustav.ganguli@treas.nj.gov'
+            )
+        }
+    }
+}
