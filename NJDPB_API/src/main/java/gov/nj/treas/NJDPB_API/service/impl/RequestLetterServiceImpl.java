@@ -35,7 +35,7 @@ public class RequestLetterServiceImpl implements RequestLetterService {
 
         List<RequestLetter> requestLetters = requestLetterRepository.findByRequestLetterIdSsn(ssn);
 
-        if(requestLetters.isEmpty()) throw new RecordNotFoundException("REQUEST_LETTER_SERVICE - Record Not Found ");
+//        if(requestLetters.isEmpty()) throw new RecordNotFoundException("REQUEST_LETTER_SERVICE - Record Not Found ");
 
         List<RequestLetterResponseDTO> requestLetterResponseDTOS = requestLetterMapper.toResponseDTOList(requestLetters);
 

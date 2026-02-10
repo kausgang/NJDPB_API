@@ -32,7 +32,7 @@ public class RequestCommentImpl implements RequestCommentService {
 
         List<RequestComment> requestComments = requestCommentRepository.findBySsn(ssn);
 
-        if(requestComments.isEmpty()) throw new RecordNotFoundException("REQUEST_COMMENT_SERVICE - Record Not Fount");
+//        if(requestComments.isEmpty()) throw new RecordNotFoundException("REQUEST_COMMENT_SERVICE - Record Not Fount");
 
         return CompletableFuture.completedFuture(requestCommentMapper.toResponseDTOList(requestComments));
 

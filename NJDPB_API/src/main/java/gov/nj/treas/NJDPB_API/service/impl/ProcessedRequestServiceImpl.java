@@ -33,7 +33,7 @@ public class ProcessedRequestServiceImpl implements ProcessedRequestService {
 
         List<ProcessedRequest> processedRequests = processedRequestRepository.findByProcessedRequestIdSsn(ssn);
 
-        if(processedRequests.isEmpty()) throw new RecordNotFoundException("PROCESSED_REQUEST_SERVICE - Record Not Fount");
+//        if(processedRequests.isEmpty()) throw new RecordNotFoundException("PROCESSED_REQUEST_SERVICE - Record Not Fount");
 
         List<ProcessedRequestResponseDTO> processedResponseDTOList = processedRequestMapper.toResponseDTOList(processedRequests);
 
