@@ -119,13 +119,13 @@ pipeline {
     def payload = """
 # HELP siebel_svc_process_count Number of SVC processes running
 # TYPE siebel_svc_process_count gauge
-siebel_svc_process_count{server="${serverName}",env="${env.ENVIRONMENT}"} ${svcCount}
+siebel_svc_process_count{server="${env.OM1}",env="${env.ENVIRONMENT}"} ${processCount_svc}
 # HELP siebel_shm_process_count Number of SHM processes running
 # TYPE siebel_shm_process_count gauge
-siebel_shm_process_count{server="${serverName}",env="${env.ENVIRONMENT}"} ${shmCount}
+siebel_shm_process_count{server="${env.OM1}",env="${env.ENVIRONMENT}"} ${processCount_shm}
 # HELP siebel_active_sessions Number of active sessions
 # TYPE siebel_active_sessions gauge
-siebel_active_sessions{server="${serverName}",env="${env.ENVIRONMENT}"} ${activeSession}
+siebel_active_sessions{server="${env.OM1}",env="${env.ENVIRONMENT}"} ${activeSession}
 """
 
 // 3. Push to Pushgateway using HTTP Request Plugin
