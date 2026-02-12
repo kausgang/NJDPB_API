@@ -127,6 +127,7 @@ siebel_shm_process_count{server="${env.OM1}",env="${env.ENVIRONMENT}"} ${process
 # HELP siebel_active_sessions Number of active sessions
 # TYPE siebel_active_sessions gauge
 siebel_active_sessions{server="${env.OM1}",env="${env.ENVIRONMENT}"} ${activeSession}
+
 """
 
                         // Removed the comment characters // from inside the payload and fixed the text parameter
@@ -260,6 +261,7 @@ siebel_shm_process_count{server="${env.OM2}",env="${env.ENVIRONMENT}"} ${process
 # HELP siebel_active_sessions Number of active sessions
 # TYPE siebel_active_sessions gauge
 siebel_active_sessions{server="${env.OM2}",env="${env.ENVIRONMENT}"} ${activeSession_om2}
+
 """
 
 
