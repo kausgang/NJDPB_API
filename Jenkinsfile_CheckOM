@@ -116,17 +116,18 @@ pipeline {
 
                     // 2. Prepare Prometheus Data (Text Format)
                         // Format: metric_name{label="value"} value
-                        def payload = """
-                        # HELP siebel_svc_process_count Number of SVC processes running
-                        # TYPE siebel_svc_process_count gauge
-                        siebel_svc_process_count{server="${env.OM1}",env="${env.ENVIRONMENT}"} ${processCount_svc}
-                        # HELP siebel_shm_process_count Number of SHM processes running
-                        # TYPE siebel_shm_process_count gauge
-                        siebel_shm_process_count{server="${env.OM1}",env="${env.ENVIRONMENT}"} ${processCount_shm}
-                        # HELP siebel_active_sessions Number of active sessions
-                        # TYPE siebel_active_sessions gauge
-                        siebel_active_sessions{server="${env.OM1}",env="${env.ENVIRONMENT}"} ${activeSession}
-                        """
+                        def payload = 
+"""
+# HELP siebel_svc_process_count Number of SVC processes running
+# TYPE siebel_svc_process_count gauge
+siebel_svc_process_count{server="${env.OM1}",env="${env.ENVIRONMENT}"} ${processCount_svc}
+# HELP siebel_shm_process_count Number of SHM processes running
+# TYPE siebel_shm_process_count gauge
+siebel_shm_process_count{server="${env.OM1}",env="${env.ENVIRONMENT}"} ${processCount_shm}
+# HELP siebel_active_sessions Number of active sessions
+# TYPE siebel_active_sessions gauge
+siebel_active_sessions{server="${env.OM1}",env="${env.ENVIRONMENT}"} ${activeSession}
+"""
 
                         // Removed the comment characters // from inside the payload and fixed the text parameter
                         // writeFile file: '/data/OBSERVABILITY/PROMETHEUS/NodeExporterMetricsData/OM1.prom', text: payload
@@ -248,17 +249,18 @@ pipeline {
 
                     // 2. Prepare Prometheus Data (Text Format)
             // Format: metric_name{label="value"} value
-                    def payload = """
-                # HELP siebel_svc_process_count Number of SVC processes running
-                # TYPE siebel_svc_process_count gauge
-                siebel_svc_process_count{server="${env.OM2}",env="${env.ENVIRONMENT}"} ${processCount_svc_om2}
-                # HELP siebel_shm_process_count Number of SHM processes running
-                # TYPE siebel_shm_process_count gauge
-                siebel_shm_process_count{server="${env.OM2}",env="${env.ENVIRONMENT}"} ${processCount_shm_om2}
-                # HELP siebel_active_sessions Number of active sessions
-                # TYPE siebel_active_sessions gauge
-                siebel_active_sessions{server="${env.OM2}",env="${env.ENVIRONMENT}"} ${activeSession_om2}
-                """
+                    def payload = 
+"""
+# HELP siebel_svc_process_count Number of SVC processes running
+# TYPE siebel_svc_process_count gauge
+siebel_svc_process_count{server="${env.OM2}",env="${env.ENVIRONMENT}"} ${processCount_svc_om2}
+# HELP siebel_shm_process_count Number of SHM processes running
+# TYPE siebel_shm_process_count gauge
+siebel_shm_process_count{server="${env.OM2}",env="${env.ENVIRONMENT}"} ${processCount_shm_om2}
+# HELP siebel_active_sessions Number of active sessions
+# TYPE siebel_active_sessions gauge
+siebel_active_sessions{server="${env.OM2}",env="${env.ENVIRONMENT}"} ${activeSession_om2}
+"""
 
 
                 writeFile file: 'OM2.prom', text: payload
