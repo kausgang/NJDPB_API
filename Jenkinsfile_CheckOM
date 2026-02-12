@@ -131,7 +131,7 @@ siebel_active_sessions{server="${env.OM1}",env="${env.ENVIRONMENT}"} ${activeSes
 // 3. Push to Pushgateway using HTTP Request Plugin
     // Note: We append the instance name to the URL to distinguish metrics per server
     httpRequest(
-        url: "${env.PUSHGATEWAY_URL}/instance/${serverName}",
+        url: "${env.PUSHGATEWAY_URL}/instance/${env.OM1}",
         httpMode: 'POST',
         requestBody: payload,
         contentType: 'TEXT_PLAIN',
@@ -237,19 +237,19 @@ siebel_active_sessions{server="${env.OM1}",env="${env.ENVIRONMENT}"} ${activeSes
     def payload = """
 # HELP siebel_svc_process_count Number of SVC processes running
 # TYPE siebel_svc_process_count gauge
-siebel_svc_process_count{server="${serverName}",env="${env.ENVIRONMENT}"} ${svcCount}
+siebel_svc_process_count{server="${env.OM2}",env="${env.ENVIRONMENT}"} ${processCount_svc_om2}
 # HELP siebel_shm_process_count Number of SHM processes running
 # TYPE siebel_shm_process_count gauge
-siebel_shm_process_count{server="${serverName}",env="${env.ENVIRONMENT}"} ${shmCount}
+siebel_shm_process_count{server="${env.OM2}",env="${env.ENVIRONMENT}"} ${processCount_shm_om2}
 # HELP siebel_active_sessions Number of active sessions
 # TYPE siebel_active_sessions gauge
-siebel_active_sessions{server="${serverName}",env="${env.ENVIRONMENT}"} ${activeSession}
+siebel_active_sessions{server="${env.OM2}",env="${env.ENVIRONMENT}"} ${activeSession_om2}
 """
 
 // 3. Push to Pushgateway using HTTP Request Plugin
     // Note: We append the instance name to the URL to distinguish metrics per server
     httpRequest(
-        url: "${env.PUSHGATEWAY_URL}/instance/${serverName}",
+        url: "${env.PUSHGATEWAY_URL}/instance/${env.OM2}",
         httpMode: 'POST',
         requestBody: payload,
         contentType: 'TEXT_PLAIN',
