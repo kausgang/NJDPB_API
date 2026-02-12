@@ -129,7 +129,9 @@ siebel_active_sessions{server="${env.OM1}",env="${env.ENVIRONMENT}"} ${activeSes
 """
 
 // Removed the comment characters // from inside the payload and fixed the text parameter
-writeFile file: '/data/OBSERVABILITY/PROMETHEUS/NodeExporterMetricsData/OM1.prom', text: payload
+// writeFile file: '/data/OBSERVABILITY/PROMETHEUS/NodeExporterMetricsData/OM1.prom', text: payload
+writeFile file: 'OM1.prom', text: payload
+stash includes: 'OM1.prom', name: 'OM1 prom_file' // Save for other agents
 
 
 // // 3. Push to Pushgateway using HTTP Request Plugin
@@ -180,6 +182,20 @@ writeFile file: '/data/OBSERVABILITY/PROMETHEUS/NodeExporterMetricsData/OM1.prom
                 }
             }
         }
+
+
+
+
+stage('Write to Target Agent') {
+            agent { label 'built-in' } // Switch to the different agent
+            steps {
+                unstash 'OM1 prom_file' // Retrieve the file on this agent
+                // Move it to the specific Node Exporter path
+                sh "mv OM1.prom /data/OBSERVABILITY/PROMETHEUS/NodeExporterMetricsData/OM1.prom"
+            }
+        }
+
+
 
         stage('Check processes - OM2') {
             agent { label "${env.OM2}" }
