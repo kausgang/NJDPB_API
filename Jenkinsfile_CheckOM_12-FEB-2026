@@ -7,7 +7,6 @@ pipeline {
         DB_CREDS = credentials('siebel-db-credentials')
         RUN_IN_PRODUCTION = 'true'  // Set to true for prod
         Allowed_Active_Sessions = '190'
-        PUSHGATEWAY_URL = "http://ty-sieweb2-ha-s.njes.state.nj.us:9091/metrics/job/siebel_monitoring"
     }
 
 
@@ -111,37 +110,6 @@ pipeline {
                     echo "Active sessions are: ${activeSession}"
 
 
-
-
-
-                    // 2. Prepare Prometheus Data (Text Format)
-    // Format: metric_name{label="value"} value
-    def payload = """
-# HELP siebel_svc_process_count Number of SVC processes running
-# TYPE siebel_svc_process_count gauge
-siebel_svc_process_count{server="${serverName}",env="${env.ENVIRONMENT}"} ${svcCount}
-# HELP siebel_shm_process_count Number of SHM processes running
-# TYPE siebel_shm_process_count gauge
-siebel_shm_process_count{server="${serverName}",env="${env.ENVIRONMENT}"} ${shmCount}
-# HELP siebel_active_sessions Number of active sessions
-# TYPE siebel_active_sessions gauge
-siebel_active_sessions{server="${serverName}",env="${env.ENVIRONMENT}"} ${activeSession}
-"""
-
-// 3. Push to Pushgateway using HTTP Request Plugin
-    // Note: We append the instance name to the URL to distinguish metrics per server
-    httpRequest(
-        url: "${env.PUSHGATEWAY_URL}/instance/${serverName}",
-        httpMode: 'POST',
-        requestBody: payload,
-        contentType: 'TEXT_PLAIN',
-        validResponseCodes: '200:202'
-    )
-    
-    echo "Metrics pushed to Pushgateway for ${serverName}"
-
-
-
                     def cleanedRecipients = env.EMAIL_RECIPIENTS.replaceAll('\\s*,\\s*', ',')  // Removes surrounding whitespace
 
                     // Process count email alert
@@ -228,35 +196,6 @@ siebel_active_sessions{server="${serverName}",env="${env.ENVIRONMENT}"} ${active
 
                     def activeSession_om2 = extractCpNumRunTasks(srvrmgr_output)
                     echo "Active sessions are: ${activeSession_om2}"
-
-
-
-
-                    // 2. Prepare Prometheus Data (Text Format)
-    // Format: metric_name{label="value"} value
-    def payload = """
-# HELP siebel_svc_process_count Number of SVC processes running
-# TYPE siebel_svc_process_count gauge
-siebel_svc_process_count{server="${serverName}",env="${env.ENVIRONMENT}"} ${svcCount}
-# HELP siebel_shm_process_count Number of SHM processes running
-# TYPE siebel_shm_process_count gauge
-siebel_shm_process_count{server="${serverName}",env="${env.ENVIRONMENT}"} ${shmCount}
-# HELP siebel_active_sessions Number of active sessions
-# TYPE siebel_active_sessions gauge
-siebel_active_sessions{server="${serverName}",env="${env.ENVIRONMENT}"} ${activeSession}
-"""
-
-// 3. Push to Pushgateway using HTTP Request Plugin
-    // Note: We append the instance name to the URL to distinguish metrics per server
-    httpRequest(
-        url: "${env.PUSHGATEWAY_URL}/instance/${serverName}",
-        httpMode: 'POST',
-        requestBody: payload,
-        contentType: 'TEXT_PLAIN',
-        validResponseCodes: '200:202'
-    )
-    
-    echo "Metrics pushed to Pushgateway for ${serverName}"
 
 
                     def cleanedRecipients = env.EMAIL_RECIPIENTS.replaceAll('\\s*,\\s*', ',')  // Removes surrounding whitespace
