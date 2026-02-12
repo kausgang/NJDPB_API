@@ -7,7 +7,7 @@ pipeline {
         DB_CREDS = credentials('siebel-db-credentials')
         RUN_IN_PRODUCTION = 'true'  // Set to true for prod
         Allowed_Active_Sessions = '190'
-        PUSHGATEWAY_URL = "http://localhost:9091/metrics/job/siebel_monitoring"
+        PUSHGATEWAY_URL = "http://10.243.2.8:9091/metrics/job/siebel_monitoring"
     }
 
 
