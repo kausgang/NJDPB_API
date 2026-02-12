@@ -132,7 +132,8 @@ siebel_active_sessions{server="${env.OM1}",env="${env.ENVIRONMENT}"} ${activeSes
     // Note: We append the instance name to the URL to distinguish metrics per server
     httpRequest(
         url: "${env.PUSHGATEWAY_URL}/instance/${env.OM1}",
-        httpMode: 'POST',
+        // httpMode: 'POST',
+        httpMode: 'PUT',
         requestBody: payload,
         contentType: 'TEXT_PLAIN',
         validResponseCodes: '200:202'
