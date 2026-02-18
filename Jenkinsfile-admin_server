@@ -1,8 +1,67 @@
+// pipeline{
+
+//     agent none
+
+
+
+//     stages{
+
+//         stage('Checkout') {
+//             agent {label 'master'}
+//                     steps {
+//                         checkout scm
+//                     }
+//                 }
+
+//         stage('Build'){
+
+//             agent {label 'master'}
+//             steps {
+//                 echo 'Building the application...'
+//                 sh '''
+//                     cd ./NJDPB_ADMIN_Server;
+//                     export JAVA_HOME=/home/typgang/Jenkins/jdk-21.0.2;
+//                     /home/typgang/MAVEN/apache-maven-3.9.11/bin/mvn clean package -DskipTests
+//                 '''
+//             }
+//         }
+//         stage('Deploy'){
+
+//             agent { label 'master' }
+//             steps{
+
+//                 echo "Kill the previous instance and Deploy the new change - DO IT MANUALLY"
+
+
+
+//                 sh '''
+        
+//                     echo "Moving old JAR to a new location...";
+//                     mv /home/typgang/SiebelExternalApi/NJDPB_ADMIN_Server-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/NJDPB_ADMIN_Server-0.0.1-SNAPSHOT.jar_$(date +%Y-%m-%d_%H:%M:%S);
+
+//                     echo "Copying new JAR from workspace...";
+//                     scp ${WORKSPACE}/NJDPB_ADMIN_Server/target/NJDPB_ADMIN_Server-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/;
+
+//                     echo "Starting new instance...";
+//                     nohup /home/typgang/SiebelExternalApi/runAPI.sh > /home/typgang/SiebelExternalApi/api.log 2>&1 &
+//                 '''
+
+//                 // sh '/home/typgang/SiebelExternalApi/runAPI.sh'
+
+//                 // sh '''
+//                 //     mv /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar_$(date +%Y-%m-%d_%H:%M:%S)
+//                 // '''
+                
+//             }
+//         }
+//     }
+// }
+
+
+
 pipeline{
 
     agent none
-
-
 
     stages{
 
@@ -11,48 +70,41 @@ pipeline{
                     steps {
                         checkout scm
                     }
-                }
+        }
 
-        stage('Build'){
-
+        stage('Build Podman Image') {
             agent {label 'master'}
             steps {
-                echo 'Building the application...'
-                sh '''
-                    cd ./NJDPB_ADMIN_Server;
-                    export JAVA_HOME=/home/typgang/Jenkins/jdk-21.0.2;
-                    /home/typgang/MAVEN/apache-maven-3.9.11/bin/mvn clean package -DskipTests
-                '''
+                script 
+                {
+                    // def imageName = 'njdpb-purchase'
+                    def IMAGE_NAME = 'njdpb-sba'
+                    def buildArgs = "-f ./NJDPB_CICD/Dockerfile_NJDPB_Proxy"
+
+                    // // Define the specific path to the directory containing your Containerfile/Dockerfile
+                    def buildPath = "${WORKSPACE}/NJDPB_ADMIN_Server/"
+
+                    sh """
+                        # Ensure the script runs in the correct directory
+                        cd ${buildPath}
+
+                        # Run the podman build command within that directory
+                        podman build ${buildArgs} -t ${IMAGE_NAME}:${BUILD_NUMBER} .
+
+                        
+                        # Optionally tag as latest
+                        podman tag ${IMAGE_NAME}:${BUILD_NUMBER} ${IMAGE_NAME}:latest
+
+                    """
+                    echo "Image built: ${IMAGE_NAME}:${BUILD_NUMBER}"
+                }
             }
         }
-        stage('Deploy'){
-
-            agent { label 'master' }
-            steps{
-
-                echo "Kill the previous instance and Deploy the new change - DO IT MANUALLY"
 
 
 
-                sh '''
-        
-                    echo "Moving old JAR to a new location...";
-                    mv /home/typgang/SiebelExternalApi/NJDPB_ADMIN_Server-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/NJDPB_ADMIN_Server-0.0.1-SNAPSHOT.jar_$(date +%Y-%m-%d_%H:%M:%S);
 
-                    echo "Copying new JAR from workspace...";
-                    scp ${WORKSPACE}/NJDPB_ADMIN_Server/target/NJDPB_ADMIN_Server-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/;
 
-                    echo "Starting new instance...";
-                    nohup /home/typgang/SiebelExternalApi/runAPI.sh > /home/typgang/SiebelExternalApi/api.log 2>&1 &
-                '''
 
-                // sh '/home/typgang/SiebelExternalApi/runAPI.sh'
-
-                // sh '''
-                //     mv /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar /home/typgang/SiebelExternalApi/NJDPB_API-0.0.1-SNAPSHOT.jar_$(date +%Y-%m-%d_%H:%M:%S)
-                // '''
-                
-            }
-        }
     }
 }
