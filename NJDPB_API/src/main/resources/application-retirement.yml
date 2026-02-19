@@ -40,10 +40,10 @@ server:
 #   config: classpath:logback-spring-retirement.xml
 
 
-logging:
-  structured:
-    format:
-      console: ecs
+#logging:
+#  structured:
+#    format:
+#      console: ecs
 
 
 #resilience4j.ratelimiter:
