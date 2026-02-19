@@ -84,7 +84,7 @@ pipeline{
                     // // Define the specific path to the directory containing your Containerfile/Dockerfile
                     def buildPath = "${WORKSPACE}/NJDPB_ADMIN_Server/"
 
-                    sh """
+                    bat """
                         # Ensure the script runs in the correct directory
                         cd ${buildPath}
 
