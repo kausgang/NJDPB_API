@@ -33,8 +33,6 @@ EXPOSE 8090
 # Use JAVA_TOOL_OPTIONS to automatically load the agent
 ENV JAVA_TOOL_OPTIONS="-javaagent:/app/opentelemetry-javaagent.jar"
 
-# Default OTel configuration (can be overridden at runtime)
-ENV OTEL_SERVICE_NAME="your-service-name"
-ENV OTEL_METRICS_EXPORTER="none"
+
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
