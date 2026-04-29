@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: returnJWT
+
+
+  security:
+    user:
+      name: ${SECURITY_USERNAME}
+      password: ${SECURITY_PASSWORD}
