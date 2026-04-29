@@ -7,3 +7,15 @@ spring:
     user:
       name: ${SECURITY_USERNAME}
       password: ${SECURITY_PASSWORD}
+
+
+#  for case insensetivity in post body
+  jackson:
+    mapper:
+      accept-case-insensitive-properties: true
+
+
+
+CONNECT_SECRET: "CONNECT_SECRET"
+WIDGET_ID: "WIDGET_ID"
+JWT_EXP_DELTA_SECONDS: 500
