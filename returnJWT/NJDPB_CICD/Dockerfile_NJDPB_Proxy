@@ -1,0 +1,38 @@
+# === Stage 1: Build the application ===
+FROM maven:3.9.6-eclipse-temurin-21 AS build
+WORKDIR /app
+COPY .. .
+
+# Copy the maven settings
+COPY ./NJDPB_CICD/settings.xml /root/.m2/settings.xml
+
+# Download the OpenTelemetry Java Agent
+# Using ADD with a URL lets Docker handle the download during the build
+ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar /app/opentelemetry-javaagent.jar
+
+RUN mvn clean package -DskipTests
+
+
+# === Stage 2: Run the application ===
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+
+# Add non-root user
+RUN addgroup -S spring && adduser -S spring -G spring
+
+# Copy the application JAR and the OTel agent from the build stage
+COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/opentelemetry-javaagent.jar opentelemetry-javaagent.jar
+
+# Ensure the non-root user owns the files
+RUN chown spring:spring app.jar opentelemetry-javaagent.jar
+
+USER spring:spring
+EXPOSE 9000
+
+# Use JAVA_TOOL_OPTIONS to automatically load the agent
+ENV JAVA_TOOL_OPTIONS="-javaagent:/app/opentelemetry-javaagent.jar"
+
+
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
