@@ -19,3 +19,52 @@ spring:
 CONNECT_SECRET: "CONNECT_SECRET"
 WIDGET_ID: "WIDGET_ID"
 JWT_EXP_DELTA_SECONDS: 500
+
+
+
+otel:
+  distribution:
+    spring_starter:
+      instrumentation:
+        default_enabled: false
+        enabled:
+          - jdbc
+          - spring_web
+          - logback_appender
+#        disabled:
+
+  exporter:
+    otlp:
+      endpoint: http://localhost:3100
+      logs:
+        endpoint: http://localhost:3100/otlp/v1/logs
+    logs:
+      exporter: otlp
+
+
+#management:
+#  otlp:
+#    logging:
+#      endpoint: "http://localhost:3100/v1/logs"
+#  tracing:
+#    sampling:
+#      probability: 1.0
+
+
+management:
+  opentelemetry:
+    logging:
+      export:
+        otlp:
+          endpoint: http://localhost:3100/otlp/v1/logs
+
+    tracing:
+      enabled: false
+
+    metrics:
+      export:
+        otlp:
+          enabled: false
+
+
+
