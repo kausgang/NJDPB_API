@@ -33,7 +33,7 @@ public class TokenService {
 
         Date now = new Date();
 
-        Date issuedAt = new Date(now.getTime() - 5 * 1000L);
+        Date issuedAt = new Date(now.getTime() - 50 * 1000L);
         Date expiresAt = new Date(issuedAt.getTime() + JWT_EXP_DELTA_SECONDS * 1000L);
 
         // attributes map (nested)
