@@ -31,7 +31,9 @@ public class TokenService {
 
         Algorithm algorithm = Algorithm.HMAC256(CONNECT_SECRET);
 
-        Date issuedAt = new Date();
+        Date now = new Date();
+
+        Date issuedAt = new Date(now.getTime() - 5 * 1000L);
         Date expiresAt = new Date(issuedAt.getTime() + JWT_EXP_DELTA_SECONDS * 1000L);
 
         // attributes map (nested)
