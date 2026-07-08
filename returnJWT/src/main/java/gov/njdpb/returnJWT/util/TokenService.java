@@ -41,10 +41,7 @@ public class TokenService {
         attributes.put("FirstName",firstName);
         attributes.put("LastName",lastName);
         attributes.put("Email",email);
-//        attributes.put("customerName", "Sukumar");
-//        attributes.put("accountID", "123456789");
-//        attributes.put("email", "jane@example.com");
-//        attributes.put("sessionID", "portal-session-xyz");
+
 
         // build token
         String token = JWT.create()

@@ -34,6 +34,8 @@ public class ReturnJWTImpl implements ReturnJWT {
 
         String jwt = tokenService.returnToken(firstName,lastName,email);
 
+        log.debug("Service returned - {}",jwt);
+
         return ResponseDTO.builder()
                 .jwt(jwt)
                 .build();
