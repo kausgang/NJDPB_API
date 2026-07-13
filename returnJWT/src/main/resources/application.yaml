@@ -7,6 +7,9 @@ spring:
     admin:
       client:
         url: ${ADMIN_SERVER_URL}  # URL of your Admin Server
+        instance:
+          prefer-ip: true
+          service-base-url: ${SERVICE_BASE_URL}
 
 
   security:
