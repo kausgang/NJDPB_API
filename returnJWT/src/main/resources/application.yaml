@@ -3,6 +3,12 @@ spring:
     name: returnJWT
 
 
+  boot:
+    admin:
+      client:
+        url: {ADMIN_SERVER_URL}  # URL of your Admin Server
+
+
   security:
     user:
       name: ${SECURITY_USERNAME}
@@ -21,6 +27,15 @@ WIDGET_ID: "WIDGET_ID"
 JWT_EXP_DELTA_SECONDS: 500
 
 
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
 
 #otel:
 #  distribution:
