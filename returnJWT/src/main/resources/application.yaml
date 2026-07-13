@@ -6,7 +6,7 @@ spring:
   boot:
     admin:
       client:
-        url: {ADMIN_SERVER_URL}  # URL of your Admin Server
+        url: ${ADMIN_SERVER_URL}  # URL of your Admin Server
 
 
   security:
