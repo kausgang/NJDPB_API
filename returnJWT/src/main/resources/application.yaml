@@ -39,6 +39,9 @@ management:
   endpoint:
     health:
       show-details: always
+  security:
+    enabled: false
+
 
 #otel:
 #  distribution:
