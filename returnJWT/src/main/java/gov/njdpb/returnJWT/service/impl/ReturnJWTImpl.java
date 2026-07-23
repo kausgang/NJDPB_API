@@ -27,18 +27,33 @@ public class ReturnJWTImpl implements ReturnJWT {
     @Override
     public ResponseDTO provideJWT(RequestDTO requestDTO) {
 
+        log.info("Processing JWT generation");
+
+        log.debug("Extracting fields from RequestDTO");
 
         firstName = requestDTO.getFirstName();
         lastName = requestDTO.getLastName();
         email = requestDTO.getEmail();
 
-        String jwt = tokenService.returnToken(firstName,lastName,email);
+        log.debug("FirstName: {}", firstName);
+        log.debug("LastName: {}", lastName);
+        log.debug("Email: {}", email);
 
-        log.debug("Service returned - {}",jwt);
+        try {
+            String jwt = tokenService.returnToken(firstName,lastName,email);
 
-        return ResponseDTO.builder()
-                .jwt(jwt)
-                .build();
+            log.info("TokenService returned a JWT successfully");
+            log.debug("Generated JWT: {}", jwt);
+
+            return ResponseDTO.builder()
+                    .jwt(jwt)
+                    .build();
+
+        } catch (Exception e) {
+
+            log.error("Error while generating JWT in ReturnJWTImpl", e);
+            throw new RuntimeException(e);
+        }
 
 
     }
