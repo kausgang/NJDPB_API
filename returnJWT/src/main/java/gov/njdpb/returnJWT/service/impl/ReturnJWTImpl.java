@@ -23,6 +23,7 @@ public class ReturnJWTImpl implements ReturnJWT {
     private String firstName;
     private String lastName;
     private String email;
+    private String memberno;
 
     @Override
     public ResponseDTO provideJWT(RequestDTO requestDTO) {
@@ -34,13 +35,15 @@ public class ReturnJWTImpl implements ReturnJWT {
         firstName = requestDTO.getFirstName();
         lastName = requestDTO.getLastName();
         email = requestDTO.getEmail();
+        memberno = requestDTO.getMemberno();
 
         log.debug("FirstName: {}", firstName);
         log.debug("LastName: {}", lastName);
         log.debug("Email: {}", email);
+        log.debug("MemberNo: {}", memberno);
 
         try {
-            String jwt = tokenService.returnToken(firstName,lastName,email);
+            String jwt = tokenService.returnToken(firstName,lastName,email,memberno);
 
             log.info("TokenService returned a JWT successfully");
             log.debug("Generated JWT: {}", jwt);

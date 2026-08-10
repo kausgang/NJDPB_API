@@ -26,7 +26,7 @@ public class TokenService {
     @Value("${JWT_EXP_DELTA_SECONDS}")
     private int JWT_EXP_DELTA_SECONDS;
 
-    public String returnToken(String firstName, String lastName, String email) {
+    public String returnToken(String firstName, String lastName, String email,String memberno) {
 
 
 
@@ -54,6 +54,7 @@ public class TokenService {
             attributes.put("FirstName",firstName);
             attributes.put("LastName",lastName);
             attributes.put("Email",email);
+            attributes.put("MemberNo",memberno);
 
             log.debug("Attributes map created: {}", attributes);
 
