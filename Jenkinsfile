@@ -1,18 +1,19 @@
 pipeline{
 
-    agent none
+    // agent none
+    agent any
 
     stages{
 
         stage('Checkout') {
-            agent {label 'master'}
+            // agent {label 'master'}
                     steps {
                         checkout scm
                     }
         }
 
         stage('Build Podman Image') {
-            agent {label 'master'}
+            // agent {label 'master'}
             steps {
                 script 
                 {
