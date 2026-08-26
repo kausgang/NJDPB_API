@@ -2,10 +2,13 @@
 # Use a JDK 21 image with Maven for compilation
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
-COPY ../NJDPB_ADMIN_Server/* .
+# COPY ../NJDPB_ADMIN_Server/* .
+COPY pom.xml .
+COPY src ./src
 
 # Copy the maven settings
-COPY ./NJDPB_CICD/settings.xml /root/.m2/settings.xml
+# COPY ./NJDPB_CICD/settings.xml /root/.m2/settings.xml
+COPY settings.xml /root/.m2/settings.xml
 
 # Use -DskipTests or specific profiles as needed for your CI/CD
 RUN mvn clean package -DskipTests
