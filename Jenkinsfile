@@ -28,7 +28,6 @@ pipeline{
                         # Ensure the script runs in the correct directory
 
                         # Run the podman build command within that directory
-                        # podman build ${buildArgs} -t ${IMAGE_NAME}:${BUILD_NUMBER} .
                         podman build -t ${IMAGE_NAME}:${BUILD_NUMBER} .
 
                         
