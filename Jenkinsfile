@@ -22,7 +22,7 @@ pipeline{
                     def buildArgs = "-f ./NJDPB_CICD/Dockerfile_NJDPB_Proxy"
 
                     // // Define the specific path to the directory containing your Containerfile/Dockerfile
-                    def buildPath = "${WORKSPACE}/NJDPB_ADMIN_Server/"
+                    def buildPath = "${WORKSPACE}/NJDPB_CICD/"
 
                     sh """
                         # Ensure the script runs in the correct directory
