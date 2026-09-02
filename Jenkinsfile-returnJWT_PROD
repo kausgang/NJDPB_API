@@ -1,0 +1,82 @@
+pipeline{
+
+    // agent none
+    agent any
+
+    stages{
+
+        stage('Checkout') {
+            // agent {label 'master'}
+                    steps {
+                        checkout scm
+                    }
+        }
+
+        stage('Build Podman Image') {
+            // agent {label 'master'}
+            steps {
+                script 
+                {
+                    // def imageName = 'njdpb-purchase'
+                    def IMAGE_NAME = 'njdpb-returnjwt'
+                    def buildArgs = "-f ./NJDPB_CICD/Dockerfile_NJDPB_Proxy"
+
+                    // // Define the specific path to the directory containing your Containerfile/Dockerfile
+                    def buildPath = "${WORKSPACE}/returnJWT/"
+
+                    sh """
+                        # Ensure the script runs in the correct directory
+                        cd ${buildPath}
+
+                        # Run the podman build command within that directory
+                        podman build ${buildArgs} -t ${IMAGE_NAME}:${BUILD_NUMBER} .
+
+                        
+                        # Optionally tag as latest
+                        podman tag ${IMAGE_NAME}:${BUILD_NUMBER} ${IMAGE_NAME}:latest
+
+                    """
+                    echo "Image built: ${IMAGE_NAME}:${BUILD_NUMBER}"
+                }
+            }
+        }
+
+
+
+
+        
+        // stage('Stop Previous Container') {
+        //     agent {label 'master'}
+        //     steps {
+        //         sh '''
+        //             if podman ps -a --format '{{.Names}}' | grep -q purchase_api; then
+        //                 podman stop purchase_api
+        //                 podman rm purchase_api
+        //             fi
+        //         '''
+        //     }
+        // }
+
+
+        // stage('Deploy New Container') {
+        //     agent {label 'master'}
+        //     steps {
+        //         script{
+
+        //             sh '''
+        //                 nohup podman run --replace --name purchase-api --net=host \
+        //                 --env-file=/home/typgang/SiebelExternalApi/.env-purchase.properties \
+        //                 localhost/njdpb-purchase:latest \
+        //                 --spring.profiles.active=purchase > /dev/null 2>&1 &
+                       
+        //             '''
+        //         }
+                
+        //     }
+        // }
+
+
+
+
+    }
+}
