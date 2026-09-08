@@ -44,7 +44,7 @@ public class ReturnJWTImpl implements ReturnJWT {
 
         try {
 
-                        Thread.sleep(3000);
+                        // Thread.sleep(3000);
 
             String jwt = tokenService.returnToken(firstName,lastName,email,memberno);
 
