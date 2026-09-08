@@ -43,6 +43,9 @@ public class ReturnJWTImpl implements ReturnJWT {
         log.debug("MemberNo: {}", memberno);
 
         try {
+
+                        Thread.sleep(3000);
+
             String jwt = tokenService.returnToken(firstName,lastName,email,memberno);
 
             log.info("TokenService returned a JWT successfully");
