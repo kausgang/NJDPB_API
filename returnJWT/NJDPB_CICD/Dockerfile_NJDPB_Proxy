@@ -8,7 +8,10 @@ COPY ./NJDPB_CICD/settings.xml /root/.m2/settings.xml
 
 # Download the OpenTelemetry Java Agent
 # Using ADD with a URL lets Docker handle the download during the build
-ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar /app/opentelemetry-javaagent.jar
+# ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar /app/opentelemetry-javaagent.jar
+ARG OTEL_AGENT_VERSION=2.28.1
+ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v${OTEL_AGENT_VERSION}/opentelemetry-javaagent.jar /app/opentelemetry-javaagent.jar
+
 
 RUN mvn clean package -DskipTests
 
