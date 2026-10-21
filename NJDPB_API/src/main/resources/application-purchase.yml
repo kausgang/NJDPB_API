@@ -26,6 +26,8 @@ spring:
     admin:
       client:
         url: ${ADMIN_SERVER_URL:""}  # Default empty string if admin server is not available
+        instance:
+          service-base-url: ${SERVICE_BASE_URL}
 
 cache:
   type: none
