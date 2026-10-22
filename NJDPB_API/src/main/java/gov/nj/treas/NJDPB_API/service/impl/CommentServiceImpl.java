@@ -34,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
 
             List<Comment> commentList = commentRepository.findBySsn(ssn);
 
-            if(commentList.isEmpty()) throw new RecordNotFoundException("COMMENT - Record not found");
+//            if(commentList.isEmpty()) throw new RecordNotFoundException("COMMENT - Record not found");
 
             List<CommentResponseDTO> commentResponseDTOList = commentMapper.toResponseList(commentList);
 

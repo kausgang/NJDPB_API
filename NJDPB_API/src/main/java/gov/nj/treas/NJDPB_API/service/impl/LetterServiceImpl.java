@@ -37,7 +37,7 @@ public class LetterServiceImpl implements LetterService {
 
             List<Letter> letterList = letterRepository.findBySsn(ssn);
 
-            if(letterList.isEmpty()) throw new RecordNotFoundException("LETTER - Record not found");
+//            if(letterList.isEmpty()) throw new RecordNotFoundException("LETTER - Record not found");
 
             List<LetterResponseDTO> letterResponseDTOList = letterMapper.toResponseDTOList(letterList);
 

@@ -35,7 +35,7 @@ public class MemberApplicationServiceImpl implements MemberApplicationService {
 
             List<MemberApplication> memberApplicationList = memberApplicationRepository.findBySsnMember(ssn);
 
-            if(memberApplicationList.isEmpty()) throw new RecordNotFoundException("MEMBER_APPLICATION - Record not found");
+//            if(memberApplicationList.isEmpty()) throw new RecordNotFoundException("MEMBER_APPLICATION - Record not found");
 
             List<MemberApplicationResponseDTO> memberApplicationResponseDTOList = memberApplicationMapper.toResponseDTOList(memberApplicationList);
 
