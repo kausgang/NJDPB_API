@@ -44,11 +44,8 @@ management:
 
 
 
-app:
-  chat-hours: ${CHAT-HOURS}
-
 
 
 
 server:
-  port: 9001
+  port: 9000
