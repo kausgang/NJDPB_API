@@ -1,0 +1,73 @@
+package gov.njdpb.returnJWT.service.impl;
+
+import gov.njdpb.returnJWT.config.AppProperties;
+import gov.njdpb.returnJWT.dto.RequestDTO;
+import gov.njdpb.returnJWT.dto.ResponseDTO;
+import gov.njdpb.returnJWT.dto.ResponseV2DTO;
+import gov.njdpb.returnJWT.service.intrface.ReturnJWT;
+import gov.njdpb.returnJWT.service.intrface.ReturnJWTV2;
+import gov.njdpb.returnJWT.util.TokenService;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+@Data
+@Slf4j
+@RequiredArgsConstructor
+public class ReturnJWTV2Impl implements ReturnJWTV2 {
+
+    @Autowired
+    TokenService tokenService;
+
+    private final AppProperties appProperties;
+
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String memberno;
+
+    @Override
+    public ResponseV2DTO provideJWT(RequestDTO requestDTO) {
+
+        log.info("Processing JWT generation V2");
+
+
+
+        log.debug("Extracting fields from RequestDTO");
+
+        firstName = requestDTO.getFirstName();
+        lastName = requestDTO.getLastName();
+        email = requestDTO.getEmail();
+        memberno = requestDTO.getMemberno();
+
+        log.debug("FirstName: {}", firstName);
+        log.debug("LastName: {}", lastName);
+        log.debug("Email: {}", email);
+        log.debug("MemberNo: {}", memberno);
+
+        try {
+
+                        // Thread.sleep(3000);
+
+            String jwt = tokenService.returnToken(firstName,lastName,email,memberno);
+
+            log.info("TokenService returned a JWT successfully");
+            log.debug("Generated JWT: {}", jwt);
+
+            return ResponseV2DTO.builder()
+                    .jwt(jwt)
+                    .chatHours(appProperties.getChatHours())
+                    .build();
+
+        } catch (Exception e) {
+
+            log.error("Error while generating JWT in ReturnJWTImpl", e);
+            throw new RuntimeException(e);
+        }
+
+
+    }
+}
