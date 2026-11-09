@@ -1,0 +1,10 @@
+@ReturnJWT_HostAddress = http://localhost:9001
+
+POST {{ReturnJWT_HostAddress}}/getJWT
+Content-Type: application/json
+
+{
+  "name": "Laptop1",
+  "price": 1999.99,
+  "stock": 110
+}

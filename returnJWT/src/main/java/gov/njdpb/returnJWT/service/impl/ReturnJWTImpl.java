@@ -1,5 +1,6 @@
 package gov.njdpb.returnJWT.service.impl;
 
+import gov.njdpb.returnJWT.config.AppProperties;
 import gov.njdpb.returnJWT.dto.RequestDTO;
 import gov.njdpb.returnJWT.dto.ResponseDTO;
 import gov.njdpb.returnJWT.service.intrface.ReturnJWT;
@@ -19,6 +20,7 @@ public class ReturnJWTImpl implements ReturnJWT {
     @Autowired
     TokenService tokenService;
 
+    private final AppProperties appProperties;
 
     private String firstName;
     private String lastName;
@@ -51,9 +53,17 @@ public class ReturnJWTImpl implements ReturnJWT {
             log.info("TokenService returned a JWT successfully");
             log.debug("Generated JWT: {}", jwt);
 
+//            return ResponseDTO.builder()
+//                    .jwt(jwt)
+//                    .build();
+
+
+//            ADDED chat hours on 9/NOV-2026
             return ResponseDTO.builder()
                     .jwt(jwt)
+                    .chatHours(appProperties.getChatHours())
                     .build();
+
 
         } catch (Exception e) {
 

@@ -13,4 +13,5 @@ import lombok.NoArgsConstructor;
 public class ResponseDTO {
 
     private String jwt;
+    private String chatHours;
 }
