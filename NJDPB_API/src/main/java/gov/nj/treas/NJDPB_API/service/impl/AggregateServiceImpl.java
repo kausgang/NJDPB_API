@@ -31,15 +31,15 @@ public class AggregateServiceImpl implements AggregateService {
         CompletableFuture<List<LetterResponseDTO>> letterList = letterService.getLetterBySsn(aggregateRequestDTO);
         CompletableFuture<List<CommentResponseDTO>> commentList = commentService.getCommentBySsn(aggregateRequestDTO);
 
-        CompletableFuture<MSSChecklistResponseDTO> mssChecklistResponseDTOCompletableFuture = mssChecklistService.getMSSChecklist(aggregateRequestDTO);
+//        CompletableFuture<MSSChecklistResponseDTO> mssChecklistResponseDTOCompletableFuture = mssChecklistService.getMSSChecklist(aggregateRequestDTO);
 
-//        CompletableFuture.allOf(memberList,letterList).join(); //blocking call
-        CompletableFuture.allOf(memberList,letterList,mssChecklistResponseDTOCompletableFuture).join(); //blocking call
+        CompletableFuture.allOf(memberList,letterList).join(); //blocking call
+//        CompletableFuture.allOf(memberList,letterList,mssChecklistResponseDTOCompletableFuture).join(); //blocking call
 
         List<MemberApplicationResponseDTO> members = memberList.get();
         List<LetterResponseDTO> letters = letterList.get();
         List<CommentResponseDTO> comments = commentList.get();
-        MSSChecklistResponseDTO mssChecklistResponseDTO = mssChecklistResponseDTOCompletableFuture.get();
+//        MSSChecklistResponseDTO mssChecklistResponseDTO = mssChecklistResponseDTOCompletableFuture.get();
 
 
 //        System.out.println("in aggregate service "+mssChecklistResponseDTO);
@@ -47,8 +47,8 @@ public class AggregateServiceImpl implements AggregateService {
         return aggregateMapper.toAggregateResponseDto(
                 members,
                 letters,
-                comments,
-                mssChecklistResponseDTO
+                comments
+//                mssChecklistResponseDTO
         );
 
     }

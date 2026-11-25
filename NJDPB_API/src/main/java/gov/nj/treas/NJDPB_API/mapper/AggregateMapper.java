@@ -13,19 +13,19 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface AggregateMapper {
 
-//    default AggregateResponseDTO toAggregateResponseDto(
-//            List<MemberApplicationResponseDTO> member_application,
-//            List<LetterResponseDTO> letter,
-//            List<CommentResponseDTO> comment
-//    ){
-
-
     default AggregateResponseDTO toAggregateResponseDto(
             List<MemberApplicationResponseDTO> member_application,
             List<LetterResponseDTO> letter,
-            List<CommentResponseDTO> comment,
-            MSSChecklistResponseDTO mssChecklistResponseDTO
+            List<CommentResponseDTO> comment
     ){
+
+
+//    default AggregateResponseDTO toAggregateResponseDto(
+//            List<MemberApplicationResponseDTO> member_application,
+//            List<LetterResponseDTO> letter,
+//            List<CommentResponseDTO> comment,
+//            MSSChecklistResponseDTO mssChecklistResponseDTO
+//    ){
 
         AggregateResponseDTO dto = new AggregateResponseDTO();
 
@@ -33,7 +33,7 @@ public interface AggregateMapper {
         dto.setLetters(letter);
         dto.setComments(comment);
 
-        dto.setMssChecklist(mssChecklistResponseDTO);
+//        dto.setMssChecklist(mssChecklistResponseDTO);
 
 
         return dto;

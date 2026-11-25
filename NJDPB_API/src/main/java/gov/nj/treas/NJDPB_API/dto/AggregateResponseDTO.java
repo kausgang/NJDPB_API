@@ -18,6 +18,6 @@ public class AggregateResponseDTO implements Serializable {
     private List<MemberApplicationResponseDTO> member_applications;
     private List<LetterResponseDTO> letters;
     private List<CommentResponseDTO> comments;
-    private MSSChecklistResponseDTO mssChecklist;
+//    private MSSChecklistResponseDTO mssChecklist;
 
 }

@@ -15,54 +15,56 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/v1")
 public class AggregateController {
 
     private final AggregateService aggregateService;
 
 
-    @Operation(
-            summary = "Find by SSN",
-            description = "Retrieves Member, Processed Request, Request Comment & Request Letter information based on provided SSN number",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Successfully retrieved information",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = AggregateResponseDTO.class))
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Bad request - invalid Input/SSN",
-                            content = @Content(
-                                    mediaType = "application/JSON",
-                                    schema = @Schema(implementation = ErrorResponseDTO.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Record not found",
-                            content = @Content(
-                                    mediaType = "application/JSON",
-                                    schema = @Schema(implementation = ErrorResponseDTO.class)
-                            )
-                    ),
-                    @ApiResponse(responseCode = "401", description = "Unauthorized")
-            },
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Member SSN information",
-                    required = true,
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = AggregateRequestDTO.class)
-                    )
-            )
-    )
+//    @Operation(
+//            summary = "Find by SSN",
+//            description = "Retrieves Member, Processed Request, Request Comment & Request Letter information based on provided SSN number",
+//            responses = {
+//                    @ApiResponse(
+//                            responseCode = "200",
+//                            description = "Successfully retrieved information",
+//                            content = @Content(
+//                                    mediaType = "application/json",
+//                                    array = @ArraySchema(schema = @Schema(implementation = AggregateResponseDTO.class))
+//                            )
+//                    ),
+//                    @ApiResponse(
+//                            responseCode = "400",
+//                            description = "Bad request - invalid Input/SSN",
+//                            content = @Content(
+//                                    mediaType = "application/JSON",
+//                                    schema = @Schema(implementation = ErrorResponseDTO.class)
+//                            )
+//                    ),
+//                    @ApiResponse(
+//                            responseCode = "404",
+//                            description = "Record not found",
+//                            content = @Content(
+//                                    mediaType = "application/JSON",
+//                                    schema = @Schema(implementation = ErrorResponseDTO.class)
+//                            )
+//                    ),
+//                    @ApiResponse(responseCode = "401", description = "Unauthorized")
+//            },
+//            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+//                    description = "Member SSN information",
+//                    required = true,
+//                    content = @Content(
+//                            mediaType = "application/json",
+//                            schema = @Schema(implementation = AggregateRequestDTO.class)
+//                    )
+//            )
+//    )
     @PostMapping("/details")
     public ResponseEntity<?> getDetails(@RequestBody AggregateRequestDTO aggregateRequestDTO) throws Exception{
 
