@@ -17,7 +17,7 @@ public interface CommentRepository extends JpaRepository<Comment,Integer> {
         SELECT c
         FROM Comment c
         WHERE c.ssn = :ssn
-        ORDER BY c.comment_date DESC
+        ORDER BY c.comment_id DESC
     """)
     List<Comment> findBySsn(@Param("ssn") String ssn);
 
