@@ -1,6 +1,7 @@
 package gov.nj.treas.NJDPB_API.persistence.entity;
 
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -26,4 +27,9 @@ public class Comment {
     private String user_id;
     private LocalDateTime comment_date;
     private String comments;
+
+
+//    @Column(name = "comment_date")
+//    private LocalDateTime commentDate;
+
 }

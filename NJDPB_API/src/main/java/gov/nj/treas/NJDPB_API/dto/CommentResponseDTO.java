@@ -18,5 +18,6 @@ public class CommentResponseDTO {
     private String ssn;
     private String user_id;
     private LocalDateTime comment_date;
+//private LocalDateTime commentDate;
     private String comments;
 }

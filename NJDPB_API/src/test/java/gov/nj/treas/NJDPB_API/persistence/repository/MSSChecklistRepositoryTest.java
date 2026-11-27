@@ -39,7 +39,13 @@ public class MSSChecklistRepositoryTest {
                 .desc_type_ret("P")
                 .build();
 
+//        MSSChecklist mssChecklist1 = MSSChecklist.builder()
+//                .idn_member_num(12345678)
+//                .desc_type_ret("S")
+//                .build();
+
         testEntityManager.persistAndFlush(mssChecklist);
+//        testEntityManager.persistAndFlush(mssChecklist1);
 
     }
 
@@ -56,8 +62,8 @@ public class MSSChecklistRepositoryTest {
 //        assertEquals("123456789",ma.getFirst().getSsnMember());
 
 //        assertEquals(1,type.);
-//
-//        assertTrue(type.);
+
+//        assertTrue(type);
         assertEquals("P",type);
     }
 }

@@ -10,6 +10,7 @@ import gov.nj.treas.NJDPB_API.service.intrface.CommentService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +34,16 @@ public class CommentServiceImpl implements CommentService {
             String ssn = aggregateRequestDTO.getSsn();
 
             List<Comment> commentList = commentRepository.findBySsn(ssn);
+//            List<Comment> commentList = commentRepository.findBySsnOrderByCommentDateDesc(ssn);
+//            List<Comment> commentList = commentRepository.findBySsnOrderByComment_dateDesc(ssn);
+//            System.out.println(commentList.get(0).getComment_date());
+
+
+
+//            List<Comment> commentList =
+//                    commentRepository.findBySsn(
+//                            ssn,
+//                            Sort.by(Sort.Direction.DESC, "comment_date"));
 
 //            if(commentList.isEmpty()) throw new RecordNotFoundException("COMMENT - Record not found");
 
